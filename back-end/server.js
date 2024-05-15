@@ -3,6 +3,7 @@ import { config } from 'dotenv';
 import mongoose from 'mongoose';
 import { userApiRoute } from './services/routes/user.route.js';
 import { insertionApiRoute } from './services/routes/insertion.route.js';
+import cors from 'cors';
 
 config();
 
@@ -11,6 +12,8 @@ const app = express();
 const port = process.env.PORT || 3001;
 
 app.use(express.json());
+
+app.use(cors())
 
 
 app.use("/api/user", userApiRoute);
