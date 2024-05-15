@@ -1,5 +1,6 @@
 import { Router } from "express";
-import Insertion from '../models/insertion.model.js'
+import Insertion from '../models/insertion.model.js';
+import User from '../models/user.model.js';
 export const insertionApiRoute = Router();
 
 insertionApiRoute.get("/", async (req, res, next) => {
@@ -20,11 +21,15 @@ insertionApiRoute.get("/:id", async (req, res, next) => {
     }
 })
 
-insertionApiRoute.post("/", async (req, res, next) => {
+insertionApiRoute.post("/:userId", async (req, res, next) => {
     try {
-        const post = await Insertion.create(req.body);
 
-        res.send(post)
+        const user = await User.findById(req.params.userId);
+        if (user) {
+            const post = await Insertion.create({ ...req.body, host: user });
+            res.send(post)
+
+        }
     } catch (error) {
         next(error)
     }
