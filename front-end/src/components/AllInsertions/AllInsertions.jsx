@@ -19,7 +19,8 @@ export default function AllInsertions({ data }) {
                             details={el.details}
                             cover={el.cover}
                             price={el.price}
-                            availability={el.availability} />
+                            availability={el.availability}
+                            place={el.place} />
                     </Col>
                 ))}
         </Row>

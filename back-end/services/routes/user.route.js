@@ -1,3 +1,4 @@
+import { avatarCloud } from "../middlewares/multer.js";
 import User from "../models/user.model.js";
 import { Router } from 'express';
 
@@ -46,6 +47,18 @@ userApiRoute.delete("/:id", async (req, res, next) => {
         const del = await User.findByIdAndDelete(req.params.id);
 
         res.send(del)
+    } catch (error) {
+        next(error)
+    }
+})
+
+userApiRoute.patch("/:id/avatar", avatarCloud.single("avatar"), async (req, res, next) => {
+    try {
+        const update = await User.findByIdAndUpdate(req.params.id,
+            { avatar: req.file.path },
+            { new: true }
+        );
+        res.send(update)
     } catch (error) {
         next(error)
     }

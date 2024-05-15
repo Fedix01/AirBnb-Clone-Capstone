@@ -1,5 +1,5 @@
 import { Router } from "express";
-import Insertion from '../models/insertion.route.js'
+import Insertion from '../models/insertion.model.js'
 export const insertionApiRoute = Router();
 
 insertionApiRoute.get("/", async (req, res, next) => {

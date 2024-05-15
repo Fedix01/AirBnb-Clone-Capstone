@@ -26,6 +26,11 @@ const insertionSchema = new Schema({
         required: true
     },
 
+    place: {
+        type: String,
+        required: true
+    },
+
     availability: {
         type: Boolean,
         required: false
