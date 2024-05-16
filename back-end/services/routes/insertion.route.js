@@ -13,6 +13,18 @@ insertionApiRoute.get("/", async (req, res, next) => {
         next(error)
     }
 })
+
+insertionApiRoute.get("/findByCategory/:category", async (req, res, next) => {
+    try {
+        const category = await Insertion.find({ "category": req.params.category });
+        res.send(category)
+    } catch (error) {
+        next(error)
+    }
+
+})
+
+
 insertionApiRoute.get("/:id", async (req, res, next) => {
     try {
         const singleIns = await Insertion.findById(req.params.id);
@@ -23,12 +35,36 @@ insertionApiRoute.get("/:id", async (req, res, next) => {
     }
 })
 
-insertionApiRoute.post("/:userId", async (req, res, next) => {
+insertionApiRoute.post("/:id", authMiddleware, async (req, res, next) => {
+    try {
+        const userId = req.user.id;
+        console.log(userId)
+        const newBooking = await Booking.create({
+            ...req.body,
+            user: userId,
+            insertion: req.params.id,
+        });
+        console.log(newBooking)
+        const post = await Insertion.findByIdAndUpdate(
+            req.params.id,
+            {
+                $push: {
+                    booking: newBooking
+                }
+            },
+            { new: true });
+        res.send(post)
+    } catch (error) {
+        next(error)
+    }
+})
+
+insertionApiRoute.post("/", authMiddleware, async (req, res, next) => {
     try {
 
-        const user = await User.findById(req.params.userId);
+        const user = await User.findById(req.user.id);
         if (user) {
-            const post = await Insertion.create({ ...req.body, host: user });
+            const post = await Insertion.create({ ...req.body, user: user });
             res.send(post)
 
         }
@@ -66,30 +102,6 @@ insertionApiRoute.get("/:id/booking", authMiddleware, async (req, res, next) => 
             user: req.user.id
         });
         res.send(allBookings);
-    } catch (error) {
-        next(error)
-    }
-})
-
-insertionApiRoute.post("/:id", authMiddleware, async (req, res, next) => {
-    try {
-        const userId = req.user.id;
-        console.log(userId)
-        const newBooking = await Booking.create({
-            ...req.body,
-            user: userId,
-            insertion: req.params.id,
-        });
-        console.log(newBooking)
-        const post = await Insertion.findByIdAndUpdate(
-            req.params.id,
-            {
-                $push: {
-                    booking: newBooking
-                }
-            },
-            { new: true });
-        res.send(post)
     } catch (error) {
         next(error)
     }

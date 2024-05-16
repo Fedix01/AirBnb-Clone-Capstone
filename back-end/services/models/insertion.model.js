@@ -18,7 +18,7 @@ const insertionSchema = new Schema({
 
     cover: {
         type: String,
-        required: true
+        required: false
     },
 
     price: {
@@ -36,7 +36,7 @@ const insertionSchema = new Schema({
         required: false
     },
 
-    host: {
+    user: {
         type: Schema.Types.ObjectId,
         ref: "User"
     },
