@@ -37,7 +37,7 @@ const UserSchema = new Schema({
         required: false
     },
 
-    host: {
+    isHost: {
         type: Boolean,
         required: true
     }

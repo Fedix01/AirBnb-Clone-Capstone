@@ -39,7 +39,14 @@ const insertionSchema = new Schema({
     host: {
         type: Schema.Types.ObjectId,
         ref: "User"
-    }
+    },
+
+    booking: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Booking"
+        }
+    ]
 },
 
     {

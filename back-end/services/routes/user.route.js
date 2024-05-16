@@ -1,6 +1,8 @@
 import { avatarCloud } from "../middlewares/multer.js";
 import User from "../models/user.model.js";
 import { Router } from 'express';
+import bcrypt from 'bcryptjs';
+import { generateJWT, authMiddleware } from "../middlewares/auth.js";
 
 export const userApiRoute = Router();
 
@@ -21,14 +23,50 @@ userApiRoute.get("/:id", async (req, res, next) => {
         next(error)
     }
 })
-userApiRoute.post("/", async (req, res, next) => {
+userApiRoute.post("/register", async (req, res, next) => {
     try {
-        const post = await User.create(req.body);
-        res.send(post)
+        const user = await User.create({
+            ...req.body,
+            password: await bcrypt.hash(req.body.password, 10)
+        });
+
+        const token = await generateJWT({
+            email: user.email
+        })
+        res.send({ user, token })
     } catch (error) {
         next(error)
     }
 })
+
+userApiRoute.post("/login", async (req, res, next) => {
+    try {
+        const userFound = await User.findOne({
+            email: req.body.email
+        });
+
+        if (userFound) {
+            const isPasswordMatching = await bcrypt.compare(req.body.password, userFound.password);
+
+            if (isPasswordMatching) {
+                const token = await generateJWT({
+                    email: userFound.email
+                })
+
+                res.send({ user: userFound, token })
+            } else {
+                res.status(400).send("Password errata")
+
+            }
+        } else {
+            res.status(400).send("Utente non trovato")
+        }
+
+    } catch (error) {
+        next(error)
+    }
+})
+
 
 userApiRoute.put("/:id", async (req, res, next) => {
     try {

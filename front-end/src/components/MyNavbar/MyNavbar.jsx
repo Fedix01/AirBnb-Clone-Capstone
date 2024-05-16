@@ -13,11 +13,11 @@ export default function MyNavbar() {
                     style={{ width: "100px" }} />
             </Navbar.Brand>
             <div>
-                <div>
+                {/* <div>
                     <Button variant='transparent'>Soggiorni</Button>
                     <Button variant='transparent'>Esperienze</Button>
                     <Button variant='transparent'>esperienze online</Button>
-                </div>
+                </div> */}
                 <div className="bar">
                     <div className="location">
                         <p>Location</p>

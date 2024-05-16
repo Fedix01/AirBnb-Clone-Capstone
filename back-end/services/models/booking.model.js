@@ -9,6 +9,10 @@ const bookingSchema = new Schema({
         type: String,
         required: true
     },
+    guestNum: {
+        type: String,
+        required: true
+    },
     user: {
         type: Schema.Types.ObjectId,
         ref: "User"
