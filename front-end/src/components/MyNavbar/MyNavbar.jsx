@@ -1,14 +1,21 @@
-import React from 'react'
-import { Navbar, Button } from 'react-bootstrap';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import Navbar from 'react-bootstrap/Navbar';
+import Button from 'react-bootstrap/esm/Button';
 import logoPink from "../../assets/logo-pink.png";
 import avatar from "../../assets/avatar.png";
 import "./MyNavbar.css";
 import { GoSearch } from "react-icons/go";
 
 export default function MyNavbar() {
+
+    const navigate = useNavigate();
+
+
+
     return (
         <Navbar className="justify-content-around" style={{ borderBottom: "1px solid lightgray" }}>
-            <Navbar.Brand href="#home">
+            <Navbar.Brand onClick={() => navigate("/")} style={{ cursor: "pointer" }}>
                 <img src={logoPink} alt=""
                     style={{ width: "100px" }} />
             </Navbar.Brand>
@@ -43,7 +50,7 @@ export default function MyNavbar() {
             </div>
             <div>
                 <Button variant='transparent'>Affitta con AirBnb</Button>
-                <Button variant='transparent'>
+                <Button variant='transparent' onClick={() => navigate("/signIn")}>
                     <img src={avatar} alt=""
                         style={{ width: "50px", borderRadius: "50%" }} />
                 </Button>

@@ -1,0 +1,15 @@
+.signIn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.signIn form div {
+    width: 700px;
+}
+
+.signIn form input {
+    border: 1px solid lightgray;
+    padding: 12px;
+}

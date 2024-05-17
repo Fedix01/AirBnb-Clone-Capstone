@@ -1,44 +1,51 @@
 import React, { useEffect, useState } from 'react';
-import { Button } from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
 import { PiFarm } from "react-icons/pi";
 import "./Category.css";
-export default function Category() {
-
-    const [data, setData] = useState([]);
+export default function Category({ setCategory }) {
 
     const endpoint = "http://localhost:3001/api/insertion";
 
-    const getCategory = async () => {
+
+
+    const [dataCat, setDataCat] = useState([]);
+
+
+    const getFromApi = async () => {
         try {
             const res = await fetch(endpoint);
             if (res.ok) {
                 const response = await res.json();
-                setData(response);
+                setDataCat(response);
             }
-        } catch (error) {
+
+        }
+
+        catch (error) {
             console.error(error)
         }
     }
 
-    useEffect(() => {
-        getCategory()
-        console.log(data)
-    }, [])
 
+    useEffect(() => {
+        getFromApi()
+    }, [])
 
     return (
 
         <>
-            {data &&
-                data.map((el) => (
-                    <div className='d-flex category-container m-5' key={el}>
-                        <Button variant='transparent' className='mx-2'>
+            <div className='d-flex category-container m-5' >
+
+                {dataCat &&
+                    dataCat.map((el) => (
+                        <Button variant='transparent' className='mx-2' key={el._id} value={el.category} onClick={() => setCategory(el.category)}>
                             <PiFarm />
                             <h6>{el.category}</h6>
                         </Button>
-                    </div>
-                ))
-            }
+                    ))
+                }
+            </div>
+
         </>
     )
 }
