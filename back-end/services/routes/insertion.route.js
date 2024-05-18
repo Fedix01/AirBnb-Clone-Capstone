@@ -35,6 +35,7 @@ insertionApiRoute.get("/:id", async (req, res, next) => {
     }
 })
 
+// Creo la booking
 insertionApiRoute.post("/:id", authMiddleware, async (req, res, next) => {
     try {
         const userId = req.user.id;
@@ -59,6 +60,7 @@ insertionApiRoute.post("/:id", authMiddleware, async (req, res, next) => {
     }
 })
 
+// Nuova inserzione
 insertionApiRoute.post("/", authMiddleware, async (req, res, next) => {
     try {
 

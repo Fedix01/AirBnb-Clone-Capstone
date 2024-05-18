@@ -1,26 +1,19 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import MyNavbar from '../MyNavbar/MyNavbar'
-import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
-import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
 import './SignIn.css';
+import { useNavigate } from 'react-router-dom';
+import { AlertContext } from '../AlertProvider/AlertProvider';
 
 export default function SignIn() {
 
+    const endpoint = "http://localhost:3001/api/user"
+
+    const navigate = useNavigate();
+    const { setAlert } = useContext(AlertContext)
+
     const [validated, setValidated] = useState(false);
-
-    const handleSubmit = (event) => {
-        const form = event.currentTarget;
-        if (form.checkValidity() === false) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
-
-        setValidated(true);
-    };
-
     const [formData, setFormData] = useState({
         username: '',
         email: '',
@@ -31,6 +24,77 @@ export default function SignIn() {
         avatar: null,
         isHost: false
     });
+
+    const handleSubmit = (event) => {
+        event.preventDefault()
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+
+        setValidated(true);
+        handleSignIn()
+    };
+
+    const handleSignIn = async () => {
+        try {
+            const payload = {
+                "name": formData.name,
+                "surname": formData.surname,
+                "email": formData.email,
+                "username": formData.username,
+                "password": formData.password,
+                "birthday": formData.date,
+                "isHost": formData.isHost
+            }
+
+
+            const res = await fetch(`${endpoint}/register`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+            if (res.ok) {
+                const register = await res.json();
+                console.log(register)
+                if (formData.avatar) {
+                    const formDataFile = new FormData();
+                    formDataFile.append("avatar", formData.avatar);
+                    const patch = await fetch(`${endpoint}/${register.user._id}/avatar`, {
+                        method: "PATCH",
+                        body: formDataFile
+                    });
+                    if (patch.ok) {
+                        const newUser = await patch.json();
+                        console.log(newUser);
+                        localStorage.setItem("user", JSON.stringify(newUser.user));
+                        localStorage.setItem("token", newUser.token);
+                        navigate("/");
+                        setAlert(`Benvenuto ${newUser.user.name}`);
+                        setTimeout(() => {
+                            setAlert("")
+                        }, 4000);
+                    } else {
+                        console.error("Errore durante la richiesta PATCH per l'avatar");
+                    }
+
+                } else {
+                    localStorage.setItem("user", JSON.stringify(register.user));
+                    localStorage.setItem("token", register.token);
+                    navigate("/");
+                    setAlert(`Benvenuto ${register.user.name}`);
+                    setTimeout(() => {
+                        setAlert("")
+                    }, 4000);
+                }
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+
 
     return (
         <>
@@ -64,6 +128,20 @@ export default function SignIn() {
                         />
                         <Form.Control.Feedback type="invalid">
                             Inserisci un Cognome valido...
+                        </Form.Control.Feedback>
+                        <Form.Control.Feedback>Perfetto!</Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Group controlId="email">
+                        <Form.Label>Email</Form.Label>
+                        <Form.Control
+                            required
+                            type="email"
+                            value={formData.email}
+                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                            placeholder="Inserisci email"
+                        />
+                        <Form.Control.Feedback type="invalid">
+                            Inserisci un email valida...
                         </Form.Control.Feedback>
                         <Form.Control.Feedback>Perfetto!</Form.Control.Feedback>
                     </Form.Group>

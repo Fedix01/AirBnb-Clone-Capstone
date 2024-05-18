@@ -14,11 +14,13 @@ const UserSchema = new Schema({
 
     email: {
         type: String,
+        unique: true,
         required: true
     },
 
     username: {
         type: String,
+        unique: true,
         required: true
     },
 
@@ -29,6 +31,7 @@ const UserSchema = new Schema({
 
     password: {
         type: String,
+        select: false,
         required: true
     },
 

@@ -5,6 +5,13 @@
 }
 
 
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    border-bottom: 1px solid lightgray;
+    background-color: white;
+}
 
 .bar {
     width: 650px;
@@ -84,4 +91,14 @@ input[type="text"]:focus {
     width: 1px;
     height: 55%;
     background: hsl(0 0% 90%);
+}
+
+.alert {
+    position: sticky;
+    top: 100px;
+}
+
+.dropdown {
+    border: 1px solid lightgray;
+    border-radius: 20px;
 }

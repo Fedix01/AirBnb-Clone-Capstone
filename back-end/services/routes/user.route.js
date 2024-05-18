@@ -15,9 +15,9 @@ userApiRoute.get("/", async (req, res, next) => {
     }
 })
 
-userApiRoute.get("/:id", async (req, res, next) => {
+userApiRoute.get("/me", authMiddleware, async (req, res, next) => {
     try {
-        const user = await User.findById(req.params.id);
+        const user = await User.findById(req.user.id);
         res.send(user)
     } catch (error) {
         next(error)
@@ -96,7 +96,11 @@ userApiRoute.patch("/:id/avatar", avatarCloud.single("avatar"), async (req, res,
             { avatar: req.file.path },
             { new: true }
         );
-        res.send(update)
+        const token = await generateJWT({
+            _id: update._id
+        })
+
+        res.send({ user: update, token })
     } catch (error) {
         next(error)
     }
