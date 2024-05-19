@@ -108,7 +108,7 @@ export default function Profile() {
                         const newUser = await patch.json();
                         console.log(newUser);
                         localStorage.removeItem("user");
-                        localStorage.remove("token");
+                        localStorage.removeItem("token");
                         localStorage.setItem("user", JSON.stringify(newUser.user));
                         localStorage.setItem("token", newUser.token);
                         setMod(false);
@@ -120,7 +120,7 @@ export default function Profile() {
                     }
                 } else {
                     localStorage.removeItem("user");
-                    localStorage.remove("token");
+                    localStorage.removeItem("token");
                     localStorage.setItem("user", JSON.stringify(results.user));
                     localStorage.setItem("token", results.token);
                     setMod(false);
