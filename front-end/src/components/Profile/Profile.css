@@ -4,4 +4,15 @@
     background-color: #dbdbdb;
     padding: 20px;
     border-radius: 20px;
+    height: 250px;
+}
+
+.info1,
+.info2 {
+    padding: 10px;
+    font-size: 20px;
+}
+
+form .form-control {
+    border: 1px solid lightgray;
 }

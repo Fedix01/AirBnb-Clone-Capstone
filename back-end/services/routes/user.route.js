@@ -68,13 +68,16 @@ userApiRoute.post("/login", async (req, res, next) => {
 })
 
 
-userApiRoute.put("/:id", async (req, res, next) => {
+userApiRoute.put("/:id", authMiddleware, async (req, res, next) => {
     try {
-        const put = await User.findByIdAndUpdate(req.params.id, req.body, {
+        const newUser = await User.findByIdAndUpdate(req.params.id, req.body, {
             new: true
         });
 
-        res.send(put)
+        const token = await generateJWT({
+            _id: newUser._id
+        })
+        res.send({ newUser, token })
     } catch (error) {
         next(error)
     }

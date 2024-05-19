@@ -29,6 +29,16 @@ const UserSchema = new Schema({
         required: false
     },
 
+    work: {
+        type: String,
+        required: false
+    },
+
+    address: {
+        type: String,
+        required: false
+    },
+
     password: {
         type: String,
         select: false,
