@@ -202,7 +202,7 @@ export default function SignIn() {
 
                     <Form.Group className="mb-3">
                         <Form.Check
-                            required
+
                             label="Sei un host?"
                             value={formData.isHost}
                             onChange={(e) => setFormData({ ...formData, isHost: e.target.checked })}
