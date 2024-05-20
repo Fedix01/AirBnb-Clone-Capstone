@@ -2,10 +2,12 @@ import React, { useContext, useEffect, useState } from 'react'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
+import avatar from "../../assets/avatar.png";
 import { useNavigate } from 'react-router-dom';
 import MyNavbar from '../MyNavbar/MyNavbar';
 import './Profile.css';
 import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 import { MdOutlineAlternateEmail } from "react-icons/md";
 import { FaRegUserCircle } from "react-icons/fa";
 import { MdOutlineWorkOutline } from "react-icons/md";
@@ -26,7 +28,11 @@ export default function Profile() {
     const token = localStorage.getItem("token");
 
     const [mod, setMod] = useState(false);
+
     const [validated, setValidated] = useState(false);
+
+    const [modalShow, setModalShow] = useState(false);
+
     const [formData, setFormData] = useState({
         username: '',
         email: '',
@@ -148,7 +154,31 @@ export default function Profile() {
 
     }
 
-
+    const handleDelete = async () => {
+        try {
+            const res = await fetch(endpointPUT, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+            if (res.ok) {
+                await res.json();
+                console.log("Utente eliminato");
+                setModalShow(false);
+                localStorage.removeItem("user");
+                localStorage.removeItem("token");
+                navigate("/")
+                setAlert("Utente eliminato correttamente");
+                setTimeout(() => {
+                    setAlert("")
+                }, 4000);
+            }
+        } catch (error) {
+            console.error(error, "Errore nell eliminazione utente")
+        }
+    }
 
     return (
         <>
@@ -161,7 +191,7 @@ export default function Profile() {
                         <div className='image-prof'>
                             <Row>
                                 <Col md={6}>
-                                    <img src={data.avatar} alt=""
+                                    <img src={data.avatar ? data.avatar : avatar} alt=""
                                         style={{ width: "100px", borderRadius: "50%" }} />
                                     <h4 className='mt-2' style={{ textAlign: "center" }}>{data.name}</h4>
                                     <h6 style={{ textAlign: "center" }}>{data.isHost ? "Host" : "Ospite"}</h6>
@@ -180,12 +210,17 @@ export default function Profile() {
                         <div>
                             <h2>{`Informazioni su ${data.name}`}</h2>
                         </div>
-                        <div className='my-4'>
-                            {mod ?
-                                <Button variant='transparent' style={{ border: "1px solid black" }} onClick={() => setMod(false)}>Torna al tuo profilo</Button>
-                                :
-                                <Button variant='transparent' style={{ border: "1px solid black" }} onClick={() => setMod(true)}>Modifica il profilo</Button>
-                            }
+                        <div className='d-flex my-4'>
+                            <div>
+                                {mod ?
+                                    <Button variant='transparent' style={{ border: "1px solid black" }} onClick={() => setMod(false)}>Torna al tuo profilo</Button>
+                                    :
+                                    <Button variant='transparent' style={{ border: "1px solid black" }} onClick={() => setMod(true)}>Modifica il profilo</Button>
+                                }
+                            </div>
+                            <div className='ms-2'>
+                                <Button variant='outline-danger' onClick={() => setModalShow(true)}>Elimina profilo</Button>
+                            </div>
                         </div>
                         <hr style={{ width: "50%" }} />
 
@@ -364,6 +399,27 @@ export default function Profile() {
                     </Col>
                 </Row>
             }
+
+
+            <Modal
+                show={modalShow}
+                onHide={() => setModalShow(false)}
+                size="lg"
+                aria-labelledby="contained-modal-title-vcenter"
+                centered
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title id="contained-modal-title-vcenter">
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <h3>Sicuro di voler eliminare il tuo account?</h3>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button onClick={() => setModalShow(false)}>Torna indietro</Button>
+                    <Button variant='danger' onClick={() => handleDelete()}>Elimina Account</Button>
+                </Modal.Footer>
+            </Modal>
         </>
     )
 }

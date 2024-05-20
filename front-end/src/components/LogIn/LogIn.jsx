@@ -3,6 +3,7 @@ import MyNavbar from '../MyNavbar/MyNavbar'
 import Form from 'react-bootstrap/Form';
 import './LogIn.css';
 import Button from 'react-bootstrap/Button';
+import Alert from 'react-bootstrap/Alert';
 import { useNavigate } from 'react-router-dom';
 import { AlertContext } from '../AlertProvider/AlertProvider';
 export default function LogIn() {
@@ -11,6 +12,8 @@ export default function LogIn() {
 
     const navigate = useNavigate();
     const { setAlert } = useContext(AlertContext);
+
+    const [errorAlert, setErrorAlert] = useState(false);
 
     const [formData, setFormData] = useState({
         email: "",
@@ -56,10 +59,18 @@ export default function LogIn() {
                 setTimeout(() => {
                     setAlert("")
                 }, 4000);
+            } else {
+                setErrorAlert(true);
+                setTimeout(() => {
+                    setErrorAlert(false)
+                }, 4000);
             }
         } catch (error) {
             console.error(error);
-
+            setErrorAlert(true);
+            setTimeout(() => {
+                setErrorAlert(false)
+            }, 4000);
         }
     }
 
@@ -98,6 +109,12 @@ export default function LogIn() {
                         </Form.Control.Feedback>
                         <Form.Control.Feedback>Perfetto!</Form.Control.Feedback>
                     </Form.Group>
+                    {errorAlert &&
+                        <Alert variant='danger' style={{ width: "50%" }}>
+                            Email o password errata
+                        </Alert>
+                    }
+
                     <Button variant='primary' type='submit'>Log In</Button>
                 </Form>
             </div>

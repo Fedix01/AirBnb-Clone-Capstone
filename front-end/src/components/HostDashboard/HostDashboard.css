@@ -1,0 +1,12 @@
+.tabs-wrap {
+    -webkit-box-shadow: 3px -8px 14px -7px rgba(143, 143, 143, 0.82);
+    -moz-box-shadow: 3px -8px 14px -7px rgba(143, 143, 143, 0.82);
+    box-shadow: 3px -8px 14px -7px rgba(143, 143, 143, 0.82);
+    border: 1px solid lightgray;
+}
+
+.tabs-wrap div:hover {
+    background-color: #FF385D;
+    color: white;
+    font-weight: bold;
+}

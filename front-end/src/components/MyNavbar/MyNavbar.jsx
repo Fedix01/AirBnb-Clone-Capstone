@@ -49,11 +49,13 @@ export default function MyNavbar() {
 
     const renderUserArea = () => {
         if (user && user.length !== 0) {
-            const userType = user.isHost ? "Host dashboard" : "Le mie prenotazioni"
             return (
                 <>
                     <div className='d-flex'>
-                        <Button variant='transparent'>{userType}</Button>
+                        {user.isHost ?
+                            <Button variant='transparent' onClick={() => navigate("/hostDashboard")}>Host dashboard</Button>
+                            :
+                            <Button variant='transparent'>Le mie prenotazioni</Button>}
                         <Dropdown>
                             <Dropdown.Toggle variant="transparent">
                                 <MdOutlineFormatListBulleted className='mx-2' />

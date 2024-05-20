@@ -91,7 +91,7 @@ userApiRoute.put("/:id", authMiddleware, async (req, res, next) => {
     }
 })
 
-userApiRoute.delete("/:id", async (req, res, next) => {
+userApiRoute.delete("/:id", authMiddleware, async (req, res, next) => {
     try {
         const del = await User.findByIdAndDelete(req.params.id);
 

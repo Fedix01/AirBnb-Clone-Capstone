@@ -5,6 +5,7 @@ import SignIn from './components/SignIn/SignIn';
 import AlertProvider from './components/AlertProvider/AlertProvider';
 import Profile from './components/Profile/Profile';
 import LogIn from './components/LogIn/LogIn';
+import HostDashboard from './components/HostDashboard/HostDashboard';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path='/' element={<Homepage />}></Route>
           <Route path='/signIn' element={<SignIn />}></Route>
           <Route path='/logIn' element={<LogIn />}></Route>
+          <Route path='/hostDashboard' element={<HostDashboard />}></Route>
           <Route path='/me' element={<Profile />}></Route>
         </Routes>
       </AlertProvider>
