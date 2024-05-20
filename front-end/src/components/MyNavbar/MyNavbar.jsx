@@ -83,7 +83,7 @@ export default function MyNavbar() {
 
                             <Dropdown.Menu>
                                 <Dropdown.Item onClick={() => navigate("/signIn")}>Registrati</Dropdown.Item>
-                                <Dropdown.Item>Accedi</Dropdown.Item>
+                                <Dropdown.Item onClick={() => navigate("/logIn")}>Accedi</Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>
                     </div>

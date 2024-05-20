@@ -43,6 +43,7 @@ export default function Homepage() {
         }
     }, [category])
 
+
     return (
         <>
             <MyNavbar />

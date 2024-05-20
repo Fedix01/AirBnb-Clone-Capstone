@@ -43,14 +43,14 @@ userApiRoute.post("/login", async (req, res, next) => {
     try {
         const userFound = await User.findOne({
             email: req.body.email
-        });
+        }).select('+password');
 
         if (userFound) {
             const isPasswordMatching = await bcrypt.compare(req.body.password, userFound.password);
 
             if (isPasswordMatching) {
                 const token = await generateJWT({
-                    email: userFound.email
+                    _id: userFound._id
                 })
 
                 res.send({ user: userFound, token })
@@ -70,8 +70,16 @@ userApiRoute.post("/login", async (req, res, next) => {
 
 userApiRoute.put("/:id", authMiddleware, async (req, res, next) => {
     try {
-        const newUser = await User.findByIdAndUpdate(req.params.id, req.body, {
-            new: true
+
+        const updateData = { ...req.body };
+
+        if (updateData.password) {
+            updateData.password = await bcrypt.hash(updateData.password, 10)
+        }
+
+        const newUser = await User.findByIdAndUpdate(req.params.id, updateData, {
+            new: true,
+            runValidators: true
         });
 
         const token = await generateJWT({

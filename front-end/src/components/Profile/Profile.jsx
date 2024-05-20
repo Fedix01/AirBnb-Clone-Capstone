@@ -23,8 +23,7 @@ export default function Profile() {
     const endpointPUT = `http://localhost:3001/api/user/${data._id}`;
     const endpointPATCH = `http://localhost:3001/api/user/${data._id}/avatar`;
     const navigate = useNavigate();
-
-    const [token, setToken] = useState("")
+    const token = localStorage.getItem("token");
 
     const [mod, setMod] = useState(false);
     const [validated, setValidated] = useState(false);
@@ -53,13 +52,13 @@ export default function Profile() {
         handleSignIn()
     };
 
-    const getProfile = async (tokenString) => {
+    const getProfile = async () => {
         try {
             const res = await fetch(endpoint, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${tokenString}`
+                    "Authorization": `Bearer ${token}`
                 }
             });
             if (res.ok) {
@@ -67,9 +66,16 @@ export default function Profile() {
                 setData(profile)
             }
         } catch (error) {
-            navigate("/")
+            console.error(error);
+            localStorage.removeItem("user");
+            localStorage.removeItem("token");
+            navigate("/logIn")
         }
     }
+
+    useEffect(() => {
+        getProfile()
+    }, [])
 
     const handleSignIn = async () => {
         try {
@@ -112,7 +118,7 @@ export default function Profile() {
                         localStorage.setItem("user", JSON.stringify(newUser.user));
                         localStorage.setItem("token", newUser.token);
                         setMod(false);
-                        getProfile();
+                        getProfile(token);
                         setAlert("Profilo modificato correttamente");
                         setTimeout(() => {
                             setAlert("")
@@ -124,7 +130,7 @@ export default function Profile() {
                     localStorage.setItem("user", JSON.stringify(results.user));
                     localStorage.setItem("token", results.token);
                     setMod(false);
-                    getProfile();
+                    getProfile(token);
                     setAlert("Profilo modificato correttamente");
                     setTimeout(() => {
                         setAlert("")
@@ -142,15 +148,7 @@ export default function Profile() {
 
     }
 
-    useEffect(() => {
-        const tokenString = localStorage.getItem("token");
-        if (tokenString) {
-            setToken(tokenString);
-            getProfile(tokenString);
-        } else {
-            navigate("/")
-        }
-    }, [])
+
 
     return (
         <>

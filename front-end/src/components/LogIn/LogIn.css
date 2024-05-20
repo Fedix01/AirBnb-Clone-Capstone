@@ -1,0 +1,15 @@
+.logIn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.logIn form div {
+    width: 700px;
+}
+
+.logIn form input {
+    border: 1px solid lightgray;
+    padding: 12px;
+}

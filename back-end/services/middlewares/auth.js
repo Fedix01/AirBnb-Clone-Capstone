@@ -57,10 +57,10 @@ export const authMiddleware = async (req, res, next) => {
                     req.user = me;
                     next()
                 } else {
-                    res.status(400).send("Utente non trovato")
+                    res.status(401).send("Utente non trovato")
                 }
             } else {
-                res.status(400).send("Rieffettua il login")
+                res.status(401).send("Rieffettua il login")
             }
         }
 
