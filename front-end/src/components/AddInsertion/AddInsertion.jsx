@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -6,8 +6,15 @@ import Form from 'react-bootstrap/Form';
 import { MdOutlineBedroomChild } from "react-icons/md";
 import { MdOutlineBathroom } from "react-icons/md";
 import { MdOutlineOtherHouses } from "react-icons/md";
+import { AlertContext } from '../AlertProvider/AlertProvider';
 
 export default function AddInsertion() {
+
+    const endpoint = "http://localhost:3001/api/insertion";
+
+    const { setAlert } = useContext(AlertContext);
+
+    const token = localStorage.getItem("token");
 
     const [validated, setValidated] = useState(false);
 
@@ -18,7 +25,6 @@ export default function AddInsertion() {
         cover: null,
         price: "",
         place: "",
-        availability: false,
         roomDetails: "",
         bathDetails: "",
         other: "",
@@ -33,8 +39,56 @@ export default function AddInsertion() {
         }
 
         setValidated(true);
-        // handleSignIn()
+        createInsertion()
     };
+
+    const createInsertion = async () => {
+        try {
+            const payload = {
+                "category": formData.category,
+                "address": formData.address,
+                "details": formData.details,
+                "price": formData.price,
+                "place": formData.place,
+                "services": {
+                    "roomDetails": formData.roomDetails,
+                    "bathDetails": formData.bathDetails,
+                    "other": formData.other
+                }
+            };
+            const res = await fetch(endpoint, {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            });
+            if (res.ok) {
+                const newInsertion = await res.json();
+                const formDataFile = new FormData();
+                formDataFile.append("cover", formData.cover);
+                const patch = await fetch(`${endpoint}/${newInsertion._id}/cover`, {
+                    method: "PATCH",
+                    body: formDataFile
+                });
+                if (patch.ok) {
+                    const created = await patch.json();
+                    console.log(created);
+                    setAlert("Nuova inserzione aggiunta");
+                    setTimeout(() => {
+                        setAlert("")
+                    }, 4000);
+                }
+            }
+        } catch (error) {
+            console.error(error);
+            setAlert("Errore");
+            setTimeout(() => {
+                setAlert("")
+            }, 4000);
+        }
+    }
 
     return (
         <>
@@ -99,8 +153,7 @@ export default function AddInsertion() {
                                 <Form.Control
                                     required
                                     type="file"
-                                    multiple
-                                    onChange={(e) => setFormData({ ...formData, cover: e.target.files })}
+                                    onChange={(e) => setFormData({ ...formData, cover: e.target.files[0] })}
 
                                 />
                                 <Form.Control.Feedback type="invalid">

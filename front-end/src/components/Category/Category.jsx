@@ -6,6 +6,7 @@ import { PiBuildingApartment } from "react-icons/pi";
 import { MdHotel } from "react-icons/md";
 import { MdCabin } from "react-icons/md";
 import { MdMapsHomeWork } from "react-icons/md";
+import { IoEarth } from "react-icons/io5";
 export default function Category({ setCategory }) {
 
     const endpoint = "http://localhost:3001/api/insertion";
@@ -33,6 +34,8 @@ export default function Category({ setCategory }) {
             console.error(error)
         }
     }
+
+
 
     const handleCategoriesPics = (category) => {
         if (category === "Appartamento") {
@@ -62,7 +65,10 @@ export default function Category({ setCategory }) {
 
         <>
             <div className='d-flex category-container m-5' >
-
+                <Button variant='transparent' className='mx-2' onClick={() => setCategory("")}>
+                    <IoEarth />
+                    <h6>Tutte</h6>
+                </Button>
                 {dataCat &&
                     dataCat.map((el) => (
                         <Button variant='transparent' className='mx-2' key={el} value={el} onClick={() => setCategory(el)}>

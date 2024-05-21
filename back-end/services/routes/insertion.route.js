@@ -3,6 +3,7 @@ import Insertion from '../models/insertion.model.js';
 import User from '../models/user.model.js';
 import Booking from '../models/booking.model.js';
 import { authMiddleware } from "../middlewares/auth.js";
+import { coverCloud } from "../middlewares/multer.js";
 export const insertionApiRoute = Router();
 
 insertionApiRoute.get("/", async (req, res, next) => {
@@ -67,6 +68,8 @@ insertionApiRoute.post("/", authMiddleware, async (req, res, next) => {
         const user = await User.findById(req.user.id);
         if (user) {
             const post = await Insertion.create({ ...req.body, user: user });
+            user.insertions.push(post._id);
+            await user.save()
             res.send(post)
 
         }
@@ -75,7 +78,7 @@ insertionApiRoute.post("/", authMiddleware, async (req, res, next) => {
     }
 })
 
-insertionApiRoute.put("/:id", async (req, res, next) => {
+insertionApiRoute.put("/:id", authMiddleware, async (req, res, next) => {
     try {
         const put = await Insertion.findByIdAndUpdate(req.params.id, req.body, {
             new: true
@@ -87,7 +90,7 @@ insertionApiRoute.put("/:id", async (req, res, next) => {
     }
 })
 
-insertionApiRoute.delete("/:id", async (req, res, next) => {
+insertionApiRoute.delete("/:id", authMiddleware, async (req, res, next) => {
     try {
         const del = await Insertion.findByIdAndDelete(req.params.id);
 
@@ -104,6 +107,18 @@ insertionApiRoute.get("/:id/booking", authMiddleware, async (req, res, next) => 
             user: req.user.id
         });
         res.send(allBookings);
+    } catch (error) {
+        next(error)
+    }
+})
+
+insertionApiRoute.patch("/:id/cover", coverCloud.single("cover"), async (req, res, next) => {
+    try {
+        const update = await Insertion.findByIdAndUpdate(req.params.id,
+            { cover: req.file.path },
+            { new: true }
+        );
+        res.send(update)
     } catch (error) {
         next(error)
     }
