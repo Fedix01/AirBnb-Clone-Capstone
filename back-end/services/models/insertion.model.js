@@ -36,6 +36,23 @@ const insertionSchema = new Schema({
         required: false
     },
 
+    services: {
+        roomDetails: {
+            type: String,
+            required: false
+        },
+
+        bathDetails: {
+            type: String,
+            required: false
+        },
+
+        otherDetails: {
+            type: String,
+            required: false
+        }
+    },
+
     user: {
         type: Schema.Types.ObjectId,
         ref: "User"

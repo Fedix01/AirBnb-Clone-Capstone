@@ -102,6 +102,8 @@ export default function SignIn() {
 
 
             <div className='signIn'>
+                <h6 className='header pb-3'>Accedi o registrati</h6>
+                <h3><b>Benvenuto su AirBnb</b></h3>
                 <Form noValidate validated={validated} onSubmit={handleSubmit}>
                     <Form.Group controlId="name">
                         <Form.Label>Nome</Form.Label>
@@ -208,8 +210,12 @@ export default function SignIn() {
                             onChange={(e) => setFormData({ ...formData, isHost: e.target.checked })}
                         />
                     </Form.Group>
-                    <Button type="submit">Registrati</Button>
+                    <Button className='btn-signIn mt-3' type="submit">Registrati</Button>
                 </Form>
+                <div className='d-flex align-items-center justify-content-center'>
+                    <div className='mt-3 ps-3'>Hai già un account?</div>
+                    <Button variant='outline' className='logIn-btn mt-3 ms-2' onClick={() => navigate("/logIn")}>Log In</Button>
+                </div>
             </div>
         </>
     )

@@ -1,15 +1,38 @@
 .signIn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-}
-
-.signIn form div {
+    position: absolute;
+    top: 54%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 700px;
+    padding: 30px;
+    border: 1px solid lightgray;
+    border-radius: 15px;
 }
 
 .signIn form input {
     border: 1px solid lightgray;
     padding: 12px;
+    width: calc(100% - 26px);
+}
+
+.signIn .header {
+    font-weight: bold;
+    text-align: center;
+    border-bottom: 1px solid lightgray;
+}
+
+.btn-signIn {
+    background: linear-gradient(#FF385D, #F22A5F);
+    border: none;
+    width: 100%;
+}
+
+.logIn-btn {
+    border: 1px solid #F22A5F;
+    color: #F22A5F;
+}
+
+.logIn-btn:hover {
+    background-color: #F22A5F;
+    color: white;
 }

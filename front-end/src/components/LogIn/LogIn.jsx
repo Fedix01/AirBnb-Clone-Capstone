@@ -79,6 +79,8 @@ export default function LogIn() {
             <MyNavbar />
 
             <div className='logIn'>
+                <h6 className='header pb-3'>Accedi o registrati</h6>
+                <h3><b>Bentornato su AirBnb</b></h3>
                 <Form noValidate validated={validated} onSubmit={handleSubmit}>
                     <Form.Group controlId="email">
                         <Form.Label>Email</Form.Label>
@@ -115,8 +117,12 @@ export default function LogIn() {
                         </Alert>
                     }
 
-                    <Button variant='primary' type='submit'>Log In</Button>
+                    <Button className='btn-logIn mt-3' type='submit'>Log In</Button>
                 </Form>
+                <div className='d-flex align-items-center justify-content-center'>
+                    <div className='mt-3 ps-3'>Non hai un account?</div>
+                    <Button variant='outline' className='signIn-btn mt-3 ms-2' onClick={() => navigate("/signIn")}>Registrati</Button>
+                </div>
             </div>
         </>
     )
