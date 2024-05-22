@@ -21,15 +21,20 @@ export default function SingleInsertion(props) {
                 <Carousel.Item>
                     <img src={cover ? cover : emptyLocation}
                         alt=''
+                        className='img-insertion'
                     />
 
                 </Carousel.Item>
                 <Carousel.Item>
-                    <img />
+                    <img
+                        className='img-insertion'
+                    />
 
                 </Carousel.Item>
                 <Carousel.Item>
-                    <img />
+                    <img
+                        className='img-insertion'
+                    />
 
                 </Carousel.Item>
             </Carousel>
