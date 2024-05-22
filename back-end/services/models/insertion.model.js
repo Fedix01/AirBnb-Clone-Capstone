@@ -1,6 +1,11 @@
 import { Schema, model } from 'mongoose';
 
 const insertionSchema = new Schema({
+    title: {
+        type: String,
+        required: true
+    },
+
     category: {
         type: String,
         required: true

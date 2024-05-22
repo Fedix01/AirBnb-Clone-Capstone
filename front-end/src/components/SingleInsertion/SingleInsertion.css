@@ -6,3 +6,13 @@ h6 {
 .info h6 {
     color: gray;
 }
+
+img {
+    height: 250px;
+    width: 250px;
+    border-radius: 15px;
+}
+
+.carousel-control-next {
+    right: 10%;
+}

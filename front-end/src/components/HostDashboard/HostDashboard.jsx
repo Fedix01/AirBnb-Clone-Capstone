@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import MyNavbar from '../MyNavbar/MyNavbar';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
@@ -12,6 +12,11 @@ export default function HostDashboard() {
 
     const [key, setKey] = useState("");
 
+    const [mod, setMod] = useState("");
+
+    useEffect(() => {
+        setKey("myInsertions")
+    }, [])
 
 
     return (
@@ -31,11 +36,11 @@ export default function HostDashboard() {
                 </Col>
                 <Col md={8}>
                     {key === "addNew" &&
-                        <AddInsertion />}
+                        <AddInsertion mod={mod} setKey={setKey} setMod={setMod} />}
                     {key === "myInsertions" &&
                         <>
                             <div className='mx-5'>
-                                <MyInsertions />
+                                <MyInsertions setMod={setMod} setKey={setKey} />
                             </div>
                         </>
 

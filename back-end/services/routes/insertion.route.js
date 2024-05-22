@@ -68,10 +68,15 @@ insertionApiRoute.post("/", authMiddleware, async (req, res, next) => {
         const user = await User.findById(req.user.id);
         if (user) {
             const post = await Insertion.create({ ...req.body, user: user });
-            user.insertions.push(post._id);
-            await user.save()
-            res.send(post)
 
+            // Assicurati che l'array insertions esista
+            if (!user.insertions) {
+                user.insertions = [];
+            }
+
+            user.insertions.push(post._id);
+            await user.save();
+            res.send(post);
         }
     } catch (error) {
         next(error)

@@ -8,7 +8,7 @@ import { MdOutlineBathroom } from "react-icons/md";
 import { MdOutlineOtherHouses } from "react-icons/md";
 import { AlertContext } from '../AlertProvider/AlertProvider';
 
-export default function AddInsertion() {
+export default function AddInsertion({ mod, setKey, setMod }) {
 
     const endpoint = "http://localhost:3001/api/insertion";
 
@@ -19,6 +19,7 @@ export default function AddInsertion() {
     const [validated, setValidated] = useState(false);
 
     const [formData, setFormData] = useState({
+        title: "",
         category: "",
         address: "",
         details: "",
@@ -39,12 +40,17 @@ export default function AddInsertion() {
         }
 
         setValidated(true);
-        createInsertion()
+        if (mod) {
+            modifyInsertion(mod)
+        } else {
+            createInsertion()
+        }
     };
 
     const createInsertion = async () => {
         try {
             const payload = {
+                "title": formData.title,
                 "category": formData.category,
                 "address": formData.address,
                 "details": formData.details,
@@ -79,6 +85,7 @@ export default function AddInsertion() {
                     setTimeout(() => {
                         setAlert("")
                     }, 4000);
+                    setKey("myInsertions")
                 }
             }
         } catch (error) {
@@ -90,13 +97,81 @@ export default function AddInsertion() {
         }
     }
 
+
+    const modifyInsertion = async (id) => {
+        try {
+            const payload = {
+                "title": formData.title,
+                "category": formData.category,
+                "address": formData.address,
+                "details": formData.details,
+                "price": formData.price,
+                "place": formData.place,
+                "services": {
+                    "roomDetails": formData.roomDetails,
+                    "bathDetails": formData.bathDetails,
+                    "other": formData.other
+                }
+            };
+            const res = await fetch(`${endpoint}/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            });
+            if (res.ok) {
+                const modify = await res.json();
+                const formDataFile = new FormData();
+                formDataFile.append("cover", formData.cover);
+                const patch = await fetch(`${endpoint}/${modify._id}/cover`, {
+                    method: "PATCH",
+                    body: formDataFile
+                });
+                if (patch.ok) {
+                    const newInsertion = await patch.json();
+                    console.log(newInsertion);
+                    setAlert("Inserzione modificata!");
+                    setTimeout(() => {
+                        setAlert("")
+                    }, 4000);
+                    setKey("myInsertions")
+                }
+            }
+        } catch (error) {
+            console.error(error);
+            setAlert("Errore nella modifica");
+            setTimeout(() => {
+                setAlert("")
+            }, 4000);
+        }
+    }
+
     return (
         <>
             <div>
                 <Form noValidate validated={validated} onSubmit={handleSubmit}>
                     <Row>
-                        <h2>Aggiungi una nuova Inserzione</h2>
+                        <h2>{mod ? "Modifica l'inserzione" : "Aggiungi una nuova Inserzione"}</h2>
                         <Col md={6}>
+
+
+                            <Form.Group controlId="title" className='p-2'>
+                                <Form.Label>Titolo</Form.Label>
+                                <Form.Control
+                                    required
+                                    type="text"
+                                    value={formData.title}
+                                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                                    placeholder='Inserisci nome della struttura'
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    Inserisci un indirizzo valido
+                                </Form.Control.Feedback>
+                                <Form.Control.Feedback>Perfetto!</Form.Control.Feedback>
+                            </Form.Group>
+
                             <Form.Group controlId="category" className='p-2'>
                                 <Form.Label>Categoria</Form.Label>
 
@@ -235,8 +310,17 @@ export default function AddInsertion() {
                         </Col>
 
                     </Row>
-
-                    <Button variant='primary' type='submit'>Aggiungi Inserzione</Button>
+                    {mod ?
+                        <>
+                            <div className='mt-3'>
+                                <Button variant='primary' type='submit'>Modifica inserzione</Button>
+                                <span className='mx-2'>oppure</span>
+                                <Button variant='outline-secondary' onClick={() => setMod("")}>Aggiungi nuova nserzione</Button>
+                            </div>
+                        </>
+                        :
+                        <Button className='mt-3' variant='primary' type='submit'>Aggiungi Inserzione</Button>
+                    }
                 </Form>
             </div>
         </>

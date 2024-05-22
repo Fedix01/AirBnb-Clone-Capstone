@@ -5,12 +5,19 @@ import Button from 'react-bootstrap/esm/Button';
 import { GoPencil } from "react-icons/go";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { AlertContext } from '../AlertProvider/AlertProvider';
+import emptyLocation from "../../assets/empty.png";
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
 
-export default function MyInsertions() {
+
+
+export default function MyInsertions({ setMod, setKey }) {
 
     const endpoint = "http://localhost:3001/api/insertion";
 
     const [data, setData] = useState([]);
+
+    const [search, setSearch] = useState("");
 
     const { setAlert } = useContext(AlertContext);
 
@@ -31,6 +38,19 @@ export default function MyInsertions() {
         }
     }
 
+    const filteredByTitle = () => {
+        if (search) {
+            const filter = data.filter((el) => el.title.toLowerCase().includes(search.toLowerCase()));
+            setData(filter)
+        } else {
+            fetchInsertions()
+        }
+    }
+
+    const handleMod = (id) => {
+        setMod(id);
+        setKey("addNew")
+    }
 
     const deleteInsertion = async (id) => {
         try {
@@ -62,8 +82,19 @@ export default function MyInsertions() {
 
     return (
         <>
-            <h2>Le tue Inserzioni</h2>
-            <Table striped bordered hover>
+            <h2 className='my-2'>Le tue Inserzioni</h2>
+
+            <InputGroup className="my-3">
+                <Form.Control
+                    aria-label="Default"
+                    placeholder='Cerca per nome'
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                />
+                <Button variant='outline-primary' onClick={() => filteredByTitle()}>Cerca</Button>
+            </InputGroup>
+
+            <Table hover>
                 <thead>
                     <tr>
                         <th>#</th>
@@ -79,14 +110,20 @@ export default function MyInsertions() {
                             <tr key={el._id}>
                                 <td>{index + 1}</td>
                                 <td>
-                                    <img src={el.cover} alt=""
-                                        className='img-fluid'
-                                        style={{ height: "130px" }} />
+                                    <div className='d-flex'>
+                                        <img src={el.cover ? el.cover : emptyLocation} alt=""
+                                            className='img-fluid'
+                                            style={{ height: "130px", width: "200px" }} />
+                                        <div className='ms-3'>
+                                            <h3>{el.title}</h3>
+                                            <p style={{ color: 'gray' }}>{el.place}</p>
+                                        </div>
+                                    </div>
                                 </td>
-                                <td>{el.place}</td>
+                                <td>{el.booking.length !== 0 ? el.booking : "Nessuna prenotazione"}</td>
                                 <td>{el.price}</td>
                                 <td>
-                                    <Button variant='transparent'>
+                                    <Button variant='transparent' onClick={() => handleMod(el._id)}>
                                         <GoPencil />
                                     </Button>
                                     <Button variant='transparent' onClick={() => deleteInsertion(el._id)}>
