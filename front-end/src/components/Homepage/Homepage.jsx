@@ -1,15 +1,20 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import MyNavbar from '../MyNavbar/MyNavbar'
 import Category from '../Category/Category'
 import AllInsertions from '../AllInsertions/AllInsertions'
+import { searchBarContext } from '../SearchBarProvider/SearchBarProvider';
 
 export default function Homepage() {
 
     const [data, setData] = useState([]);
 
+    const { setSearchBar } = useContext(searchBarContext);
+
     const [category, setCategory] = useState("");
 
-    const endpoint = "http://localhost:3001/api/insertion";
+    const [page, setPage] = useState(1);
+
+    const endpoint = `http://localhost:3001/api/insertion/pagination?page=${page}`;
 
     const endpointCategories = "http://localhost:3001/api/insertion/findByCategory/";
 
@@ -43,12 +48,19 @@ export default function Homepage() {
         }
     }, [category])
 
+    useEffect(() => {
+        setSearchBar(true)
+    }, [])
+
+    useEffect(() => {
+        getFromApi()
+    }, [page])
 
     return (
         <>
             <MyNavbar />
             <Category setCategory={setCategory} />
-            <AllInsertions data={data} />
+            <AllInsertions data={data} setPage={setPage} page={page} />
         </>
     )
 }

@@ -5,7 +5,7 @@ import emptyLocation from "../../assets/empty.png";
 import './SingleInsertion.css';
 export default function SingleInsertion(props) {
 
-    const { category, address, details, cover, price, availability, place } = props;
+    const { cover, price, place, hostType } = props;
 
     const [index, setIndex] = useState(0);
 
@@ -41,7 +41,7 @@ export default function SingleInsertion(props) {
 
             <div className='info mt-2'>
                 <h5>{place}</h5>
-                <h6>Host privato</h6>
+                <h6>{hostType}</h6>
                 <h6>25 Maggio - 2 Giugno</h6>
                 <h5><b>{price}</b> notte</h5>
             </div>

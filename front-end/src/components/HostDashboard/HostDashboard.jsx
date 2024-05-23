@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import MyNavbar from '../MyNavbar/MyNavbar';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
@@ -6,6 +6,7 @@ import Col from 'react-bootstrap/Col';
 import './HostDashboard.css';
 import AddInsertion from '../AddInsertion/AddInsertion';
 import MyInsertions from '../MyInsertions/MyInsertions';
+import { searchBarContext } from '../SearchBarProvider/SearchBarProvider';
 
 
 export default function HostDashboard() {
@@ -14,8 +15,14 @@ export default function HostDashboard() {
 
     const [mod, setMod] = useState("");
 
+    const { setSearchBar } = useContext(searchBarContext);
+
     useEffect(() => {
         setKey("myInsertions")
+    }, [])
+
+    useEffect(() => {
+        setSearchBar(false)
     }, [])
 
 

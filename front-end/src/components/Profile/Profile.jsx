@@ -13,12 +13,14 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { MdOutlineWorkOutline } from "react-icons/md";
 import { FaRegAddressCard } from "react-icons/fa6";
 import { AlertContext } from '../AlertProvider/AlertProvider';
+import { searchBarContext } from '../SearchBarProvider/SearchBarProvider';
 
 export default function Profile() {
     const [data, setData] = useState([]);
 
     const endpoint = "http://localhost:3001/api/user/me";
 
+    const { setSearchBar } = useContext(searchBarContext);
 
     const { setAlert } = useContext(AlertContext);
 
@@ -179,6 +181,11 @@ export default function Profile() {
             console.error(error, "Errore nell eliminazione utente")
         }
     }
+
+    useEffect(() => {
+        setSearchBar(false)
+    }, [])
+
 
     return (
         <>

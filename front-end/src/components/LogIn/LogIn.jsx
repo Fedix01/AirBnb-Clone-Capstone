@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import MyNavbar from '../MyNavbar/MyNavbar'
 import Form from 'react-bootstrap/Form';
 import './LogIn.css';
@@ -6,12 +6,16 @@ import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import { useNavigate } from 'react-router-dom';
 import { AlertContext } from '../AlertProvider/AlertProvider';
+import { searchBarContext } from '../SearchBarProvider/SearchBarProvider';
 export default function LogIn() {
 
     const endpoint = "http://localhost:3001/api/user/login"
 
     const navigate = useNavigate();
+
     const { setAlert } = useContext(AlertContext);
+
+    const { setSearchBar } = useContext(searchBarContext);
 
     const [errorAlert, setErrorAlert] = useState(false);
 
@@ -73,6 +77,12 @@ export default function LogIn() {
             }, 4000);
         }
     }
+
+
+    useEffect(() => {
+        setSearchBar(false);
+    }, [])
+
 
     return (
         <>

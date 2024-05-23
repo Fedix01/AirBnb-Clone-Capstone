@@ -25,6 +25,19 @@ insertionApiRoute.get("/findByCategory/:category", async (req, res, next) => {
 
 })
 
+insertionApiRoute.get("/pagination", async (req, res, next) => {
+    try {
+        const queryPage = req.query.page;
+
+        const itemsForPage = 3;
+
+        const ins = await Insertion.find().skip(queryPage * itemsForPage).limit(itemsForPage);
+
+        res.send(ins)
+    } catch (error) {
+        next(error)
+    }
+})
 
 insertionApiRoute.get("/:id", async (req, res, next) => {
     try {

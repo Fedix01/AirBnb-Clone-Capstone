@@ -10,12 +10,15 @@ import avatar from "../../assets/avatar.png";
 import { GoSearch } from "react-icons/go";
 import { AlertContext } from '../AlertProvider/AlertProvider';
 import { MdOutlineFormatListBulleted } from "react-icons/md";
+import { searchBarContext } from '../SearchBarProvider/SearchBarProvider';
 
 export default function MyNavbar() {
 
     const navigate = useNavigate();
 
     const { alert, setAlert } = useContext(AlertContext);
+
+    const { searchBar } = useContext(searchBarContext);
 
     const [user, setUser] = useState([]);
 
@@ -101,12 +104,7 @@ export default function MyNavbar() {
                     <img src={logoPink} alt=""
                         style={{ width: "100px" }} />
                 </Navbar.Brand>
-                <div>
-                    {/* <div>
-                    <Button variant='transparent'>Soggiorni</Button>
-                    <Button variant='transparent'>Esperienze</Button>
-                    <Button variant='transparent'>esperienze online</Button>
-                </div> */}
+                {searchBar &&
                     <div className="bar">
                         <div className="location">
                             <p>Location</p>
@@ -124,12 +122,14 @@ export default function MyNavbar() {
                             <p>Guests</p>
                             <input type="text" placeholder="Add guests" />
                             <span>
-                                <Button variant='transpatent'>
+                                <Button variant='transparent'>
                                     <GoSearch />
                                 </Button></span>
                         </div>
                     </div>
-                </div>
+
+                }
+
                 <div>
                     {renderUserArea()}
                 </div>

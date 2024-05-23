@@ -6,18 +6,21 @@ import AlertProvider from './components/AlertProvider/AlertProvider';
 import Profile from './components/Profile/Profile';
 import LogIn from './components/LogIn/LogIn';
 import HostDashboard from './components/HostDashboard/HostDashboard';
+import SearchBarProvider from './components/SearchBarProvider/SearchBarProvider';
 
 function App() {
   return (
     <BrowserRouter>
       <AlertProvider>
-        <Routes>
-          <Route path='/' element={<Homepage />}></Route>
-          <Route path='/signIn' element={<SignIn />}></Route>
-          <Route path='/logIn' element={<LogIn />}></Route>
-          <Route path='/hostDashboard' element={<HostDashboard />}></Route>
-          <Route path='/me' element={<Profile />}></Route>
-        </Routes>
+        <SearchBarProvider>
+          <Routes>
+            <Route path='/' element={<Homepage />}></Route>
+            <Route path='/signIn' element={<SignIn />}></Route>
+            <Route path='/logIn' element={<LogIn />}></Route>
+            <Route path='/hostDashboard' element={<HostDashboard />}></Route>
+            <Route path='/me' element={<Profile />}></Route>
+          </Routes>
+        </SearchBarProvider>
       </AlertProvider>
     </BrowserRouter>
   );

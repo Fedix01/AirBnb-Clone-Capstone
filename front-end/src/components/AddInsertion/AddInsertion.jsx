@@ -20,6 +20,7 @@ export default function AddInsertion({ mod, setKey, setMod }) {
 
     const [formData, setFormData] = useState({
         title: "",
+        hostType: "",
         category: "",
         address: "",
         details: "",
@@ -51,6 +52,7 @@ export default function AddInsertion({ mod, setKey, setMod }) {
         try {
             const payload = {
                 "title": formData.title,
+                "hostType": formData.hostType,
                 "category": formData.category,
                 "address": formData.address,
                 "details": formData.details,
@@ -102,6 +104,7 @@ export default function AddInsertion({ mod, setKey, setMod }) {
         try {
             const payload = {
                 "title": formData.title,
+                "hostType": formData.hostType,
                 "category": formData.category,
                 "address": formData.address,
                 "details": formData.details,
@@ -172,6 +175,18 @@ export default function AddInsertion({ mod, setKey, setMod }) {
                                 <Form.Control.Feedback>Perfetto!</Form.Control.Feedback>
                             </Form.Group>
 
+                            <Form.Group controlId="hostType" className='p-2'>
+                                <Form.Label>Tipo di Host</Form.Label>
+
+                                <select className='form form-control' required placeholder='Inserisci che tipo di Host sei' value={formData.hostType}
+                                    onChange={(e) => setFormData({ ...formData, hostType: e.target.value })} >
+                                    <option value="">Scegli</option>
+                                    <option value="Host professionista">Host professionista</option>
+                                    <option value="Host privato">Host privato</option>
+                                </select>
+
+                            </Form.Group>
+
                             <Form.Group controlId="category" className='p-2'>
                                 <Form.Label>Categoria</Form.Label>
 
@@ -192,6 +207,7 @@ export default function AddInsertion({ mod, setKey, setMod }) {
 
                             </Form.Group>
 
+
                             <Form.Group controlId="address" className='p-2'>
                                 <Form.Label>Indirizzo</Form.Label>
                                 <Form.Control
@@ -206,7 +222,9 @@ export default function AddInsertion({ mod, setKey, setMod }) {
                                 </Form.Control.Feedback>
                                 <Form.Control.Feedback>Perfetto!</Form.Control.Feedback>
                             </Form.Group>
+                        </Col>
 
+                        <Col md={6}>
                             <Form.Group controlId="details" className='p-2'>
                                 <Form.Label>Dettagli</Form.Label>
                                 <Form.Control
@@ -221,8 +239,8 @@ export default function AddInsertion({ mod, setKey, setMod }) {
                                 </Form.Control.Feedback>
                                 <Form.Control.Feedback>Ottimo!</Form.Control.Feedback>
                             </Form.Group>
-                        </Col>
-                        <Col md={6}>
+
+
                             <Form.Group controlId="cover" className='p-2'>
                                 <Form.Label>Foto</Form.Label>
                                 <Form.Control

@@ -6,6 +6,11 @@ const insertionSchema = new Schema({
         required: true
     },
 
+    hostType: {
+        type: String,
+        required: true
+    },
+
     category: {
         type: String,
         required: true
