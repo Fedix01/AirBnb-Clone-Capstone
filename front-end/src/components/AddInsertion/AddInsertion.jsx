@@ -24,7 +24,7 @@ export default function AddInsertion({ mod, setKey, setMod }) {
         category: "",
         address: "",
         details: "",
-        cover: null,
+        covers: null,
         price: "",
         place: "",
         roomDetails: "",
@@ -75,8 +75,12 @@ export default function AddInsertion({ mod, setKey, setMod }) {
             if (res.ok) {
                 const newInsertion = await res.json();
                 const formDataFile = new FormData();
-                formDataFile.append("cover", formData.cover);
-                const patch = await fetch(`${endpoint}/${newInsertion._id}/cover`, {
+                console.log(formData.covers);
+                Object.keys(formData.covers).forEach(key => {
+
+                    formDataFile.append("covers[]", formData.covers[key]);
+                })
+                const patch = await fetch(`${endpoint}/${newInsertion._id}/covers`, {
                     method: "PATCH",
                     body: formDataFile
                 });
@@ -245,8 +249,9 @@ export default function AddInsertion({ mod, setKey, setMod }) {
                                 <Form.Label>Foto</Form.Label>
                                 <Form.Control
                                     required
+                                    multiple
                                     type="file"
-                                    onChange={(e) => setFormData({ ...formData, cover: e.target.files[0] })}
+                                    onChange={(e) => setFormData({ ...formData, covers: e.target.files })}
 
                                 />
                                 <Form.Control.Feedback type="invalid">

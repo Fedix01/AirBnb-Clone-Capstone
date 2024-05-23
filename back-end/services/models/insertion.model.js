@@ -26,10 +26,12 @@ const insertionSchema = new Schema({
         required: true
     },
 
-    cover: {
-        type: String,
-        required: false
-    },
+    covers: [
+        {
+            type: String,
+            required: false
+        }
+    ],
 
     price: {
         type: String,
