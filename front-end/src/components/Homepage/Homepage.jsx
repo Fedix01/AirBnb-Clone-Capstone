@@ -8,6 +8,7 @@ export default function Homepage() {
 
     const [data, setData] = useState([]);
 
+
     const { setSearchBar } = useContext(searchBarContext);
 
     const [category, setCategory] = useState("");
@@ -25,6 +26,8 @@ export default function Homepage() {
                 if (res.ok) {
                     const response = await res.json();
                     setData(response);
+                    console.log(response)
+
                 }
 
             } else {

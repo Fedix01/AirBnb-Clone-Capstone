@@ -18,7 +18,7 @@ export default function AllInsertions({ data, setPage, page }) {
                             <SingleInsertion
                                 key={el._id}
                                 hostType={el.hostType}
-                                cover={el.cover}
+                                covers={el.covers}
                                 price={el.price}
                                 place={el.place} />
                         </Col>

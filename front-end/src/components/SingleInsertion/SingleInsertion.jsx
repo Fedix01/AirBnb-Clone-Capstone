@@ -5,7 +5,7 @@ import emptyLocation from "../../assets/empty.png";
 import './SingleInsertion.css';
 export default function SingleInsertion(props) {
 
-    const { cover, price, place, hostType } = props;
+    const { covers, price, place, hostType } = props;
 
     const [index, setIndex] = useState(0);
 
@@ -18,25 +18,26 @@ export default function SingleInsertion(props) {
         <>
 
             <Carousel activeIndex={index} onSelect={handleSelect} interval={null}>
-                <Carousel.Item>
-                    <img src={cover ? cover : emptyLocation}
-                        alt=''
-                        className='img-insertion'
-                    />
 
-                </Carousel.Item>
-                <Carousel.Item>
-                    <img
-                        className='img-insertion'
-                    />
+                {covers &&
+                    covers.map((el) => (
+                        <Carousel.Item key={el}>
+                            <img src={el}
+                                alt=''
+                                className='img-insertion'
+                            />
+                        </Carousel.Item>
+                    ))}
+                {!covers &&
+                    <Carousel.Item>
+                        <img src={emptyLocation}
+                            alt=''
+                            className='img-insertion'
+                        />
+                    </Carousel.Item>
+                }
 
-                </Carousel.Item>
-                <Carousel.Item>
-                    <img
-                        className='img-insertion'
-                    />
 
-                </Carousel.Item>
             </Carousel>
 
             <div className='info mt-2'>
