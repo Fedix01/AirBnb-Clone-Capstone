@@ -111,7 +111,7 @@ export default function MyInsertions({ setMod, setKey }) {
                                 <td>{index + 1}</td>
                                 <td>
                                     <div className='d-flex'>
-                                        <img src={el.cover ? el.cover : emptyLocation} alt=""
+                                        <img src={el.covers ? el.covers[0] : emptyLocation} alt=""
                                             className='img-fluid'
                                             style={{ height: "130px", width: "200px" }} />
                                         <div className='ms-3'>

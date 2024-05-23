@@ -12,7 +12,7 @@ export default function Homepage() {
 
     const [category, setCategory] = useState("");
 
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(0);
 
     const endpoint = `http://localhost:3001/api/insertion/pagination?page=${page}`;
 

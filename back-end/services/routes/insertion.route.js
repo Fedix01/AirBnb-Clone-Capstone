@@ -132,10 +132,9 @@ insertionApiRoute.get("/:id/booking", authMiddleware, async (req, res, next) => 
 
 insertionApiRoute.patch("/:id/covers", coverCloud.any("covers"), async (req, res, next) => {
     try {
-        console.log(req);
         const covers = req.files.map(file => file.path);
         const update = await Insertion.findByIdAndUpdate(req.params.id,
-            { cover: covers },
+            { covers: covers },
             { new: true }
         );
         res.send(update)
