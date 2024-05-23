@@ -131,8 +131,11 @@ export default function AddInsertion({ mod, setKey, setMod }) {
             if (res.ok) {
                 const modify = await res.json();
                 const formDataFile = new FormData();
-                formDataFile.append("cover", formData.cover);
-                const patch = await fetch(`${endpoint}/${modify._id}/cover`, {
+                Object.keys(formData.covers).forEach(key => {
+
+                    formDataFile.append("covers[]", formData.covers[key]);
+                })
+                const patch = await fetch(`${endpoint}/${modify._id}/covers`, {
                     method: "PATCH",
                     body: formDataFile
                 });
