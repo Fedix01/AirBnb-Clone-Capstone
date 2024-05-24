@@ -22,9 +22,9 @@ export default function Homepage() {
 
     const endpointCategories = `http://localhost:3001/api/insertion/findByCategory/`;
 
-    const getFromApi = async (singleCategory, reset = false) => {
+    const getFromApi = async (singleCategory) => {
         try {
-            setLoading(true);
+
 
             let res;
             if (!singleCategory) {
@@ -35,35 +35,45 @@ export default function Homepage() {
 
             if (res.ok) {
                 const response = await res.json();
-                if (reset) {
-                    setData([])
-                    setData(response);
-                } else {
-                    setData([...data, ...response])
-                }
-
-                setLoading(false)
-
-                if (response.length === 0) {
-                    setStopLoad(true);
-                }
+                setData(response)
             }
         } catch (error) {
             console.error(error);
         }
     };
 
+    const loadData = async (singleCategory) => {
+
+        try {
+            let res;
+            if (!singleCategory) {
+                res = await fetch(endpoint);
+            } else {
+                res = await fetch(`${endpointCategories}${singleCategory}/pagination?page=${page}`);
+            };
+            if (res.ok) {
+                const response = await res.json();
+                setData([...data, ...response])
+                if (response.length === 0) {
+                    setStopLoad(true)
+                } else {
+                    setStopLoad(false)
+                }
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+
     useEffect(() => {
-
-        setPage(0);
-        setStopLoad(false);
-
-        getFromApi(category, true);
-
+        setPage(0)
+        setData([])
+        getFromApi(category);
     }, [category]);
 
     useEffect(() => {
-        getFromApi(category, false)
+        loadData(category)
     }, [page])
 
 
