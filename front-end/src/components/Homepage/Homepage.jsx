@@ -8,6 +8,9 @@ export default function Homepage() {
 
     const [data, setData] = useState([]);
 
+    const [loading, setLoading] = useState(false);
+
+    const [stopLoad, setStopLoad] = useState(false);
 
     const { setSearchBar } = useContext(searchBarContext);
 
@@ -17,53 +20,64 @@ export default function Homepage() {
 
     const endpoint = `http://localhost:3001/api/insertion/pagination?page=${page}`;
 
-    const endpointCategories = "http://localhost:3001/api/insertion/findByCategory/";
+    const endpointCategories = `http://localhost:3001/api/insertion/findByCategory/`;
 
-    const getFromApi = async (singleCategory) => {
+    const getFromApi = async (singleCategory, reset = false) => {
         try {
+            setLoading(true);
+
+            let res;
             if (!singleCategory) {
-                const res = await fetch(endpoint);
-                if (res.ok) {
-                    const response = await res.json();
-                    setData(response);
-                    console.log(response)
-
-                }
-
+                res = await fetch(endpoint);
             } else {
-                const res = await fetch(`${endpointCategories}${category}`);
-                if (res.ok) {
-                    const response = await res.json();
-                    setData(response)
-                }
+                res = await fetch(`${endpointCategories}${singleCategory}/pagination?page=${page}`);
             }
 
+            if (res.ok) {
+                const response = await res.json();
+                if (reset) {
+                    setData([])
+                    setData(response);
+                } else {
+                    setData([...data, ...response])
+                }
+
+                setLoading(false)
+
+                if (response.length === 0) {
+                    setStopLoad(true);
+                }
+            }
         } catch (error) {
-            console.error(error)
+            console.error(error);
         }
-    }
+    };
 
     useEffect(() => {
-        if (category) {
-            getFromApi(category)
-        } else {
-            getFromApi()
-        }
-    }, [category])
+
+        setPage(0);
+        setStopLoad(false);
+
+        getFromApi(category, true);
+
+    }, [category]);
+
+    useEffect(() => {
+        getFromApi(category, false)
+    }, [page])
+
 
     useEffect(() => {
         setSearchBar(true)
     }, [])
 
-    useEffect(() => {
-        getFromApi()
-    }, [page])
+
 
     return (
         <>
             <MyNavbar />
             <Category setCategory={setCategory} />
-            <AllInsertions data={data} setPage={setPage} page={page} />
+            <AllInsertions data={data} setPage={setPage} loading={loading} stopLoad={stopLoad} />
         </>
     )
 }

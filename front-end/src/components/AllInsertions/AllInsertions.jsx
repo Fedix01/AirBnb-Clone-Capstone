@@ -4,7 +4,7 @@ import Col from 'react-bootstrap/Col';
 import SingleInsertion from '../SingleInsertion/SingleInsertion';
 import Button from 'react-bootstrap/Button'
 
-export default function AllInsertions({ data, setPage, page }) {
+export default function AllInsertions({ data, setPage, loading, stopLoad }) {
 
 
 
@@ -25,8 +25,13 @@ export default function AllInsertions({ data, setPage, page }) {
                     ))}
             </Row>
             <div className='d-flex justify-content-center'>
-                <Button variant='secondary' onClick={() => setPage(page + 1)}>Carica altro...</Button>
+                {stopLoad ?
+                    <h4 className='mt-3'>Non ci sono altri luoghi da mostrare</h4>
+                    :
+                    <Button variant='dark' onClick={() => setPage(prevPage => prevPage + 1)}>{loading ? "Caricamento" : "Mostra altro"}</Button>
+                }
             </div>
+
         </>
     )
 }

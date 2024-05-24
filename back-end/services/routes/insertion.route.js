@@ -15,9 +15,14 @@ insertionApiRoute.get("/", async (req, res, next) => {
     }
 })
 
-insertionApiRoute.get("/findByCategory/:category", async (req, res, next) => {
+insertionApiRoute.get("/findByCategory/:category/pagination", async (req, res, next) => {
     try {
-        const category = await Insertion.find({ "category": req.params.category });
+
+        const queryPage = req.query.page;
+
+        const itemsForPage = 2;
+
+        const category = await Insertion.find({ "category": req.params.category }).skip(queryPage * itemsForPage).limit(itemsForPage);
         res.send(category)
     } catch (error) {
         next(error)
@@ -29,7 +34,7 @@ insertionApiRoute.get("/pagination", async (req, res, next) => {
     try {
         const queryPage = req.query.page;
 
-        const itemsForPage = 3;
+        const itemsForPage = 2;
 
         const ins = await Insertion.find().skip(queryPage * itemsForPage).limit(itemsForPage);
 
