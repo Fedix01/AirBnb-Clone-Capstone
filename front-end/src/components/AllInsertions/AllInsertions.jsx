@@ -2,9 +2,10 @@ import React from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import SingleInsertion from '../SingleInsertion/SingleInsertion';
-import Button from 'react-bootstrap/Button'
+import Button from 'react-bootstrap/Button';
+import Spinner from 'react-bootstrap/Spinner';
 
-export default function AllInsertions({ data, setPage, loading, stopLoad }) {
+export default function AllInsertions({ data, setPage, loading, stopLoad, spinner }) {
 
 
 
@@ -12,11 +13,18 @@ export default function AllInsertions({ data, setPage, loading, stopLoad }) {
     return (
         <>
             <Row className='mx-5'>
+                {spinner &&
+                    <Spinner animation="border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </Spinner>
+                }
                 {data &&
                     data.map((el) => (
                         <Col md={2} key={el._id}>
+
                             <SingleInsertion
                                 key={el._id}
+                                id={el._id}
                                 hostType={el.hostType}
                                 covers={el.covers}
                                 price={el.price}

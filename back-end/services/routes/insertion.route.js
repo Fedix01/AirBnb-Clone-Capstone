@@ -46,7 +46,12 @@ insertionApiRoute.get("/pagination", async (req, res, next) => {
 
 insertionApiRoute.get("/:id", async (req, res, next) => {
     try {
-        const singleIns = await Insertion.findById(req.params.id);
+        const singleIns = await Insertion.findById(req.params.id).populate({
+            path: "user",
+            model: "User",
+            select: ["name", "surname", "avatar"]
+        }
+        );
 
         res.send(singleIns)
     } catch (error) {

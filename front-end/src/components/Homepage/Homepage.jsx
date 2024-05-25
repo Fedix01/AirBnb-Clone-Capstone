@@ -3,6 +3,7 @@ import MyNavbar from '../MyNavbar/MyNavbar'
 import Category from '../Category/Category'
 import AllInsertions from '../AllInsertions/AllInsertions'
 import { searchBarContext } from '../SearchBarProvider/SearchBarProvider';
+import { AlertContext } from '../AlertProvider/AlertProvider';
 
 export default function Homepage() {
 
@@ -10,9 +11,13 @@ export default function Homepage() {
 
     const [loading, setLoading] = useState(false);
 
+    const [spinner, setSpinner] = useState(false);
+
     const [stopLoad, setStopLoad] = useState(false);
 
     const { setSearchBar } = useContext(searchBarContext);
+
+    const { setAlert } = useContext(AlertContext);
 
     const [category, setCategory] = useState("");
 
@@ -25,7 +30,7 @@ export default function Homepage() {
     const getFromApi = async (singleCategory) => {
         try {
 
-
+            setSpinner(true);
             let res;
             if (!singleCategory) {
                 res = await fetch(endpoint);
@@ -35,16 +40,23 @@ export default function Homepage() {
 
             if (res.ok) {
                 const response = await res.json();
-                setData(response)
+                setData(response);
+                setSpinner(false)
             }
         } catch (error) {
             console.error(error);
+            setSpinner(false);
+            setAlert("Errore nel caricamento delle inserzioni");
+            setTimeout(() => {
+                setAlert("")
+            }, 4000);
         }
     };
 
     const loadData = async (singleCategory) => {
 
         try {
+            setLoading(true);
             let res;
             if (!singleCategory) {
                 res = await fetch(endpoint);
@@ -54,6 +66,7 @@ export default function Homepage() {
             if (res.ok) {
                 const response = await res.json();
                 setData([...data, ...response])
+                setLoading(false);
                 if (response.length === 0) {
                     setStopLoad(true)
                 } else {
@@ -87,7 +100,7 @@ export default function Homepage() {
         <>
             <MyNavbar />
             <Category setCategory={setCategory} />
-            <AllInsertions data={data} setPage={setPage} loading={loading} stopLoad={stopLoad} />
+            <AllInsertions data={data} setPage={setPage} loading={loading} stopLoad={stopLoad} spinner={spinner} />
         </>
     )
 }
