@@ -8,6 +8,7 @@ import LogIn from './components/LogIn/LogIn';
 import HostDashboard from './components/HostDashboard/HostDashboard';
 import SearchBarProvider from './components/SearchBarProvider/SearchBarProvider';
 import InsertionDetails from './components/InsertionDetails/InsertionDetails';
+import NotFound from './components/NotFound/NotFound';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path='/insertionDetails/:id' element={<InsertionDetails />}></Route>
             <Route path='/hostDashboard' element={<HostDashboard />}></Route>
             <Route path='/me' element={<Profile />}></Route>
+            <Route path='/*' element={<NotFound />}></Route>
           </Routes>
         </SearchBarProvider>
       </AlertProvider>

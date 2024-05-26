@@ -52,7 +52,11 @@ insertionApiRoute.get("/:id", async (req, res, next) => {
             model: "User",
             select: ["name", "surname", "avatar"]
         }
-        );
+        ).populate({
+            path: "reviews",
+            model: "Review",
+            select: ["rating", "comment"]
+        });
 
         res.send(singleIns)
     } catch (error) {
