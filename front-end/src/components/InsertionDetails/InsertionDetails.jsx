@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom'
 import InsertionDetailsPage from '../InsertionDetailsPage/InsertionDetailsPage';
 import MyNavbar from '../MyNavbar/MyNavbar';
 import Container from 'react-bootstrap/Container';
+import emptyAvatar from "../../assets/avatar.png";
+
 
 export default function InsertionDetails() {
 
@@ -39,6 +41,7 @@ export default function InsertionDetails() {
                 {data &&
                     <InsertionDetailsPage key={data._id}
                         title={data.title}
+                        reviews={data.reviews ? data.reviews : "Nessuna recensione"}
                         category={data.category}
                         address={data.address}
                         covers={data.covers}
@@ -47,9 +50,10 @@ export default function InsertionDetails() {
                         place={data.place}
                         price={data.price}
                         services={data.services}
-                        hostAvatar={data.user.avatar}
-                        hostName={data.user.name}
-                        hostSurname={data.user.surname} />
+                        hostAvatar={data.user ? data.user.avatar : emptyAvatar}
+                        hostName={data.user ? data.user.name : "Nessun nome"}
+                        hostSurname={data.user ? data.user.surname : "Nessun cognome"}
+                    />
                 }
 
             </Container>

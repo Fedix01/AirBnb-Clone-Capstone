@@ -75,6 +75,13 @@ const insertionSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: "Booking"
         }
+    ],
+
+    reviews: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Review"
+        }
     ]
 },
 

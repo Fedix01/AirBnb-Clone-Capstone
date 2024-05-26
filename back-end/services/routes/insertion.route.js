@@ -2,6 +2,7 @@ import { Router } from "express";
 import Insertion from '../models/insertion.model.js';
 import User from '../models/user.model.js';
 import Booking from '../models/booking.model.js';
+import Review from '../models/review.model.js';
 import { authMiddleware } from "../middlewares/auth.js";
 import { coverCloud } from "../middlewares/multer.js";
 export const insertionApiRoute = Router();
@@ -148,6 +149,106 @@ insertionApiRoute.patch("/:id/covers", coverCloud.any("covers"), async (req, res
             { new: true }
         );
         res.send(update)
+    } catch (error) {
+        next(error)
+    }
+})
+
+//Recensioni
+
+insertionApiRoute.get("/:id/reviews", async (req, res, next) => {
+    try {
+        const allRev = await Review.find({
+            insertion: req.params.id,
+
+        }).populate({
+            path: "user",
+            model: "User",
+            select: ["name", "surname", "avatar"]
+        });
+
+        res.send(allRev)
+    } catch (error) {
+        next(error)
+    }
+});
+
+insertionApiRoute.get("/:id/reviews/:reviewId", async (req, res, next) => {
+    try {
+        const rev = await Review.find({
+            insertion: req.params.id,
+            _id: req.params.reviewId
+        }).populate({
+            path: "user",
+            model: "User",
+            select: ["name", "surname", "avatar"]
+        });
+
+        res.send(rev)
+    } catch (error) {
+        next(error)
+    }
+})
+
+insertionApiRoute.post("/:id/reviews", authMiddleware, async (req, res, next) => {
+    try {
+        let userId = req.user.id;
+
+        const newRev = await Review.create({
+            ...req.body,
+            insertion: req.params.id,
+            user: userId
+        });
+
+        const post = await Insertion.findByIdAndUpdate(
+            req.params.id,
+            {
+                $push: {
+                    reviews: newRev
+                }
+            },
+            { new: true }
+        ).populate({
+            path: "reviews",
+            populate: {
+                path: "user",
+                model: "User",
+                select: ["name", "surname", "avatar"]
+            }
+        })
+
+        res.send(post)
+    } catch (error) {
+        next(error)
+    }
+})
+
+insertionApiRoute.put("/:id/reviews/:reviewId", authMiddleware, async (req, res, next) => {
+    try {
+        const putRev = await Review.findOneAndUpdate({
+            insertion: req.params.id,
+            _id: req.params.reviewId
+        },
+            req.body,
+            { new: true }).populate({
+                path: "user",
+                model: "User",
+                select: ["name", "surname", "avatar"]
+            });
+
+        res.send(putRev)
+    } catch (error) {
+        next(error)
+    }
+})
+
+insertionApiRoute.delete("/:id/reviews/:reviewId", authMiddleware, async (req, res, next) => {
+    try {
+        const delRev = await Review.findOneAndDelete({
+            insertion: req.params.id,
+            _id: req.params.reviewId
+        });
+        res.send(delRev)
     } catch (error) {
         next(error)
     }

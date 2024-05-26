@@ -30,7 +30,7 @@ export default function InsertionDetailsPage(props) {
             </div>
             <Row>
                 <Col md={6}>
-                    <img src={covers[0] ? covers[0] : emptyLocation}
+                    <img src={covers ? covers[0] : emptyLocation}
                         className='img-fluid'
                         alt=""
 
@@ -43,22 +43,33 @@ export default function InsertionDetailsPage(props) {
                 </Col>
                 <Col md={6}>
                     <div className='d-flex mb-2'>
-                        <img src={covers[1] ? covers[1] : emptyLocation} className='me-2'
+                        <img src={covers ? covers[1] : emptyLocation} className='me-2'
                             alt=""
                             style={{ height: "210px", width: "270px" }} />
-                        <img src={covers[2] ? covers[2] : emptyLocation}
+                        <img src={covers ? covers[2] : emptyLocation}
                             alt=""
                             style={{ height: "210px", width: "270px", borderTopRightRadius: "15px" }} />
                     </div>
                     <div className='d-flex'>
-                        <img src={covers[3] ? covers[3] : emptyLocation}
+                        <img src={covers ? covers[3] : emptyLocation}
                             className='me-2'
                             style={{ height: "210px", width: "270px" }}
                             alt="" />
-                        <img src={covers[4] ? covers[4] : emptyLocation}
+                        <img src={covers ? covers[4] : emptyLocation}
                             style={{ height: "210px", width: "270px", borderBottomRightRadius: "15px" }}
                             alt="" />
                     </div>
+                </Col>
+            </Row>
+
+            <Row>
+                <Col md={8}>
+                    <div className='mt-3'>
+                        <h3>{place}</h3>
+                        <h6>{services.roomDetails}, {services.bathDetails}</h6>
+                    </div>
+                </Col>
+                <Col md={4}>
                 </Col>
             </Row>
         </div>
