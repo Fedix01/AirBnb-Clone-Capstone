@@ -60,30 +60,7 @@ insertionApiRoute.get("/:id", async (req, res, next) => {
     }
 })
 
-// Creo la booking
-insertionApiRoute.post("/:id", authMiddleware, async (req, res, next) => {
-    try {
-        const userId = req.user.id;
-        console.log(userId)
-        const newBooking = await Booking.create({
-            ...req.body,
-            user: userId,
-            insertion: req.params.id,
-        });
-        console.log(newBooking)
-        const post = await Insertion.findByIdAndUpdate(
-            req.params.id,
-            {
-                $push: {
-                    booking: newBooking
-                }
-            },
-            { new: true });
-        res.send(post)
-    } catch (error) {
-        next(error)
-    }
-})
+
 
 // Nuova inserzione
 insertionApiRoute.post("/", authMiddleware, async (req, res, next) => {
@@ -129,17 +106,7 @@ insertionApiRoute.delete("/:id", authMiddleware, async (req, res, next) => {
     }
 })
 
-insertionApiRoute.get("/:id/booking", authMiddleware, async (req, res, next) => {
-    try {
-        const allBookings = await Booking.findById({
-            insertion: req.params.id,
-            user: req.user.id
-        });
-        res.send(allBookings);
-    } catch (error) {
-        next(error)
-    }
-})
+
 
 insertionApiRoute.patch("/:id/covers", coverCloud.any("covers"), async (req, res, next) => {
     try {
@@ -249,6 +216,71 @@ insertionApiRoute.delete("/:id/reviews/:reviewId", authMiddleware, async (req, r
             _id: req.params.reviewId
         });
         res.send(delRev)
+    } catch (error) {
+        next(error)
+    }
+})
+
+// Booking
+insertionApiRoute.get("/:id/booking", authMiddleware, async (req, res, next) => {
+    try {
+        const allBookings = await Booking.find({
+            insertion: req.params.id,
+            user: req.user.id
+        });
+        res.send(allBookings);
+    } catch (error) {
+        next(error)
+    }
+})
+
+
+insertionApiRoute.post("/:id/booking", authMiddleware, async (req, res, next) => {
+    try {
+        const userId = req.user.id;
+        console.log(userId)
+        const newBooking = await Booking.create({
+            ...req.body,
+            user: userId,
+            insertion: req.params.id,
+        });
+        console.log(newBooking)
+        const post = await Insertion.findByIdAndUpdate(
+            req.params.id,
+            {
+                $push: {
+                    booking: newBooking
+                }
+            },
+            { new: true });
+        res.send(post)
+    } catch (error) {
+        next(error)
+    }
+})
+
+insertionApiRoute.put("/:id/booking/:bookingId", authMiddleware, async (req, res, next) => {
+    try {
+        const putBooking = await Booking.findOneAndUpdate({
+            insertion: req.params.id,
+            _id: req.params.bookingId
+        },
+            req.body,
+            { new: true }
+        );
+        res.send(putBooking)
+    } catch (error) {
+        next(error)
+    }
+})
+
+insertionApiRoute.delete("/:id/booking/:bookingId", authMiddleware, async (req, res, next) => {
+    try {
+        const deleteBooking = await Booking.findOneAndDelete({
+            insertion: req.params.id,
+            _id: req.params.bookingId
+        });
+        res.send(deleteBooking)
     } catch (error) {
         next(error)
     }
