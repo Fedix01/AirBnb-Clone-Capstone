@@ -70,7 +70,7 @@ const insertionSchema = new Schema({
         ref: "User"
     },
 
-    booking: [
+    bookings: [
         {
             type: Schema.Types.ObjectId,
             ref: "Booking"

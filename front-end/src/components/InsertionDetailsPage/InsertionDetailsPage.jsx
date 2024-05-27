@@ -13,7 +13,7 @@ import BookingForm from '../BookingForm/BookingForm';
 
 export default function InsertionDetailsPage(props) {
 
-    const { title, address, category, covers, details,
+    const { id, title, address, category, covers, details,
         hostType, place, price, services,
         hostAvatar, hostName, hostSurname, reviews } = props;
 
@@ -134,7 +134,7 @@ export default function InsertionDetailsPage(props) {
                     </div>
                 </Col>
                 <Col md={5} className='mt-5'>
-                    <BookingForm price={price} />
+                    <BookingForm price={price} id={id} />
                 </Col>
             </Row>
         </div>

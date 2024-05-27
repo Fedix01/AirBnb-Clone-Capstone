@@ -40,6 +40,7 @@ export default function InsertionDetails() {
 
                 {data &&
                     <InsertionDetailsPage key={data._id}
+                        id={data._id}
                         title={data.title}
                         reviews={data.reviews ? data.reviews : "Nessuna recensione"}
                         category={data.category}

@@ -8,6 +8,8 @@ import { AlertContext } from '../AlertProvider/AlertProvider';
 import emptyLocation from "../../assets/empty.png";
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
+import { useNavigate } from 'react-router-dom';
+import BookingInfo from '../BookingInfo/BookingInfo';
 
 
 
@@ -18,6 +20,8 @@ export default function MyInsertions({ setMod, setKey }) {
     const [data, setData] = useState([]);
 
     const [search, setSearch] = useState("");
+
+    const navigate = useNavigate();
 
     const { setAlert } = useContext(AlertContext);
 
@@ -50,6 +54,10 @@ export default function MyInsertions({ setMod, setKey }) {
     const handleMod = (id) => {
         setMod(id);
         setKey("addNew")
+    }
+
+    const handleViewBookings = (bookings) => {
+        navigate("/bookingInfo", { state: { bookings } })
     }
 
     const deleteInsertion = async (id) => {
@@ -99,7 +107,7 @@ export default function MyInsertions({ setMod, setKey }) {
                     <tr>
                         <th>#</th>
                         <th>Annuncio</th>
-                        <th>Luogo</th>
+                        <th>Prenotazioni</th>
                         <th>Prezzo</th>
                         <th>Azioni</th>
                     </tr>
@@ -120,7 +128,14 @@ export default function MyInsertions({ setMod, setKey }) {
                                         </div>
                                     </div>
                                 </td>
-                                <td>{el.booking.length !== 0 ? el.booking : "Nessuna prenotazione"}</td>
+                                <td>{el.bookings.length !== 0 ? (
+                                    <>
+                                        <h6>{el.bookings.length} prenotazioni</h6>
+                                        <Button variant='transparent' onClick={() => handleViewBookings(el.bookings)}>Visualizza prenotazioni</Button>
+
+                                    </>
+                                )
+                                    : "Nessuna prenotazione"}</td>
                                 <td>{el.price} €</td>
                                 <td>
                                     <Button variant='transparent' onClick={() => handleMod(el._id)}>

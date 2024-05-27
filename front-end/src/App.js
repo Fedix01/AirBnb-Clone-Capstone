@@ -9,6 +9,7 @@ import HostDashboard from './components/HostDashboard/HostDashboard';
 import SearchBarProvider from './components/SearchBarProvider/SearchBarProvider';
 import InsertionDetails from './components/InsertionDetails/InsertionDetails';
 import NotFound from './components/NotFound/NotFound';
+import BookingInfo from './components/BookingInfo/BookingInfo';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path='/logIn' element={<LogIn />}></Route>
             <Route path='/insertionDetails/:id' element={<InsertionDetails />}></Route>
             <Route path='/hostDashboard' element={<HostDashboard />}></Route>
+            <Route path='/bookingInfo' element={<BookingInfo />}></Route>
             <Route path='/me' element={<Profile />}></Route>
             <Route path='/*' element={<NotFound />}></Route>
           </Routes>

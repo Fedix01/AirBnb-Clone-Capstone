@@ -9,7 +9,11 @@ export const insertionApiRoute = Router();
 
 insertionApiRoute.get("/", async (req, res, next) => {
     try {
-        const insertion = await Insertion.find();
+        const insertion = await Insertion.find().populate({
+            path: "bookings",
+            model: "Booking",
+            select: ["checkInDate", "checkOutDate", "guestNum"]
+        });
         res.send(insertion)
     } catch (error) {
         next(error)
@@ -56,7 +60,11 @@ insertionApiRoute.get("/:id", async (req, res, next) => {
             path: "reviews",
             model: "Review",
             select: ["rating", "comment"]
-        });
+        }).populate({
+            path: "bookings",
+            model: "Booking",
+            select: ["checkInDate", "checkOutDate", "guestNum"]
+        });;
 
         res.send(singleIns)
     } catch (error) {
@@ -253,7 +261,7 @@ insertionApiRoute.post("/:id/booking", authMiddleware, async (req, res, next) =>
             req.params.id,
             {
                 $push: {
-                    booking: newBooking
+                    bookings: newBooking
                 }
             },
             { new: true });

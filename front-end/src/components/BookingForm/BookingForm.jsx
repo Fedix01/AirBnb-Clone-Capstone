@@ -1,11 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './BookingForm.css';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import { AlertContext } from '../AlertProvider/AlertProvider';
 
-export default function BookingForm({ price }) {
+export default function BookingForm({ price, id }) {
 
+
+
+    const endpoint = `http://localhost:3001/api/insertion/${id}/booking`;
+
+    const token = localStorage.getItem("token");
+
+    const { setAlert } = useContext(AlertContext);
 
     const [formData, setFormData] = useState({
         checkInDate: null,
@@ -20,6 +28,12 @@ export default function BookingForm({ price }) {
     const [partialPrice, setPartialPrice] = useState(0);
 
     const [servicesPrice, setServicesPrice] = useState(0);
+
+
+    const handleSelectChange = (e) => {
+        const value = e.target.value;
+        setFormData({ ...formData, guestNum: Number(value) })
+    }
 
     const handlePartialPrice = () => {
         if (price && totalNights) {
@@ -39,6 +53,40 @@ export default function BookingForm({ price }) {
 
     const totalPrice = () => {
         return partialPrice + servicesPrice
+    }
+
+
+    const createBooking = async (event) => {
+        event.preventDefault();
+        try {
+            const payload = {
+                "checkInDate": formData.checkInDate,
+                "checkOutDate": formData.checkOutDate,
+                "guestNum": formData.guestNum
+            };
+            const res = await fetch(endpoint, {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            });
+            if (res.ok) {
+                const post = await res.json();
+                console.log(post);
+                setAlert("Nuova prenotazione aggiunta a 'Le tue prenotazioni'");
+                setTimeout(() => {
+                    setAlert("")
+                }, 4000);
+            }
+        } catch (error) {
+            console.error(error);
+            setAlert("Errore nella prenotazione");
+            setTimeout(() => {
+                setAlert("")
+            }, 4000);
+        }
     }
 
 
@@ -69,41 +117,43 @@ export default function BookingForm({ price }) {
     return (
         <div className='booking-container mx-3'>
             <div className='d-flex align-items-center mb-2'>
-                <h4>{price}</h4>
+                <h4>{price}€</h4>
                 <h6 className='ms-2'>notte</h6>
             </div>
-            <div className='booking-box'>
-                <div className='date d-flex'>
-                    <div>
-                        <h6>CHECK-IN</h6>
-                        <input type="date"
-                            onChange={(e) => setFormData({ ...formData, checkInDate: e.target.value })} />
+            <Form onSubmit={createBooking}>
+                <div className='booking-box'>
+                    <div className='date d-flex'>
+                        <div>
+                            <h6>CHECK-IN</h6>
+                            <input type="date"
+                                onChange={(e) => setFormData({ ...formData, checkInDate: e.target.value })} />
+                        </div>
+                        <div>
+                            <h6>CHECK-OUT</h6>
+                            <input type="date"
+                                onChange={(e) => setFormData({ ...formData, checkOutDate: e.target.value })} />
+                        </div>
                     </div>
-                    <div>
-                        <h6>CHECK-OUT</h6>
-                        <input type="date"
-                            onChange={(e) => setFormData({ ...formData, checkOutDate: e.target.value })} />
+                    <hr />
+                    <div className='guest'>
+                        <h6>OSPITI</h6>
+                        <Form.Select
+                            value={formData.guestNum}
+                            onChange={handleSelectChange}>
+                            <option>Inserisci il numero di ospiti</option>
+                            <option value="1">Uno</option>
+                            <option value="2">Due</option>
+                            <option value="3">Tre</option>
+                            <option value="4">Quattro</option>
+                            <option value="5">Cinque</option>
+                            <option value="6">Sei</option>
+                        </Form.Select>
                     </div>
                 </div>
-                <hr />
-                <div className='guest'>
-                    <h6>OSPITI</h6>
-                    <Form.Select
-                        value={formData.guestNum}
-                        onChange={(e) => setFormData({ ...formData, guestNum: e.target.value })}>
-                        <option>Inserisci il numero di ospiti</option>
-                        <option value="1">Uno</option>
-                        <option value="2">Due</option>
-                        <option value="3">Tre</option>
-                        <option value="4">Quattro</option>
-                        <option value="5">Cinque</option>
-                        <option value="6">Sei</option>
-                    </Form.Select>
+                <div className='booking-btn my-4 d-flex justify-content-center'>
+                    <Button type='submit'>Prenota</Button>
                 </div>
-            </div>
-            <div className='booking-btn my-4 d-flex justify-content-center'>
-                <Button>Prenota</Button>
-            </div>
+            </Form>
             <div className='costs mt-4 py-4'>
                 <div className='d-flex justify-content-between align-items-center my-1 p-1'>
                     <h6>{price} € x {totalNights}</h6>

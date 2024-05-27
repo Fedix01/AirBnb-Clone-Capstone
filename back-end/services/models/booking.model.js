@@ -24,7 +24,7 @@ const bookingSchema = new Schema({
 
 },
     {
-        collection: "booking",
+        collection: "AirBnb booking",
         timestamps: true
     });
 
