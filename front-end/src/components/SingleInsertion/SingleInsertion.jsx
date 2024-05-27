@@ -51,7 +51,7 @@ export default function SingleInsertion(props) {
                 >{place}</h5>
                 <h6>{hostType}</h6>
                 <h6>25 Maggio - 2 Giugno</h6>
-                <h5><b>{price}</b> notte</h5>
+                <h5><b>{price} €</b> notte</h5>
             </div>
         </>
     )

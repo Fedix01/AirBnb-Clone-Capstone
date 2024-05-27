@@ -121,7 +121,7 @@ export default function MyInsertions({ setMod, setKey }) {
                                     </div>
                                 </td>
                                 <td>{el.booking.length !== 0 ? el.booking : "Nessuna prenotazione"}</td>
-                                <td>{el.price}</td>
+                                <td>{el.price} €</td>
                                 <td>
                                     <Button variant='transparent' onClick={() => handleMod(el._id)}>
                                         <GoPencil />

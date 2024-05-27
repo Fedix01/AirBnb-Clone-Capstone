@@ -3,9 +3,12 @@ import { FaRegHeart } from "react-icons/fa6";
 import { IoShareOutline } from "react-icons/io5";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 import emptyLocation from "../../assets/empty.png";
 import './InsertionDetailsPage.css';
 import { FaStar } from "react-icons/fa";
+import BookingForm from '../BookingForm/BookingForm';
 
 
 export default function InsertionDetailsPage(props) {
@@ -15,6 +18,12 @@ export default function InsertionDetailsPage(props) {
         hostAvatar, hostName, hostSurname, reviews } = props;
 
     const [average, setAverage] = useState(0);
+
+    const [show, setShow] = useState(false);
+
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     const calculateAverage = (reviews) => {
         if (!Array.isArray(reviews) || reviews.length === 0) {
@@ -86,7 +95,7 @@ export default function InsertionDetailsPage(props) {
             </Row>
 
             <Row>
-                <Col md={8}>
+                <Col md={7}>
                     <div className='mt-3'>
                         <h3>{place}</h3>
                         <h6>{services ? services.roomDetails : "Nessun servizio"}, {services ? services.bathDetails : "Nessun servizio"}</h6>
@@ -107,8 +116,25 @@ export default function InsertionDetailsPage(props) {
                             </div>
                         </div>
                     </div>
+                    <div className='my-4 py-5 details'>
+                        <h3>Informazioni sulla struttura</h3>
+                        <p>{details}</p>
+                        <Button variant="transparent" onClick={handleShow}>
+                            Mostra altro
+                        </Button>
+
+                        <Modal show={show} onHide={handleClose} centered>
+                            <Modal.Header closeButton>
+                                <Modal.Title>Informazioni sulla struttura</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>{details}</Modal.Body>
+
+                        </Modal>
+
+                    </div>
                 </Col>
-                <Col md={4}>
+                <Col md={5} className='mt-5'>
+                    <BookingForm price={price} />
                 </Col>
             </Row>
         </div>

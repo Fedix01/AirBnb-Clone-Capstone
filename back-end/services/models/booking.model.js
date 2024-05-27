@@ -2,15 +2,15 @@ import { Schema, model } from 'mongoose';
 
 const bookingSchema = new Schema({
     checkInDate: {
-        type: String,
+        type: Date,
         required: true
     },
     checkOutDate: {
-        type: String,
+        type: Date,
         required: true
     },
     guestNum: {
-        type: String,
+        type: Number,
         required: true
     },
     user: {

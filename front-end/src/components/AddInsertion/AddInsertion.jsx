@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
 import { MdOutlineBedroomChild } from "react-icons/md";
 import { MdOutlineBathroom } from "react-icons/md";
 import { MdOutlineOtherHouses } from "react-icons/md";
@@ -25,7 +26,7 @@ export default function AddInsertion({ mod, setKey, setMod }) {
         address: "",
         details: "",
         covers: null,
-        price: "",
+        price: 0,
         place: "",
         roomDetails: "",
         bathDetails: "",
@@ -265,13 +266,16 @@ export default function AddInsertion({ mod, setKey, setMod }) {
 
                             <Form.Group controlId="price" className='p-2'>
                                 <Form.Label>Prezzo</Form.Label>
-                                <Form.Control
-                                    required
-                                    type="text"
-                                    value={formData.price}
-                                    onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                                    placeholder='Inserisci il prezzo per notte'
-                                />
+                                <div className='d-flex'>
+                                    <Form.Control
+                                        required
+                                        type="number"
+                                        value={formData.price}
+                                        onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                                        placeholder='Inserisci il prezzo per notte'
+                                    />
+                                    <InputGroup.Text className='ms-1'>€</InputGroup.Text>
+                                </div>
                                 <Form.Control.Feedback type="invalid">
                                     Inserisci un prezzo valido
                                 </Form.Control.Feedback>

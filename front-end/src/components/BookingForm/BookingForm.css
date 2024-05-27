@@ -1,0 +1,54 @@
+.booking-container {
+    border: 1px solid lightgray;
+    border-radius: 20px;
+    padding: 25px;
+}
+
+.booking-box {
+    border: 1px solid black;
+    border-radius: 20px;
+}
+
+.booking-box hr {
+    border-top: 1px solid black;
+    opacity: none;
+    margin: 0;
+}
+
+.booking-box .date {
+    padding: 12px;
+}
+
+.booking-box .date div {
+    width: 50%;
+}
+
+.booking-box .date div input {
+    border: none;
+}
+
+.booking-box .guest {
+    padding: 12px;
+}
+
+.booking-box .guest select {
+    padding: 5px 5px 0 0;
+    border: none;
+}
+
+.booking-btn button {
+    width: 100%;
+    padding: 12px;
+    font-weight: bold;
+    background: linear-gradient(#F62F58, #DE1263);
+    border: none;
+}
+
+.booking-container .costs {
+    border-bottom: 1px solid lightgray;
+}
+
+.booking-container .costs h6:first-of-type {
+    text-decoration: underline;
+    cursor: pointer;
+}

@@ -27,3 +27,23 @@
     font-size: 15px;
     color: rgb(147, 145, 145);
 }
+
+.details {
+    border-bottom: 1px solid lightgray;
+}
+
+.details p {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    margin-bottom: 4px;
+}
+
+.details button {
+    font-size: 17px;
+    text-decoration: underline;
+    font-weight: bold;
+    padding: 0;
+}
