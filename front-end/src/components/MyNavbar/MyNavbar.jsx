@@ -11,6 +11,7 @@ import { GoSearch } from "react-icons/go";
 import { AlertContext } from '../AlertProvider/AlertProvider';
 import { MdOutlineFormatListBulleted } from "react-icons/md";
 import { searchBarContext } from '../SearchBarProvider/SearchBarProvider';
+import { AuthContext } from '../AuthContextProvider/AuthContextProvider';
 
 export default function MyNavbar() {
 
@@ -19,6 +20,8 @@ export default function MyNavbar() {
     const { alert, setAlert } = useContext(AlertContext);
 
     const { searchBar } = useContext(searchBarContext);
+
+    const { setToken } = useContext(AuthContext);
 
     const [user, setUser] = useState([]);
 
@@ -35,6 +38,9 @@ export default function MyNavbar() {
     }
 
     const handleLogOut = () => {
+
+        setToken("");
+        localStorage.removeItem("token");
         localStorage.removeItem("user");
         setAlert("Logout effettuato con successo!");
         setTimeout(() => {

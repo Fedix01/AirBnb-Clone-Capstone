@@ -6,6 +6,7 @@ import './SignIn.css';
 import { useNavigate } from 'react-router-dom';
 import { AlertContext } from '../AlertProvider/AlertProvider';
 import { searchBarContext } from '../SearchBarProvider/SearchBarProvider';
+import { AuthContext } from '../AuthContextProvider/AuthContextProvider';
 
 export default function SignIn() {
 
@@ -14,6 +15,8 @@ export default function SignIn() {
     const navigate = useNavigate();
 
     const { setAlert } = useContext(AlertContext);
+
+    const { setToken } = useContext(AuthContext);
 
     const { setSearchBar } = useContext(searchBarContext);
 
@@ -74,6 +77,7 @@ export default function SignIn() {
                         console.log(newUser);
                         localStorage.setItem("user", JSON.stringify(newUser.user));
                         localStorage.setItem("token", newUser.token);
+                        setToken(newUser.token);
                         navigate("/");
                         setAlert(`Benvenuto ${newUser.user.name}`);
                         setTimeout(() => {
@@ -86,6 +90,7 @@ export default function SignIn() {
                 } else {
                     localStorage.setItem("user", JSON.stringify(register.user));
                     localStorage.setItem("token", register.token);
+                    setToken(register.token);
                     navigate("/");
                     setAlert(`Benvenuto ${register.user.name}`);
                     setTimeout(() => {

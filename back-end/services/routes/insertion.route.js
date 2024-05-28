@@ -12,7 +12,19 @@ insertionApiRoute.get("/", async (req, res, next) => {
         const insertion = await Insertion.find().populate({
             path: "bookings",
             model: "Booking",
-            select: ["checkInDate", "checkOutDate", "guestNum"]
+            select: ["checkInDate", "checkOutDate", "guestNum", "user", "insertion"],
+            populate: [
+                {
+                    path: "user",
+                    model: "User",
+                    select: ["name", "surname", "avatar"]
+                },
+                {
+                    path: "insertion",
+                    model: "Insertion",
+                    select: ["title"]
+                }
+            ]
         });
         res.send(insertion)
     } catch (error) {
@@ -239,6 +251,10 @@ insertionApiRoute.get("/:id/booking", authMiddleware, async (req, res, next) => 
         const allBookings = await Booking.find({
             insertion: req.params.id,
             user: req.user.id
+        }).populate({
+            path: "user",
+            model: "User",
+            select: ["name", "surname", "avatar"]
         });
         res.send(allBookings);
     } catch (error) {
@@ -264,7 +280,14 @@ insertionApiRoute.post("/:id/booking", authMiddleware, async (req, res, next) =>
                     bookings: newBooking
                 }
             },
-            { new: true });
+            { new: true }).populate({
+                path: "bookings",
+                populate: {
+                    path: "user",
+                    model: "User",
+                    select: ["name", "surname", "avatar"]
+                }
+            });
         res.send(post)
     } catch (error) {
         next(error)

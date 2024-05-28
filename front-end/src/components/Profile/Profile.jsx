@@ -14,6 +14,7 @@ import { MdOutlineWorkOutline } from "react-icons/md";
 import { FaRegAddressCard } from "react-icons/fa6";
 import { AlertContext } from '../AlertProvider/AlertProvider';
 import { searchBarContext } from '../SearchBarProvider/SearchBarProvider';
+import { AuthContext } from '../AuthContextProvider/AuthContextProvider';
 
 export default function Profile() {
     const [data, setData] = useState([]);
@@ -22,11 +23,14 @@ export default function Profile() {
 
     const { setSearchBar } = useContext(searchBarContext);
 
+    const { setToken } = useContext(AuthContext);
+
     const { setAlert } = useContext(AlertContext);
 
     const endpointPUT = `http://localhost:3001/api/user/${data._id}`;
     const endpointPATCH = `http://localhost:3001/api/user/${data._id}/avatar`;
     const navigate = useNavigate();
+
     const token = localStorage.getItem("token");
 
     const [mod, setMod] = useState(false);
@@ -84,6 +88,11 @@ export default function Profile() {
     useEffect(() => {
         getProfile()
     }, [])
+
+    useEffect(() => {
+        setToken(token)
+    }, [token])
+
 
     const handleSignIn = async () => {
         try {

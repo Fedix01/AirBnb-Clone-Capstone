@@ -4,6 +4,8 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { AlertContext } from '../AlertProvider/AlertProvider';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../AuthContextProvider/AuthContextProvider';
 
 export default function BookingForm({ price, id }) {
 
@@ -11,7 +13,7 @@ export default function BookingForm({ price, id }) {
 
     const endpoint = `http://localhost:3001/api/insertion/${id}/booking`;
 
-    const token = localStorage.getItem("token");
+    const { setToken } = useContext(AuthContext);
 
     const { setAlert } = useContext(AlertContext);
 
@@ -28,6 +30,10 @@ export default function BookingForm({ price, id }) {
     const [partialPrice, setPartialPrice] = useState(0);
 
     const [servicesPrice, setServicesPrice] = useState(0);
+
+    const navigate = useNavigate();
+
+    const token = localStorage.getItem("token");
 
 
     const handleSelectChange = (e) => {
@@ -58,36 +64,49 @@ export default function BookingForm({ price, id }) {
 
     const createBooking = async (event) => {
         event.preventDefault();
-        try {
-            const payload = {
-                "checkInDate": formData.checkInDate,
-                "checkOutDate": formData.checkOutDate,
-                "guestNum": formData.guestNum
-            };
-            const res = await fetch(endpoint, {
-                method: "POST",
-                headers: {
-                    "Authorization": `Bearer ${token}`,
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(payload)
-            });
-            if (res.ok) {
-                const post = await res.json();
-                console.log(post);
-                setAlert("Nuova prenotazione aggiunta a 'Le tue prenotazioni'");
+        if (token) {
+            try {
+                const payload = {
+                    "checkInDate": formData.checkInDate,
+                    "checkOutDate": formData.checkOutDate,
+                    "guestNum": formData.guestNum
+                };
+                const res = await fetch(endpoint, {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(payload)
+                });
+                if (res.ok) {
+                    const post = await res.json();
+                    console.log(post);
+                    setAlert("Nuova prenotazione aggiunta a 'Le tue prenotazioni'");
+                    setTimeout(() => {
+                        setAlert("")
+                    }, 4000);
+                }
+            } catch (error) {
+                console.error(error);
+                setAlert("Errore nella prenotazione");
                 setTimeout(() => {
                     setAlert("")
                 }, 4000);
             }
-        } catch (error) {
-            console.error(error);
-            setAlert("Errore nella prenotazione");
+
+        } else {
+            navigate("/logIn");
+            setAlert("Per prenotare devi effettuare il login");
             setTimeout(() => {
                 setAlert("")
             }, 4000);
         }
     }
+
+    useEffect(() => {
+        setToken(token);
+    }, [token])
 
 
     useEffect(() => {

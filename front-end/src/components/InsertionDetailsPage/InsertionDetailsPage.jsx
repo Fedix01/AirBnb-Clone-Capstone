@@ -9,6 +9,7 @@ import emptyLocation from "../../assets/empty.png";
 import './InsertionDetailsPage.css';
 import { FaStar } from "react-icons/fa";
 import BookingForm from '../BookingForm/BookingForm';
+import ReviewsArea from '../CommentArea/ReviewsArea';
 
 
 export default function InsertionDetailsPage(props) {
@@ -135,6 +136,14 @@ export default function InsertionDetailsPage(props) {
                 </Col>
                 <Col md={5} className='mt-5'>
                     <BookingForm price={price} id={id} />
+                </Col>
+            </Row>
+            <Row>
+                <Col md={12} className='mt-5'>
+                    <div className='comment-box'>
+                        <ReviewsArea reviews={reviews} insertionId={id} />
+
+                    </div>
                 </Col>
             </Row>
         </div>

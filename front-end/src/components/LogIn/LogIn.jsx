@@ -7,6 +7,7 @@ import Alert from 'react-bootstrap/Alert';
 import { useNavigate } from 'react-router-dom';
 import { AlertContext } from '../AlertProvider/AlertProvider';
 import { searchBarContext } from '../SearchBarProvider/SearchBarProvider';
+import { AuthContext } from '../AuthContextProvider/AuthContextProvider';
 export default function LogIn() {
 
     const endpoint = "http://localhost:3001/api/user/login"
@@ -14,6 +15,8 @@ export default function LogIn() {
     const navigate = useNavigate();
 
     const { setAlert } = useContext(AlertContext);
+
+    const { setToken } = useContext(AuthContext);
 
     const { setSearchBar } = useContext(searchBarContext);
 
@@ -58,6 +61,7 @@ export default function LogIn() {
                 console.log(logIn)
                 localStorage.setItem("user", JSON.stringify(logIn.user));
                 localStorage.setItem("token", logIn.token);
+                setToken(logIn.token);
                 navigate("/");
                 setAlert("Log in effettuato con successo");
                 setTimeout(() => {

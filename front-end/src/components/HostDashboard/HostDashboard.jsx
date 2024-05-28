@@ -7,6 +7,7 @@ import './HostDashboard.css';
 import AddInsertion from '../AddInsertion/AddInsertion';
 import MyInsertions from '../MyInsertions/MyInsertions';
 import { searchBarContext } from '../SearchBarProvider/SearchBarProvider';
+import { AuthContext } from '../AuthContextProvider/AuthContextProvider';
 
 
 export default function HostDashboard() {
@@ -14,6 +15,9 @@ export default function HostDashboard() {
     const [key, setKey] = useState("");
 
     const [mod, setMod] = useState("");
+
+
+    const { setToken } = useContext(AuthContext);
 
     const { setSearchBar } = useContext(searchBarContext);
 
@@ -23,6 +27,15 @@ export default function HostDashboard() {
 
     useEffect(() => {
         setSearchBar(false)
+    }, [])
+
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (token) {
+
+            setToken(token)
+        }
     }, [])
 
 

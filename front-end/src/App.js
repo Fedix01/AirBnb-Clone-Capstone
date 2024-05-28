@@ -10,25 +10,31 @@ import SearchBarProvider from './components/SearchBarProvider/SearchBarProvider'
 import InsertionDetails from './components/InsertionDetails/InsertionDetails';
 import NotFound from './components/NotFound/NotFound';
 import BookingInfo from './components/BookingInfo/BookingInfo';
+import AuthContextProvider from './components/AuthContextProvider/AuthContextProvider';
+import ProtectedAuthRoute from './components/ProtectedAuthRoute/ProtectedAuthRoute';
 
 function App() {
   return (
-    <BrowserRouter>
-      <AlertProvider>
-        <SearchBarProvider>
-          <Routes>
-            <Route path='/' element={<Homepage />}></Route>
-            <Route path='/signIn' element={<SignIn />}></Route>
-            <Route path='/logIn' element={<LogIn />}></Route>
-            <Route path='/insertionDetails/:id' element={<InsertionDetails />}></Route>
-            <Route path='/hostDashboard' element={<HostDashboard />}></Route>
-            <Route path='/bookingInfo' element={<BookingInfo />}></Route>
-            <Route path='/me' element={<Profile />}></Route>
-            <Route path='/*' element={<NotFound />}></Route>
-          </Routes>
-        </SearchBarProvider>
-      </AlertProvider>
-    </BrowserRouter>
+    <AuthContextProvider>
+      <BrowserRouter>
+        <AlertProvider>
+          <SearchBarProvider>
+            <Routes>
+              <Route path='/' element={<Homepage />}></Route>
+              <Route path='/*' element={<NotFound />}></Route>
+              <Route path='/signIn' element={<SignIn />}></Route>
+              <Route path='/logIn' element={<LogIn />}></Route>
+              <Route path='/insertionDetails/:id' element={<InsertionDetails />}></Route>
+              <Route element={<ProtectedAuthRoute />}>
+                <Route path='/hostDashboard' element={<HostDashboard />}></Route>
+                <Route path='/bookingInfo' element={<BookingInfo />}></Route>
+                <Route path='/me' element={<Profile />}></Route>
+              </Route>
+            </Routes>
+          </SearchBarProvider>
+        </AlertProvider>
+      </BrowserRouter>
+    </AuthContextProvider>
   );
 }
 
