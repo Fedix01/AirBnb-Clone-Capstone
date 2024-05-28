@@ -2,22 +2,28 @@ import React, { useEffect, useState } from 'react';
 import './ReviewsArea.css';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
+import { useParams } from 'react-router-dom';
 import { FaStar } from "react-icons/fa";
+import { FaRegStar } from "react-icons/fa";
 
-
-export default function ReviewsArea({ insertionId, reviews }) {
+export default function ReviewsArea({ reviews }) {
 
     const [data, setData] = useState([]);
 
     const [average, setAverage] = useState(0);
 
+    const [showAll, setShowAll] = useState(false);
 
-    const endpoint = `http://localhost:3001/api/insertion/${insertionId}/reviews`;
+    const params = useParams();
+
+    const endpointAll = `http://localhost:3001/api/insertion/${params.id}/allReviews`;
+    const endpoint = `http://localhost:3001/api/insertion/${params.id}/reviews`;
 
 
-    const getfromApi = async () => {
+    const getfromApi = async (api) => {
         try {
-            const res = await fetch(endpoint);
+            const res = await fetch(api);
             if (res.ok) {
                 const allRev = await res.json();
                 console.log(allRev);
@@ -38,9 +44,82 @@ export default function ReviewsArea({ insertionId, reviews }) {
         setAverage(result);
     }
 
+
+    const starsRating = (rating) => {
+        if (rating === 1) {
+            return (
+                <>
+                    <FaStar />
+                    <FaRegStar />
+                    <FaRegStar />
+                    <FaRegStar />
+                    <FaRegStar />
+                </>
+            )
+        } else if (rating === 2) {
+            return (
+                <>
+                    <FaStar />
+                    <FaStar />
+                    <FaRegStar />
+                    <FaRegStar />
+                    <FaRegStar />
+                </>
+            )
+        } else if (rating === 3) {
+            return (
+                <>
+                    <FaStar />
+                    <FaStar />
+                    <FaStar />
+                    <FaRegStar />
+                    <FaRegStar />
+                </>
+            )
+        } else if (rating === 4) {
+            return (
+                <>
+                    <FaStar />
+                    <FaStar />
+                    <FaStar />
+                    <FaStar />
+                    <FaRegStar />
+                </>
+            )
+        } else if (rating === 5) {
+            return (
+                <>
+                    <FaStar />
+                    <FaStar />
+                    <FaStar />
+                    <FaStar />
+                    <FaStar />
+                    <FaRegStar />
+                </>
+            )
+        }
+    }
+
+
+    const dateString = (dateString) => {
+        const date = new Date(dateString);
+
+        const month = date.toLocaleString('default', { month: 'long' });
+        const year = date.getFullYear();
+        return (
+            <h4>{month} {year}</h4>
+        )
+    }
+
     useEffect(() => {
-        getfromApi()
-    }, [])
+        if (showAll) {
+            getfromApi(endpointAll)
+        } else {
+            getfromApi(endpoint)
+        }
+    }, [showAll])
+
+
 
 
     useEffect(() => {
@@ -55,19 +134,42 @@ export default function ReviewsArea({ insertionId, reviews }) {
         <>
             <div className='header d-flex my-3'>
                 <FaStar />
-                <h4 className='ms-2'>{average} ·</h4>
-                <h4 className='ms-1'>{reviews.length} recensioni</h4>
+                <h4 className='ms-2'>{average.toFixed(2)} ·</h4>
+                <h4 className='ms-1'>{reviews.length === 0 ? "Nessuna recensione" : `${reviews.length} recensioni`}</h4>
             </div>
 
             <Row>
-                <Col md={6}>
-                    {data &&
-                        data.map((el) => (
-                            <div className='rev-container' key={el._id}>
-
+                {data &&
+                    data.map((el) => (
+                        <Col md={6} key={el._id}>
+                            <div className='rev-container my-4 mx-4'>
+                                <div className='d-flex align-items-center'>
+                                    <img src={el.user.avatar}
+                                        alt=""
+                                        className='avatar-rev' />
+                                    <h4 className='ms-3'>{el.user.name} {el.user.surname}</h4>
+                                </div>
+                                <div className='d-flex align-items-center ratings mt-2'>
+                                    <div>
+                                        {starsRating(el.rating)} ·
+                                    </div>
+                                    <div className='ms-2'>
+                                        {dateString(el.updatedAt)}
+                                    </div>
+                                </div>
+                                <div className='comment mt-2'>
+                                    <p>{el.comment}</p>
+                                </div>
                             </div>
-                        ))}
-                </Col>
+                        </Col>
+                    ))}
+                <div className='d-flex justify-content-center'>
+                    {showAll ?
+                        <Button variant='transparent' onClick={() => setShowAll(false)}>Nascondi recensioni</Button>
+                        :
+                        <Button variant='transparent' onClick={() => setShowAll(true)}>Mostra tutte le recensioni</Button>
+                    }
+                </div>
             </Row>
         </>
     )

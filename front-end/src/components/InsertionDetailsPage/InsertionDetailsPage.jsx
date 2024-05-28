@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FaRegHeart } from "react-icons/fa6";
 import { IoShareOutline } from "react-icons/io5";
 import Row from 'react-bootstrap/Row';
@@ -22,6 +22,7 @@ export default function InsertionDetailsPage(props) {
 
     const [show, setShow] = useState(false);
 
+    const ref = useRef(null);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -37,6 +38,9 @@ export default function InsertionDetailsPage(props) {
 
     };
 
+    const handleClick = () => {
+        ref.current?.scrollIntoView({ behavior: "smooth" })
+    }
     useEffect(() => {
         if (reviews) {
             calculateAverage(reviews);
@@ -103,7 +107,7 @@ export default function InsertionDetailsPage(props) {
                         <div className='d-flex align-items-center'>
                             <FaStar className='mb-2' />
                             <h4 className='average-num ms-1'>{average.toFixed(2)} · </h4>
-                            <h4 className='reviews ms-1'>{reviews ? `${reviews.length} recensioni` : "Nessun recensione"}</h4>
+                            <h4 className='reviews ms-1' onClick={handleClick} style={{ cursor: "pointer" }}>{reviews ? `${reviews.length} recensioni` : "Nessun recensione"}</h4>
                         </div>
                     </div>
                     <div className='my-3 host-info'>
@@ -140,7 +144,7 @@ export default function InsertionDetailsPage(props) {
             </Row>
             <Row>
                 <Col md={12} className='mt-5'>
-                    <div className='comment-box'>
+                    <div className='comment-box' ref={ref}>
                         <ReviewsArea reviews={reviews} insertionId={id} />
 
                     </div>

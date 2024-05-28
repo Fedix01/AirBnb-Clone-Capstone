@@ -147,16 +147,34 @@ insertionApiRoute.patch("/:id/covers", coverCloud.any("covers"), async (req, res
 
 //Recensioni
 
-insertionApiRoute.get("/:id/reviews", async (req, res, next) => {
+insertionApiRoute.get("/:id/allReviews", async (req, res, next) => {
     try {
         const allRev = await Review.find({
-            insertion: req.params.id,
-
+            insertion: req.params.id
         }).populate({
             path: "user",
             model: "User",
             select: ["name", "surname", "avatar"]
         });
+        res.send(allRev)
+    } catch (error) {
+        next(error)
+    }
+})
+
+insertionApiRoute.get("/:id/reviews", async (req, res, next) => {
+    try {
+        const insertionId = req.params.id;
+
+        const itemsForPage = 4;
+
+        const allRev = await Review.find({
+            insertion: insertionId
+        }).populate({
+            path: "user",
+            model: "User",
+            select: ["name", "surname", "avatar"]
+        }).limit(itemsForPage)
 
         res.send(allRev)
     } catch (error) {
