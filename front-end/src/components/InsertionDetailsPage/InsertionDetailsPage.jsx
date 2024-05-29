@@ -9,7 +9,7 @@ import emptyLocation from "../../assets/empty.png";
 import './InsertionDetailsPage.css';
 import { FaStar } from "react-icons/fa";
 import BookingForm from '../BookingForm/BookingForm';
-import ReviewsArea from '../CommentArea/ReviewsArea';
+import ReviewsArea from '../ReviewsArea/ReviewsArea';
 
 
 export default function InsertionDetailsPage(props) {

@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 import { useParams } from 'react-router-dom';
 import { FaStar } from "react-icons/fa";
 import { FaRegStar } from "react-icons/fa";
+import ReviewForm from '../ReviewForm/ReviewForm';
 
 export default function ReviewsArea({ reviews }) {
 
@@ -13,12 +14,25 @@ export default function ReviewsArea({ reviews }) {
 
     const [average, setAverage] = useState(0);
 
+    const [token, setToken] = useState();
+
+    const [modify, setModify] = useState("");
+
+    const [currentUser, setCurrentUser] = useState({});
+
     const [showAll, setShowAll] = useState(false);
 
     const params = useParams();
 
     const endpointAll = `http://localhost:3001/api/insertion/${params.id}/allReviews`;
     const endpoint = `http://localhost:3001/api/insertion/${params.id}/reviews`;
+
+    const endpointDel = `http://localhost:3001/api/insertion/${params.id}/reviews`;
+
+
+    useEffect(() => {
+        console.log(modify)
+    }, [modify])
 
 
     const getfromApi = async (api) => {
@@ -101,6 +115,30 @@ export default function ReviewsArea({ reviews }) {
     }
 
 
+    const deleteReview = async (id) => {
+        try {
+            const res = await fetch(`${endpointDel}/${id}`, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
+
+            });
+            if (res.ok) {
+                const deleted = await res.json();
+                if (showAll) {
+                    getfromApi(endpointAll)
+                } else {
+                    getfromApi(endpoint)
+                }
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+
     const dateString = (dateString) => {
         const date = new Date(dateString);
 
@@ -110,6 +148,19 @@ export default function ReviewsArea({ reviews }) {
             <h4>{month} {year}</h4>
         )
     }
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        const user = localStorage.getItem("user");
+        if (token) {
+            setToken(token)
+        }
+        if (user) {
+            setCurrentUser(JSON.parse(user))
+            console.log(currentUser)
+        }
+    }, [])
+
 
     useEffect(() => {
         if (showAll) {
@@ -128,6 +179,8 @@ export default function ReviewsArea({ reviews }) {
 
         }
     }, [reviews])
+
+
 
 
     return (
@@ -160,6 +213,14 @@ export default function ReviewsArea({ reviews }) {
                                 <div className='comment mt-2'>
                                     <p>{el.comment}</p>
                                 </div>
+                                <div>
+                                    {(el.user._id === currentUser._id) &&
+                                        <>
+                                            <Button variant='transparent' onClick={() => setModify(el._id)}>Modifica</Button>
+                                            <Button variant='transparent' onClick={() => deleteReview(el._id)}>Elimina</Button>
+                                        </>
+                                    }
+                                </div>
                             </div>
                         </Col>
                     ))}
@@ -169,6 +230,9 @@ export default function ReviewsArea({ reviews }) {
                         :
                         <Button variant='transparent' onClick={() => setShowAll(true)}>Mostra tutte le recensioni</Button>
                     }
+                </div>
+                <div className='mt-3'>
+                    <ReviewForm getfromApi={getfromApi} showAll={showAll} modify={modify} />
                 </div>
             </Row>
         </>

@@ -71,7 +71,7 @@ insertionApiRoute.get("/:id", async (req, res, next) => {
         ).populate({
             path: "reviews",
             model: "Review",
-            select: ["rating", "comment"]
+            select: ["rating", "comment", "user"]
         }).populate({
             path: "bookings",
             model: "Booking",
@@ -155,7 +155,7 @@ insertionApiRoute.get("/:id/allReviews", async (req, res, next) => {
             path: "user",
             model: "User",
             select: ["name", "surname", "avatar"]
-        });
+        }).sort({ "updatedAt": -1 });
         res.send(allRev)
     } catch (error) {
         next(error)
@@ -174,7 +174,7 @@ insertionApiRoute.get("/:id/reviews", async (req, res, next) => {
             path: "user",
             model: "User",
             select: ["name", "surname", "avatar"]
-        }).limit(itemsForPage)
+        }).sort({ "updatedAt": -1 }).limit(itemsForPage)
 
         res.send(allRev)
     } catch (error) {

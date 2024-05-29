@@ -39,7 +39,7 @@ export default function BookingInfo() {
                                 <th>#</th>
                                 <th>Utente</th>
                                 <th>Struttura</th>
-                                <th>Username</th>
+                                <th>Date</th>
                             </tr>
                         </thead>
                         <tbody>
