@@ -24,7 +24,7 @@ export default function Homepage() {
     const [page, setPage] = useState(0);
 
     const [searchFormData, setSearchFormData] = useState({
-        titleInput: "",
+        placeInput: "",
         checkInDate: null,
         checkOutDate: null,
         guestNum: 0
@@ -33,6 +33,8 @@ export default function Homepage() {
     const endpoint = `http://localhost:3001/api/insertion/pagination?page=${page}`;
 
     const endpointCategories = `http://localhost:3001/api/insertion/findByCategory/`;
+
+    const endpointSearch = `http://localhost:3001/api/insertion/search`;
 
     const getFromApi = async (singleCategory) => {
         try {
@@ -85,10 +87,28 @@ export default function Homepage() {
         }
     }
 
-
-    const filteredNavSearch = () => {
-        const filtered = data.filter((el) => el.place.toLowerCase().includes(searchFormData.titleInput.toLowerCase()));
-        setData(filtered)
+    const filteredNavSearch = async (e) => {
+        e.preventDefault();
+        try {
+            const payload = {
+                "placeInput": searchFormData.placeInput,
+                "checkInDate": searchFormData.checkInDate,
+                "checkOutDate": searchFormData.checkOutDate
+            };
+            const res = await fetch(endpointSearch, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            });
+            if (res.ok) {
+                const search = await res.json();
+                setData(search)
+            }
+        } catch (error) {
+            console.error(error)
+        }
     }
 
     useEffect(() => {
@@ -112,10 +132,10 @@ export default function Homepage() {
         <>
             <MyNavbar setSearch={setSearchFormData}
                 searchForm={searchFormData}
-                titleInput={searchFormData.titleInput}
-                checkInInput={searchFormData.checkInDate}
-                checkOutInput={searchFormData.checkOutDate}
-                guestNumInput={searchFormData.guestNum}
+                placeInput={searchFormData.placeInput}
+                checkInDate={searchFormData.checkInDate}
+                checkOutDate={searchFormData.checkOutDate}
+                guestNum={searchFormData.guestNum}
                 filteredNavSearch={filteredNavSearch}
             />
             <Category setCategory={setCategory} />

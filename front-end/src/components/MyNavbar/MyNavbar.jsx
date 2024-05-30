@@ -5,6 +5,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import Dropdown from 'react-bootstrap/Dropdown';
+import Form from 'react-bootstrap/Form';
 import logoPink from "../../assets/logo-pink.png";
 import avatar from "../../assets/avatar.png";
 import { GoSearch } from "react-icons/go";
@@ -15,7 +16,7 @@ import { AuthContext } from '../AuthContextProvider/AuthContextProvider';
 
 export default function MyNavbar(props) {
 
-    const { setSearch, searchForm, titleInput, filteredNavSearch, checkInInput, checkOutInput, guestNumInput } = props;
+    const { setSearch, searchForm, placeInput, filteredNavSearch, checkInDate, checkOutDate, guestNum } = props;
 
     const navigate = useNavigate();
 
@@ -113,34 +114,36 @@ export default function MyNavbar(props) {
                         style={{ width: "100px" }} />
                 </Navbar.Brand>
                 {searchBar &&
-                    <div className="bar">
-                        <div className="location">
-                            <p>Location</p>
-                            <input type="text" placeholder="Where are you going?"
-                                value={titleInput}
-                                onChange={(e) => setSearch({ ...searchForm, titleInput: e.target.value })} />
+                    <Form onSubmit={filteredNavSearch}>
+                        <div className="bar">
+                            <div className="location">
+                                <p>Location</p>
+                                <input type="text" placeholder="Where are you going?"
+                                    value={placeInput}
+                                    onChange={(e) => setSearch({ ...searchForm, placeInput: e.target.value })} />
+                            </div>
+                            <div className="check-in">
+                                <p>Check in</p>
+                                <input type="date" placeholder="Add dates"
+                                    onChange={(e) => setSearch({ ...searchForm, checkInDate: e.target.value })} />
+                            </div>
+                            <div className="check-out">
+                                <p>Check out</p>
+                                <input type="date" placeholder="Add dates"
+                                    onChange={(e) => setSearch({ ...searchForm, checkOutDate: e.target.value })} />
+                            </div>
+                            <div className="guests">
+                                <p>Guests</p>
+                                <input type="number" placeholder="Add guests"
+                                    value={guestNum}
+                                    onChange={(e) => setSearch({ ...searchForm, guestNum: e.target.value })} />
+                                <span>
+                                    <Button variant='transparent' type='submit'>
+                                        <GoSearch />
+                                    </Button></span>
+                            </div>
                         </div>
-                        <div className="check-in">
-                            <p>Check in</p>
-                            <input type="date" placeholder="Add dates"
-                                onChange={(e) => setSearch({ ...searchForm, checkInInput: e.target.value })} />
-                        </div>
-                        <div className="check-out">
-                            <p>Check out</p>
-                            <input type="date" placeholder="Add dates"
-                                onChange={(e) => setSearch({ ...searchForm, checkOutInput: e.target.value })} />
-                        </div>
-                        <div className="guests">
-                            <p>Guests</p>
-                            <input type="number" placeholder="Add guests"
-                                value={guestNumInput}
-                                onChange={(e) => setSearch({ ...searchForm, guestNumInput: e.target.value })} />
-                            <span>
-                                <Button variant='transparent' onClick={() => filteredNavSearch()}>
-                                    <GoSearch />
-                                </Button></span>
-                        </div>
-                    </div>
+                    </Form>
 
                 }
 

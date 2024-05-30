@@ -46,9 +46,8 @@ const getDatesFromPeriod = (startDate, endDate) => {
 
 insertionApiRoute.post("/search", async (req, res, next) => {
     try {
-        const dateRequest = getDatesFromPeriod(new Date(req.body.checkInDate), new Date(req.body.checkOutDate));
-        console.log(dateRequest);
-        const regex = new RegExp(req.body.titleInput);
+        const requestedDates = getDatesFromPeriod(new Date(req.body.checkInDate), new Date(req.body.checkOutDate));
+        const regex = new RegExp(req.body.placeInput, "i");
         const insertions = await Insertion.find({
             place: { $regex: regex }
         }).populate({
@@ -56,18 +55,18 @@ insertionApiRoute.post("/search", async (req, res, next) => {
             model: "Booking",
         });
 
-        const availableInsertions = insertions.filter((el) => {
-            const filteredBookings = el.bookings.filter((booking) => {
-                const bookingdates = getDatesFromPeriod(new Date(booking.checkInDate), new Date(booking.checkOutDate))
+        const availableInsertions = insertions.filter(insertion => {
+            const isAvailable = insertion.bookings.every(booking => {
+                const bookingCheckInDate = new Date(booking.checkInDate);
+                const bookingCheckOutDate = new Date(booking.checkOutDate);
 
+                return requestedDates.every(date => date < bookingCheckInDate || date > bookingCheckOutDate);
             });
-            if (filteredBookings.length > 0) {
-                return true
-            }
-            return false
-        })
+            return isAvailable
+        });
 
-        res.send(ins)
+
+        res.send(availableInsertions)
     } catch (error) {
         next(error)
     }
