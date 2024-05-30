@@ -16,7 +16,7 @@ export default function InsertionDetailsPage(props) {
 
     const { id, title, address, category, covers, details,
         hostType, place, price, services,
-        hostAvatar, hostName, hostSurname, reviews } = props;
+        hostAvatar, hostName, hostSurname, reviews, reviewUpdate } = props;
 
     const [average, setAverage] = useState(0);
 
@@ -145,7 +145,7 @@ export default function InsertionDetailsPage(props) {
             <Row>
                 <Col md={12} className='mt-5'>
                     <div className='comment-box' ref={ref}>
-                        <ReviewsArea reviews={reviews} insertionId={id} />
+                        <ReviewsArea reviews={reviews} insertionId={id} reviewUpdate={reviewUpdate} />
 
                     </div>
                 </Col>

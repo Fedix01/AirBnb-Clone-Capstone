@@ -23,6 +23,8 @@ export default function Homepage() {
 
     const [page, setPage] = useState(0);
 
+    const [titleInput, setTitleInput] = useState("");
+
     const endpoint = `http://localhost:3001/api/insertion/pagination?page=${page}`;
 
     const endpointCategories = `http://localhost:3001/api/insertion/findByCategory/`;
@@ -79,6 +81,11 @@ export default function Homepage() {
     }
 
 
+    const filteredNavSearch = () => {
+        const filtered = data.filter((el) => el.place.toLowerCase().includes(titleInput.toLowerCase()));
+        setData(filtered)
+    }
+
     useEffect(() => {
         setPage(0)
         setData([])
@@ -98,7 +105,7 @@ export default function Homepage() {
 
     return (
         <>
-            <MyNavbar />
+            <MyNavbar setTitleInput={setTitleInput} titleInput={titleInput} filteredNavSearch={filteredNavSearch} />
             <Category setCategory={setCategory} />
             <AllInsertions data={data} setPage={setPage} loading={loading} stopLoad={stopLoad} spinner={spinner} />
         </>

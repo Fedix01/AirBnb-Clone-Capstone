@@ -5,7 +5,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
 import { AlertContext } from '../AlertProvider/AlertProvider';
 
-export default function ReviewForm({ getfromApi, showAll, modify }) {
+export default function ReviewForm({ getfromApi, showAll, modify, reviewUpdate }) {
 
     const params = useParams();
 
@@ -50,6 +50,7 @@ export default function ReviewForm({ getfromApi, showAll, modify }) {
                     } else {
                         getfromApi(endpoint)
                     }
+                    reviewUpdate()
                     console.log(newRev);
                 }
             } catch (error) {
@@ -94,6 +95,7 @@ export default function ReviewForm({ getfromApi, showAll, modify }) {
                     } else {
                         getfromApi(endpoint)
                     };
+                    reviewUpdate();
                     setAlert("Il commento è stato modificato");
                     setTimeout(() => {
                         setAlert("")
@@ -137,7 +139,7 @@ export default function ReviewForm({ getfromApi, showAll, modify }) {
                         }} />
                 </div>
                 <Form>
-                    <Form.Select onChange={(e) => setFormData({ ...formData, rating: Number(e.target.value) })}>
+                    <Form.Select required onChange={(e) => setFormData({ ...formData, rating: Number(e.target.value) })}>
                         <option>Vota il tuo soggiorno</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
@@ -148,6 +150,7 @@ export default function ReviewForm({ getfromApi, showAll, modify }) {
 
                     <InputGroup className="mb-3">
                         <Form.Control
+                            required
                             aria-label="Default"
                             value={formData.comment}
                             onChange={(e) => setFormData({ ...formData, comment: e.target.value })}

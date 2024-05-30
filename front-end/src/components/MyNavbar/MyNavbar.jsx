@@ -13,7 +13,7 @@ import { MdOutlineFormatListBulleted } from "react-icons/md";
 import { searchBarContext } from '../SearchBarProvider/SearchBarProvider';
 import { AuthContext } from '../AuthContextProvider/AuthContextProvider';
 
-export default function MyNavbar() {
+export default function MyNavbar({ setTitleInput, titleInput, filteredNavSearch }) {
 
     const navigate = useNavigate();
 
@@ -114,7 +114,9 @@ export default function MyNavbar() {
                     <div className="bar">
                         <div className="location">
                             <p>Location</p>
-                            <input type="text" placeholder="Where are you going?" />
+                            <input type="text" placeholder="Where are you going?"
+                                value={titleInput}
+                                onChange={(e) => setTitleInput(e.target.value)} />
                         </div>
                         <div className="check-in">
                             <p>Check in</p>
@@ -128,7 +130,7 @@ export default function MyNavbar() {
                             <p>Guests</p>
                             <input type="text" placeholder="Add guests" />
                             <span>
-                                <Button variant='transparent'>
+                                <Button variant='transparent' onClick={() => filteredNavSearch()}>
                                     <GoSearch />
                                 </Button></span>
                         </div>

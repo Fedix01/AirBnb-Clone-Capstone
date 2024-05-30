@@ -12,7 +12,7 @@ insertionApiRoute.get("/", async (req, res, next) => {
         const insertion = await Insertion.find().populate({
             path: "bookings",
             model: "Booking",
-            select: ["checkInDate", "checkOutDate", "guestNum", "user", "insertion"],
+            select: ["checkInDate", "checkOutDate", "guestNum", "totalPrice", "user", "insertion"],
             populate: [
                 {
                     path: "user",

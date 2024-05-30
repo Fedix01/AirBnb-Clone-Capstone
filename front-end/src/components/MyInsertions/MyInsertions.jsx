@@ -131,7 +131,7 @@ export default function MyInsertions({ setMod, setKey }) {
                                 <td>{el.bookings.length !== 0 ? (
                                     <>
                                         <h6>{el.bookings.length} prenotazioni</h6>
-                                        <Button variant='transparent' onClick={() => handleViewBookings(el.bookings)}>Visualizza prenotazioni</Button>
+                                        <Button variant='transparent' className='bookings' onClick={() => handleViewBookings(el.bookings)}>Visualizza prenotazioni</Button>
 
                                     </>
                                 )

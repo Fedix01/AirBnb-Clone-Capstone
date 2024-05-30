@@ -40,6 +40,7 @@ export default function BookingInfo() {
                                 <th>Utente</th>
                                 <th>Struttura</th>
                                 <th>Date</th>
+                                <th>Totale</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -53,6 +54,7 @@ export default function BookingInfo() {
                                     </td>
                                     <td>{el.insertion.title}</td>
                                     <td>{formatDate(el.checkInDate)} - {formatDate(el.checkOutDate)}</td>
+                                    <td>{el.totalPrice} €</td>
                                 </tr>
 
                             ))}

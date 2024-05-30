@@ -28,6 +28,10 @@ export default function InsertionDetails() {
         }
     };
 
+    const reviewUpdate = () => {
+        getfromApi()
+    }
+
     useEffect(() => {
         getfromApi()
     }, [])
@@ -54,6 +58,7 @@ export default function InsertionDetails() {
                         hostAvatar={data.user ? data.user.avatar : emptyAvatar}
                         hostName={data.user ? data.user.name : "Nessun nome"}
                         hostSurname={data.user ? data.user.surname : "Nessun cognome"}
+                        reviewUpdate={reviewUpdate}
                     />
                 }
 

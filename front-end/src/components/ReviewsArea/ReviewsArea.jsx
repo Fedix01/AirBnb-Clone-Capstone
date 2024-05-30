@@ -8,7 +8,7 @@ import { FaStar } from "react-icons/fa";
 import { FaRegStar } from "react-icons/fa";
 import ReviewForm from '../ReviewForm/ReviewForm';
 
-export default function ReviewsArea({ reviews }) {
+export default function ReviewsArea({ reviews, reviewUpdate }) {
 
     const [data, setData] = useState([]);
 
@@ -132,6 +132,7 @@ export default function ReviewsArea({ reviews }) {
                 } else {
                     getfromApi(endpoint)
                 }
+                reviewUpdate()
             }
         } catch (error) {
             console.error(error)
@@ -226,13 +227,13 @@ export default function ReviewsArea({ reviews }) {
                     ))}
                 <div className='d-flex justify-content-center'>
                     {showAll ?
-                        <Button variant='transparent' onClick={() => setShowAll(false)}>Nascondi recensioni</Button>
+                        <Button variant='outline-dark' onClick={() => setShowAll(false)}>Nascondi recensioni</Button>
                         :
-                        <Button variant='transparent' onClick={() => setShowAll(true)}>Mostra tutte le recensioni</Button>
+                        <Button variant='outline-dark' onClick={() => setShowAll(true)}>Mostra tutte le recensioni</Button>
                     }
                 </div>
                 <div className='mt-3'>
-                    <ReviewForm getfromApi={getfromApi} showAll={showAll} modify={modify} />
+                    <ReviewForm getfromApi={getfromApi} showAll={showAll} modify={modify} reviewUpdate={reviewUpdate} />
                 </div>
             </Row>
         </>
