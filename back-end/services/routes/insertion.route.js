@@ -32,6 +32,47 @@ insertionApiRoute.get("/", async (req, res, next) => {
     }
 })
 
+const getDatesFromPeriod = (startDate, endDate) => {
+    let currentDate = startDate;
+    const dates = [];
+    while (currentDate <= endDate) {
+        dates.push(new Date(currentDate));
+        currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    return dates;
+
+};
+
+insertionApiRoute.post("/search", async (req, res, next) => {
+    try {
+        const dateRequest = getDatesFromPeriod(new Date(req.body.checkInDate), new Date(req.body.checkOutDate));
+        console.log(dateRequest);
+        const regex = new RegExp(req.body.titleInput);
+        const insertions = await Insertion.find({
+            place: { $regex: regex }
+        }).populate({
+            path: "bookings",
+            model: "Booking",
+        });
+
+        const availableInsertions = insertions.filter((el) => {
+            const filteredBookings = el.bookings.filter((booking) => {
+                const bookingdates = getDatesFromPeriod(new Date(booking.checkInDate), new Date(booking.checkOutDate))
+
+            });
+            if (filteredBookings.length > 0) {
+                return true
+            }
+            return false
+        })
+
+        res.send(ins)
+    } catch (error) {
+        next(error)
+    }
+})
+
 insertionApiRoute.get("/findByCategory/:category/pagination", async (req, res, next) => {
     try {
 

@@ -23,7 +23,12 @@ export default function Homepage() {
 
     const [page, setPage] = useState(0);
 
-    const [titleInput, setTitleInput] = useState("");
+    const [searchFormData, setSearchFormData] = useState({
+        titleInput: "",
+        checkInDate: null,
+        checkOutDate: null,
+        guestNum: 0
+    });
 
     const endpoint = `http://localhost:3001/api/insertion/pagination?page=${page}`;
 
@@ -82,7 +87,7 @@ export default function Homepage() {
 
 
     const filteredNavSearch = () => {
-        const filtered = data.filter((el) => el.place.toLowerCase().includes(titleInput.toLowerCase()));
+        const filtered = data.filter((el) => el.place.toLowerCase().includes(searchFormData.titleInput.toLowerCase()));
         setData(filtered)
     }
 
@@ -105,9 +110,19 @@ export default function Homepage() {
 
     return (
         <>
-            <MyNavbar setTitleInput={setTitleInput} titleInput={titleInput} filteredNavSearch={filteredNavSearch} />
+            <MyNavbar setSearch={setSearchFormData}
+                searchForm={searchFormData}
+                titleInput={searchFormData.titleInput}
+                checkInInput={searchFormData.checkInDate}
+                checkOutInput={searchFormData.checkOutDate}
+                guestNumInput={searchFormData.guestNum}
+                filteredNavSearch={filteredNavSearch}
+            />
             <Category setCategory={setCategory} />
-            <AllInsertions data={data} setPage={setPage} loading={loading} stopLoad={stopLoad} spinner={spinner} />
+            <AllInsertions data={data} setPage={setPage}
+                loading={loading}
+                stopLoad={stopLoad}
+                spinner={spinner} />
         </>
     )
 }

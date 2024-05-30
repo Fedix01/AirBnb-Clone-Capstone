@@ -13,7 +13,9 @@ import { MdOutlineFormatListBulleted } from "react-icons/md";
 import { searchBarContext } from '../SearchBarProvider/SearchBarProvider';
 import { AuthContext } from '../AuthContextProvider/AuthContextProvider';
 
-export default function MyNavbar({ setTitleInput, titleInput, filteredNavSearch }) {
+export default function MyNavbar(props) {
+
+    const { setSearch, searchForm, titleInput, filteredNavSearch, checkInInput, checkOutInput, guestNumInput } = props;
 
     const navigate = useNavigate();
 
@@ -116,19 +118,23 @@ export default function MyNavbar({ setTitleInput, titleInput, filteredNavSearch 
                             <p>Location</p>
                             <input type="text" placeholder="Where are you going?"
                                 value={titleInput}
-                                onChange={(e) => setTitleInput(e.target.value)} />
+                                onChange={(e) => setSearch({ ...searchForm, titleInput: e.target.value })} />
                         </div>
                         <div className="check-in">
                             <p>Check in</p>
-                            <input type="date" placeholder="Add dates" />
+                            <input type="date" placeholder="Add dates"
+                                onChange={(e) => setSearch({ ...searchForm, checkInInput: e.target.value })} />
                         </div>
                         <div className="check-out">
                             <p>Check out</p>
-                            <input type="date" placeholder="Add dates" />
+                            <input type="date" placeholder="Add dates"
+                                onChange={(e) => setSearch({ ...searchForm, checkOutInput: e.target.value })} />
                         </div>
                         <div className="guests">
                             <p>Guests</p>
-                            <input type="text" placeholder="Add guests" />
+                            <input type="number" placeholder="Add guests"
+                                value={guestNumInput}
+                                onChange={(e) => setSearch({ ...searchForm, guestNumInput: e.target.value })} />
                             <span>
                                 <Button variant='transparent' onClick={() => filteredNavSearch()}>
                                     <GoSearch />
