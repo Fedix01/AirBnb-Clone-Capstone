@@ -42,6 +42,17 @@ export default function UserBookings() {
         }
     }
 
+    const dateString = (dateString) => {
+        const date = new Date(dateString);
+
+        const day = date.toLocaleString('default', { day: 'numeric' })
+        const month = date.toLocaleString('default', { month: 'long' });
+        const year = date.getFullYear();
+        return (
+            <h6>{day} {month} {year}</h6>
+        )
+    }
+
     useEffect(() => {
         setSearchBar(false)
     }, [])
@@ -84,15 +95,45 @@ export default function UserBookings() {
                 </Row>
 
                 <Row>
-                    <Col md={12}>
-                        {data &&
-                            data.map((booking) => (
-                                <>
-                                    <div key={booking._id}>
-                                    </div>
-                                </>
-                            ))}
+                    <Col md={12} className='mt-5'>
+                        <h2>Le mie prenotazioni</h2>
                     </Col>
+                </Row>
+
+                <Row className='mt-4'>
+                    {data &&
+                        data.map((booking) => (
+                            <Col md={6} key={booking._id} className='trip-container'>
+                                <>
+                                    <Row>
+
+                                        <Col md={6} className='p-4'>
+                                            <div>
+                                                <h4>{booking.insertion.title}</h4>
+                                                <h5>{booking.insertion.place}</h5>
+                                            </div>
+                                            <hr />
+                                            <div className='d-flex align-items-center'>
+                                                <div className='mx-3'>
+                                                    Arrivo: {dateString(booking.checkInDate)}
+                                                    Partenza: {dateString(booking.checkOutDate)}
+                                                </div>
+                                                <div className='mx-3'>
+                                                    <h6>{booking.insertion.address}</h6>
+                                                </div>
+                                            </div>
+                                            <div className='text-center mt-2'>
+                                                <Button variant='success'>Procedi al Pagamento</Button>
+                                            </div>
+                                        </Col>
+                                        <Col md={6} className='p-0 d-flex justify-content-end'>
+                                            <img src={booking.insertion.covers[0]} alt=''
+                                                className='img-fluid' />
+                                        </Col>
+                                    </Row>
+                                </>
+                            </Col>
+                        ))}
                 </Row>
             </Container>
         </>

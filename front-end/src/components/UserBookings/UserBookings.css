@@ -28,3 +28,13 @@
     width: 100%;
     object-fit: cover;
 }
+
+.trip-container {
+    border: 1px solid lightgray;
+    border-radius: 20px;
+}
+
+.trip-container img {
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
