@@ -6,6 +6,7 @@ import Modal from 'react-bootstrap/Modal';
 import { AlertContext } from '../AlertProvider/AlertProvider';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../AuthContextProvider/AuthContextProvider';
+import ModalBody from 'react-bootstrap/esm/ModalBody';
 
 export default function BookingForm({ price, id }) {
 
@@ -79,7 +80,8 @@ export default function BookingForm({ price, id }) {
                         "checkInDate": formData.checkInDate,
                         "checkOutDate": formData.checkOutDate,
                         "guestNum": formData.guestNum,
-                        "totalPrice": formData.totalPrice
+                        "totalPrice": formData.totalPrice,
+                        "confirm": false
                     };
                     const res = await fetch(endpoint, {
                         method: "POST",
@@ -92,10 +94,8 @@ export default function BookingForm({ price, id }) {
                     if (res.ok) {
                         const post = await res.json();
                         console.log(post);
-                        setAlert("Nuova prenotazione aggiunta a 'Le tue prenotazioni'");
-                        setTimeout(() => {
-                            setAlert("")
-                        }, 4000);
+                        setAlert("prenotazione");
+
                     }
                 } catch (error) {
                     console.error(error);

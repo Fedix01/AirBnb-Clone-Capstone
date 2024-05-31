@@ -304,6 +304,25 @@ insertionApiRoute.delete("/:id/reviews/:reviewId", authMiddleware, async (req, r
 })
 
 // Booking
+insertionApiRoute.get("/userBooking/:userId", authMiddleware, async (req, res, next) => {
+    try {
+        const userId = req.params.userId;
+        const allBookings = await Booking.find({
+            user: userId
+        }).populate({
+            path: "user",
+            model: "User",
+            select: ["name", "surname", "avatar"]
+        }).populate({
+            path: "insertion",
+            model: "Insertion"
+        });
+        res.send(allBookings)
+    } catch (error) {
+        next(error)
+    }
+})
+
 insertionApiRoute.get("/:id/booking", authMiddleware, async (req, res, next) => {
     try {
         const allBookings = await Booking.find({
@@ -319,6 +338,7 @@ insertionApiRoute.get("/:id/booking", authMiddleware, async (req, res, next) => 
         next(error)
     }
 })
+
 
 
 insertionApiRoute.post("/:id/booking", authMiddleware, async (req, res, next) => {

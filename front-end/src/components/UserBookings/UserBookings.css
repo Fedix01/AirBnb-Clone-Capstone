@@ -1,0 +1,30 @@
+.trips-box {
+    border: 1px solid lightgray;
+    max-height: 20rem;
+}
+
+.trips-text svg {
+    font-size: 40px;
+}
+
+.trips-text p {
+    color: gray;
+}
+
+.trips-text button {
+    width: 40%;
+    padding: 12px;
+    font-weight: bold;
+    background: linear-gradient(#F62F58, #DE1263);
+    border: none;
+}
+
+.img-cont {
+    padding: 0;
+}
+
+.img-cont .trip-image {
+    height: 265px;
+    width: 100%;
+    object-fit: cover;
+}

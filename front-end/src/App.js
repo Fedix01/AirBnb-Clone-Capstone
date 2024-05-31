@@ -12,6 +12,7 @@ import NotFound from './components/NotFound/NotFound';
 import BookingInfo from './components/BookingInfo/BookingInfo';
 import AuthContextProvider from './components/AuthContextProvider/AuthContextProvider';
 import ProtectedAuthRoute from './components/ProtectedAuthRoute/ProtectedAuthRoute';
+import UserBookings from './components/UserBookings/UserBookings';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
               <Route path='/insertionDetails/:id' element={<InsertionDetails />}></Route>
               <Route element={<ProtectedAuthRoute />}>
                 <Route path='/hostDashboard' element={<HostDashboard />}></Route>
+                <Route path='/myBookings' element={<UserBookings />}></Route>
                 <Route path='/bookingInfo' element={<BookingInfo />}></Route>
                 <Route path='/me' element={<Profile />}></Route>
               </Route>

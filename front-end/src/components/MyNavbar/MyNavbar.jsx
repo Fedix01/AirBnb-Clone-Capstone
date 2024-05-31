@@ -28,6 +28,8 @@ export default function MyNavbar(props) {
 
     const [user, setUser] = useState([]);
 
+    const [show, setShow] = useState(true);
+
     const userAuth = localStorage.getItem("user");
 
     const fetchUser = (userAuth) => {
@@ -53,6 +55,11 @@ export default function MyNavbar(props) {
         navigate("/")
     }
 
+    const handleAlert = () => {
+        setShow(false);
+        setAlert("")
+    }
+
     useEffect(() => {
 
         fetchUser(userAuth)
@@ -67,7 +74,7 @@ export default function MyNavbar(props) {
                         {user.isHost ?
                             <Button variant='transparent' onClick={() => navigate("/hostDashboard")}>Host dashboard</Button>
                             :
-                            <Button variant='transparent'>Le mie prenotazioni</Button>}
+                            <Button variant='transparent' onClick={() => navigate("/myBookings")}>Le mie prenotazioni</Button>}
                         <Dropdown>
                             <Dropdown.Toggle variant="transparent">
                                 <MdOutlineFormatListBulleted className='mx-2' />
@@ -152,10 +159,26 @@ export default function MyNavbar(props) {
                 </div>
             </Navbar>
             <div className='alert'>
-                {alert &&
+                {(alert && alert !== "prenotazione") &&
                     <Alert variant='primary'>
                         {alert}
                     </Alert>}
+                {alert === "prenotazione" &&
+                    <Alert show={show} variant="success">
+                        <Alert.Heading>Prenotazione effettuata!</Alert.Heading>
+                        <p>
+                            La tua prenotazione è stata effettuata, conferma il pagamento nell'area "Le mie prenotazioni"
+                        </p>
+                        <hr />
+                        <div className="d-flex justify-content-end">
+                            <Button variant='outline-success' className='mx-4' onClick={() => navigate("/myBookings")}>Conferma e paga!</Button>
+                            <Button onClick={() => handleAlert()} variant="outline-success">
+                                Continua a navigare
+                            </Button>
+                        </div>
+                    </Alert>}
+
+
             </div>
         </>
     )
