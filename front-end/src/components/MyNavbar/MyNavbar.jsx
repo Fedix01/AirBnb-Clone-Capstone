@@ -55,6 +55,12 @@ export default function MyNavbar(props) {
         navigate("/")
     }
 
+    const handleAlertPay = () => {
+        setShow(false);
+        setAlert("");
+        navigate("/myBookings")
+    }
+
     const handleAlert = () => {
         setShow(false);
         setAlert("")
@@ -171,7 +177,7 @@ export default function MyNavbar(props) {
                         </p>
                         <hr />
                         <div className="d-flex justify-content-end">
-                            <Button variant='outline-success' className='mx-4' onClick={() => navigate("/myBookings")}>Conferma e paga!</Button>
+                            <Button variant='outline-success' className='mx-4' onClick={() => handleAlertPay()}>Conferma e paga!</Button>
                             <Button onClick={() => handleAlert()} variant="outline-success">
                                 Continua a navigare
                             </Button>

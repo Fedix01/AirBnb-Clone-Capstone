@@ -7,24 +7,38 @@ import tripBackground from "../../assets/airbnb-trip-background.jpg";
 import { searchBarContext } from '../SearchBarProvider/SearchBarProvider';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import Spinner from 'react-bootstrap/Spinner';
 import { MdOutlineWavingHand } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../AuthContextProvider/AuthContextProvider';
+import { AlertContext } from '../AlertProvider/AlertProvider';
 
 export default function UserBookings() {
 
     const { setSearchBar } = useContext(searchBarContext);
 
-    const { setToken } = useContext(AuthContext);
+    const { setToken, token } = useContext(AuthContext);
+
+    const { setAlert } = useContext(AlertContext);
 
     const [data, setData] = useState([]);
 
+    const [spinner, setSpinner] = useState(false);
+
+    const [showModal, setShowModal] = useState(false);
+
+    const [currentUser, setCurrentUser] = useState({});
+
     const endpoint = `http://localhost:3001/api/insertion/userBooking/`;
+
+    const endpointPay = `http://localhost:3001/api/insertion/`
 
     const navigate = useNavigate();
 
     const getBookings = async (tok, currentUser) => {
         try {
+            setSpinner(true);
             const res = await fetch(`${endpoint}${currentUser._id}`, {
                 method: "GET",
                 headers: {
@@ -35,7 +49,37 @@ export default function UserBookings() {
             if (res.ok) {
                 const bookings = await res.json();
                 console.log(bookings);
+                setSpinner(false)
                 setData(bookings)
+            }
+        } catch (error) {
+            console.error(error);
+            setSpinner(false)
+        }
+    }
+
+    const handlePayment = async (bookingId, insertionId) => {
+        try {
+            const payload = {
+                "confirm": true
+            };
+            const res = await fetch(`${endpointPay}${insertionId}/booking/${bookingId}`, {
+                method: "PUT",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            });
+            if (res.ok) {
+                const confirm = await res.json();
+                console.log(confirm);
+                setShowModal(false);
+                setAlert("Pagamento effettuato con successo!");
+                setTimeout(() => {
+                    setAlert("")
+                }, 4000);
+                getBookings(token, currentUser)
             }
         } catch (error) {
             console.error(error)
@@ -61,8 +105,9 @@ export default function UserBookings() {
         const user = localStorage.getItem("user");
         const token = localStorage.getItem("token");
         if (token && user) {
-            setToken(token)
-            getBookings(token, JSON.parse(user))
+            setToken(token);
+            getBookings(token, JSON.parse(user));
+            setCurrentUser(JSON.parse(user))
         }
     }, [])
 
@@ -101,9 +146,14 @@ export default function UserBookings() {
                 </Row>
 
                 <Row className='mt-4'>
+                    {spinner &&
+                        <Spinner animation="border" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                        </Spinner>
+                    }
                     {data &&
                         data.map((booking) => (
-                            <Col md={6} key={booking._id} className='trip-container'>
+                            <Col md={5} key={booking._id} className='trip-container mx-2 my-2'>
                                 <>
                                     <Row>
 
@@ -123,13 +173,34 @@ export default function UserBookings() {
                                                 </div>
                                             </div>
                                             <div className='text-center mt-2'>
-                                                <Button variant='success'>Procedi al Pagamento</Button>
+                                                {booking.confirm ?
+                                                    <h5>Confermato!</h5>
+                                                    :
+                                                    <Button variant='success' onClick={() => setShowModal(true)}>Procedi al Pagamento</Button>
+                                                }
                                             </div>
                                         </Col>
                                         <Col md={6} className='p-0 d-flex justify-content-end'>
                                             <img src={booking.insertion.covers[0]} alt=''
                                                 className='img-fluid' />
                                         </Col>
+                                        <Modal
+                                            show={showModal} onHide={() => setShowModal(false)}
+                                            centered
+                                        >
+                                            <Modal.Header closeButton>
+
+                                            </Modal.Header>
+                                            <Modal.Body>
+                                                <h4>Conferma la prenotazione: Totale {booking.totalPrice} €</h4>
+
+                                            </Modal.Body>
+                                            <Modal.Footer>
+                                                <Button onClick={() => setShowModal(false)}>Chiudi</Button>
+                                                <Button variant='success' onClick={() => handlePayment(booking._id, booking.insertion._id)}>Paga</Button>
+                                            </Modal.Footer>
+                                        </Modal>
+
                                     </Row>
                                 </>
                             </Col>

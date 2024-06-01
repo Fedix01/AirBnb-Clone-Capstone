@@ -4,6 +4,7 @@ import { AuthContext } from '../AuthContextProvider/AuthContextProvider';
 import Container from 'react-bootstrap/Container';
 import MyNavbar from '../MyNavbar/MyNavbar';
 import Table from 'react-bootstrap/Table';
+import { GrStatusGoodSmall } from "react-icons/gr";
 
 export default function BookingInfo() {
 
@@ -41,6 +42,7 @@ export default function BookingInfo() {
                                 <th>Struttura</th>
                                 <th>Date</th>
                                 <th>Totale</th>
+                                <th>Stato</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -55,6 +57,18 @@ export default function BookingInfo() {
                                     <td>{el.insertion.title}</td>
                                     <td>{formatDate(el.checkInDate)} - {formatDate(el.checkOutDate)}</td>
                                     <td>{el.totalPrice} €</td>
+                                    <td className='d-flex align-items-center'>
+                                        {el.confirm ?
+                                            <>
+                                                <GrStatusGoodSmall className='me-2' style={{ fontSize: "20px", color: "green" }} />
+                                                <h6>Confermato!</h6>
+                                            </>
+                                            :
+                                            <>
+                                                <GrStatusGoodSmall className='me-2' style={{ fontSize: "20px", color: "yellow" }} />
+                                                <h6>In sospeso</h6>
+                                            </>
+                                        }</td>
                                 </tr>
 
                             ))}

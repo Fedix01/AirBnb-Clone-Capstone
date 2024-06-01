@@ -62,7 +62,7 @@ export default function BookingForm({ price, id }) {
     }
 
     const calculateTotalPrice = () => {
-        return partialPrice + servicesPrice
+        return (partialPrice + servicesPrice).toFixed(2)
     }
 
 
@@ -170,11 +170,13 @@ export default function BookingForm({ price, id }) {
                         <div>
                             <h6>CHECK-IN</h6>
                             <input type="date"
+                                required
                                 onChange={(e) => setFormData({ ...formData, checkInDate: e.target.value })} />
                         </div>
                         <div>
                             <h6>CHECK-OUT</h6>
                             <input type="date"
+                                required
                                 onChange={(e) => setFormData({ ...formData, checkOutDate: e.target.value })} />
                         </div>
                     </div>
@@ -182,9 +184,9 @@ export default function BookingForm({ price, id }) {
                     <div className='guest'>
                         <h6>OSPITI</h6>
                         <Form.Select
+                            required
                             value={formData.guestNum}
                             onChange={handleSelectChange}>
-                            <option>Inserisci il numero di ospiti</option>
                             <option value="1">Uno</option>
                             <option value="2">Due</option>
                             <option value="3">Tre</option>
@@ -201,11 +203,11 @@ export default function BookingForm({ price, id }) {
                 <div className='costs mt-4 py-4'>
                     <div className='d-flex justify-content-between align-items-center my-1 p-1'>
                         <h6>{price} € x {totalNights}</h6>
-                        <h6>{partialPrice} €</h6>
+                        <h6>{partialPrice.toFixed(2)} €</h6>
                     </div>
                     <div className='d-flex justify-content-between align-items-center my-1 p-1'>
                         <h6 onClick={() => setShowModal(true)}>Costi del servizio Airbnb</h6>
-                        <h6>{servicesPrice} €</h6>
+                        <h6>{servicesPrice.toFixed(2)} €</h6>
                     </div>
 
 
