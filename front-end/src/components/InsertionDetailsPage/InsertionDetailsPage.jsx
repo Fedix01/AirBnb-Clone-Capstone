@@ -150,6 +150,36 @@ export default function InsertionDetailsPage(props) {
                     </div>
                 </Col>
             </Row>
+            <hr />
+            <Row>
+                <Col md={12}>
+                    <h3>Informazioni sull'Host</h3>
+                </Col>
+            </Row>
+            <Row>
+                <Col md={6}>
+                    <div className='host-container d-flex flex-column justify-content-center align-items-center'>
+
+                        <img src={hostAvatar}
+                            style={{ width: "50px", height: "50px", borderRadius: "20px" }}
+                            alt="" />
+                        <h3>{hostName}</h3>
+                        <h5>{hostType}</h5>
+
+                    </div>
+
+                </Col>
+                <Col md={6}>
+                    <h4>{hostName} è un {hostType}</h4>
+                    <h6 style={{ fontWeight: "400" }}>
+                        {hostType === "Host professionista" ?
+                            "Host professionista (commerciante): Qualsiasi parte che affitti una o più strutture ricettive per scopi connessi alla propria attività commerciale o professione principale."
+                            :
+                            "Host privato (non commerciante): Qualsiasi parte che affitti una o più strutture ricettive per scopi non connessi alla propria attività commerciale o professione principale."
+                        }
+                    </h6>
+                </Col>
+            </Row>
         </div>
     )
 }
