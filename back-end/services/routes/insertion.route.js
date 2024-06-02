@@ -326,11 +326,14 @@ insertionApiRoute.get("/:id/booking", authMiddleware, async (req, res, next) => 
     try {
         const allBookings = await Booking.find({
             insertion: req.params.id,
-            user: req.user.id
         }).populate({
             path: "user",
             model: "User",
             select: ["name", "surname", "avatar"]
+        }).populate({
+            path: "insertion",
+            model: "Insertion",
+            select: ["title", "_id"]
         });
         res.send(allBookings);
     } catch (error) {

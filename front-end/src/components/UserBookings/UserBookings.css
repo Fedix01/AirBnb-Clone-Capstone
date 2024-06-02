@@ -38,3 +38,16 @@
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
 }
+
+.row-trip {
+    position: relative;
+}
+
+.trip-container .delete-btn {
+    position: absolute;
+    right: 1%;
+    top: 1%;
+    font-size: 40px;
+    color: white;
+    padding: 0;
+}

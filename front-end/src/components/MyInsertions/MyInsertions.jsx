@@ -8,6 +8,7 @@ import { AlertContext } from '../AlertProvider/AlertProvider';
 import emptyLocation from "../../assets/empty.png";
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
+import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from 'react-router-dom';
 import BookingInfo from '../BookingInfo/BookingInfo';
 
@@ -24,6 +25,8 @@ export default function MyInsertions({ setMod, setKey }) {
     const navigate = useNavigate();
 
     const { setAlert } = useContext(AlertContext);
+
+    const [showModal, setShowModal] = useState(false);
 
     const user = JSON.parse(localStorage.getItem("user"));
     const token = localStorage.getItem("token");
@@ -56,8 +59,13 @@ export default function MyInsertions({ setMod, setKey }) {
         setKey("addNew")
     }
 
-    const handleViewBookings = (bookings) => {
-        navigate("/bookingInfo", { state: { bookings } })
+    const handleViewBookings = (insertionId) => {
+        navigate("/bookingInfo", { state: { insertionId } })
+    }
+
+    const handleDelete = async (id) => {
+        setShowModal(false);
+        deleteInsertion(id)
     }
 
     const deleteInsertion = async (id) => {
@@ -131,7 +139,7 @@ export default function MyInsertions({ setMod, setKey }) {
                                 <td>{el.bookings.length !== 0 ? (
                                     <>
                                         <h6>{el.bookings.length} prenotazioni</h6>
-                                        <Button variant='transparent' className='bookings' onClick={() => handleViewBookings(el.bookings)}>Visualizza prenotazioni</Button>
+                                        <Button variant='transparent' className='bookings' onClick={() => handleViewBookings(el._id)}>Visualizza prenotazioni</Button>
 
                                     </>
                                 )
@@ -141,9 +149,25 @@ export default function MyInsertions({ setMod, setKey }) {
                                     <Button variant='transparent' onClick={() => handleMod(el._id)}>
                                         <GoPencil />
                                     </Button>
-                                    <Button variant='transparent' onClick={() => deleteInsertion(el._id)}>
+                                    <Button variant='transparent' onClick={() => setShowModal(true)}>
                                         <FaRegTrashAlt />
                                     </Button>
+                                    <Modal
+                                        show={showModal} onHide={() => setShowModal(false)}
+                                        centered
+                                    >
+                                        <Modal.Header closeButton>
+
+                                        </Modal.Header>
+                                        <Modal.Body>
+                                            <h4>Eliminare la struttura {el.title} ?</h4>
+
+                                        </Modal.Body>
+                                        <Modal.Footer>
+                                            <Button onClick={() => setShowModal(false)}>Chiudi</Button>
+                                            <Button variant='danger' onClick={() => handleDelete(el._id)}>Elimina</Button>
+                                        </Modal.Footer>
+                                    </Modal>
                                 </td>
                             </tr>
                         ))}

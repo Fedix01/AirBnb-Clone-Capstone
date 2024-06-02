@@ -9,6 +9,7 @@ import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Spinner from 'react-bootstrap/Spinner';
+import { TiDelete } from "react-icons/ti";
 import { MdOutlineWavingHand } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../AuthContextProvider/AuthContextProvider';
@@ -28,11 +29,13 @@ export default function UserBookings() {
 
     const [showModal, setShowModal] = useState(false);
 
+    const [showModalDelete, setShowModalDelete] = useState(false);
+
     const [currentUser, setCurrentUser] = useState({});
 
     const endpoint = `http://localhost:3001/api/insertion/userBooking/`;
 
-    const endpointPay = `http://localhost:3001/api/insertion/`
+    const endpointGeneric = `http://localhost:3001/api/insertion/`;
 
     const navigate = useNavigate();
 
@@ -63,7 +66,7 @@ export default function UserBookings() {
             const payload = {
                 "confirm": true
             };
-            const res = await fetch(`${endpointPay}${insertionId}/booking/${bookingId}`, {
+            const res = await fetch(`${endpointGeneric}${insertionId}/booking/${bookingId}`, {
                 method: "PUT",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -83,6 +86,33 @@ export default function UserBookings() {
             }
         } catch (error) {
             console.error(error)
+        }
+    }
+
+    const deleteBooking = async (bookingId, insertionId) => {
+        try {
+            const res = await fetch(`${endpointGeneric}${insertionId}/booking/${bookingId}`, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
+            });
+            if (res.ok) {
+                const deleted = await res.json();
+                console.log(deleted);
+                setAlert("Prenotazione eliminata correttamente!");
+                setTimeout(() => {
+                    setAlert("")
+                }, 4000);
+                getBookings(token, currentUser)
+            }
+        } catch (error) {
+            console.error(error);
+            setAlert("Errore durante l'eliminazione della prenotazione");
+            setTimeout(() => {
+                setAlert("")
+            }, 4000);
         }
     }
 
@@ -155,9 +185,28 @@ export default function UserBookings() {
                         data.map((booking) => (
                             <Col md={5} key={booking._id} className='trip-container mx-2 my-2'>
                                 <>
-                                    <Row>
+                                    <Row className='row-trip'>
 
                                         <Col md={6} className='p-4'>
+                                            <Button variant='transparent' className='delete-btn' onClick={() => setShowModalDelete(true)}>
+                                                <TiDelete />
+                                            </Button>
+                                            <Modal
+                                                show={showModalDelete} onHide={() => setShowModalDelete(false)}
+                                                centered
+                                            >
+                                                <Modal.Header closeButton>
+
+                                                </Modal.Header>
+                                                <Modal.Body>
+                                                    <h4>Eliminare la prenotazione ?</h4>
+
+                                                </Modal.Body>
+                                                <Modal.Footer>
+                                                    <Button onClick={() => setShowModalDelete(false)}>Chiudi</Button>
+                                                    <Button variant='danger' onClick={() => deleteBooking(booking._id, booking.insertion._id)}>Elimina</Button>
+                                                </Modal.Footer>
+                                            </Modal>
                                             <div>
                                                 <h4>{booking.insertion.title}</h4>
                                                 <h5>{booking.insertion.place}</h5>
