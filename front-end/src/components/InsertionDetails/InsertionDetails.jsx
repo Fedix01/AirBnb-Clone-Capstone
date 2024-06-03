@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import InsertionDetailsPage from '../InsertionDetailsPage/InsertionDetailsPage';
 import MyNavbar from '../MyNavbar/MyNavbar';
 import Container from 'react-bootstrap/Container';
 import emptyAvatar from "../../assets/avatar.png";
+import { searchBarContext } from '../SearchBarProvider/SearchBarProvider';
+import MyFooter from '../MyFooter/MyFooter';
 
 
 export default function InsertionDetails() {
@@ -11,6 +13,8 @@ export default function InsertionDetails() {
     const params = useParams();
 
     const [data, setData] = useState({});
+
+    const { setSearchBar } = useContext(searchBarContext);
 
     const endpoint = `http://localhost:3001/api/insertion/${params.id}`;
 
@@ -36,6 +40,10 @@ export default function InsertionDetails() {
         getfromApi()
     }, [])
 
+    useEffect(() => {
+        setSearchBar(false);
+    }, [])
+
 
     return (
         <>
@@ -58,11 +66,19 @@ export default function InsertionDetails() {
                         hostAvatar={data.user ? data.user.avatar : emptyAvatar}
                         hostName={data.user ? data.user.name : "Nessun nome"}
                         hostSurname={data.user ? data.user.surname : "Nessun cognome"}
+                        insertions={data.user ? data.user.insertions : "0"}
+                        hostCreatedAt={data.user ? data.user.createdAt : ""}
+                        hostBirthday={data.user ? data.user.birthday : ""}
+                        checkInRule={data.houseRules ? data.houseRules.checkInRule : ""}
+                        checkOutRule={data.houseRules ? data.houseRules.checkOutRule : ""}
+                        petsRule={data.houseRules ? data.houseRules.petsRule : ""}
                         reviewUpdate={reviewUpdate}
                     />
                 }
 
             </Container>
+
+            <MyFooter />
         </>
 
     )

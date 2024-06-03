@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
+import emptyAvatar from "../../assets/avatar.png";
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
@@ -130,7 +131,7 @@ export default function ReviewForm({ getfromApi, showAll, modify, reviewUpdate }
         <>
             <div className='d-flex align-items-center'>
                 <div className='me-3'>
-                    <img src={user.avatar}
+                    <img src={user.avatar ? user.avatar : emptyAvatar}
                         alt=""
                         style={{
                             width: "40px",

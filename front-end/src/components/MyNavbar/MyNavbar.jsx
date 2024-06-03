@@ -149,6 +149,7 @@ export default function MyNavbar(props) {
                                 <p>Guests</p>
                                 <input type="number" placeholder="Add guests"
                                     value={guestNum}
+                                    style={{ width: "50px" }}
                                     onChange={(e) => setSearch({ ...searchForm, guestNum: e.target.value })} />
                                 <span>
                                     <Button variant='transparent' type='submit'>

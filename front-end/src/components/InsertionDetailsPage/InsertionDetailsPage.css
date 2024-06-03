@@ -53,10 +53,14 @@
 }
 
 .host-container {
-    padding: 10px;
+    padding: 15px;
     border: 1px solid lightgray;
     border-radius: 20px;
     -webkit-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.26);
     -moz-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.26);
     box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.26);
+}
+
+.host-container .ins-tot {
+    border-bottom: 1px solid gray;
 }

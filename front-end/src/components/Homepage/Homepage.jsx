@@ -4,6 +4,7 @@ import Category from '../Category/Category'
 import AllInsertions from '../AllInsertions/AllInsertions'
 import { searchBarContext } from '../SearchBarProvider/SearchBarProvider';
 import { AlertContext } from '../AlertProvider/AlertProvider';
+import MyFooter from '../MyFooter/MyFooter';
 
 export default function Homepage() {
 
@@ -143,6 +144,7 @@ export default function Homepage() {
                 loading={loading}
                 stopLoad={stopLoad}
                 spinner={spinner} />
+            <MyFooter />
         </>
     )
 }

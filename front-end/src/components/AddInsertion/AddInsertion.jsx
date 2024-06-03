@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -31,6 +31,10 @@ export default function AddInsertion({ mod, setKey, setMod }) {
         roomDetails: "",
         bathDetails: "",
         other: "",
+        checkInStart: "",
+        checkInEnd: "",
+        checkOut: "",
+        pets: false
     })
 
     const handleSubmit = (event) => {
@@ -49,6 +53,7 @@ export default function AddInsertion({ mod, setKey, setMod }) {
         }
     };
 
+
     const createInsertion = async () => {
         try {
             const payload = {
@@ -63,6 +68,11 @@ export default function AddInsertion({ mod, setKey, setMod }) {
                     "roomDetails": formData.roomDetails,
                     "bathDetails": formData.bathDetails,
                     "other": formData.other
+                },
+                "houseRules": {
+                    "checkInRule": `Dalle ${formData.checkInStart} alle ${formData.checkInEnd}`,
+                    "checkOutRule": formData.checkOut,
+                    "petsRule": formData.pets
                 }
             };
             const res = await fetch(endpoint, {
@@ -119,6 +129,11 @@ export default function AddInsertion({ mod, setKey, setMod }) {
                     "roomDetails": formData.roomDetails,
                     "bathDetails": formData.bathDetails,
                     "other": formData.other
+                },
+                "houseRules": {
+                    "checkInRule": `Dalle ${formData.checkInStart} alle ${formData.checkInEnd}`,
+                    "checkOutRule": formData.checkOut,
+                    "petsRule": formData.pets
                 }
             };
             const res = await fetch(`${endpoint}/${id}`, {
@@ -265,7 +280,7 @@ export default function AddInsertion({ mod, setKey, setMod }) {
                             </Form.Group>
 
                             <Form.Group controlId="price" className='p-2'>
-                                <Form.Label>Prezzo</Form.Label>
+                                <Form.Label>Prezzo per notte</Form.Label>
                                 <div className='d-flex'>
                                     <Form.Control
                                         required
@@ -304,6 +319,7 @@ export default function AddInsertion({ mod, setKey, setMod }) {
                             <Form.Group controlId="room" className='p-2'>
                                 <MdOutlineBedroomChild />
                                 <Form.Control
+                                    required
                                     type="text"
                                     value={formData.roomDetails}
                                     onChange={(e) => setFormData({ ...formData, roomDetails: e.target.value })}
@@ -315,6 +331,7 @@ export default function AddInsertion({ mod, setKey, setMod }) {
                             <Form.Group controlId="bath" className='p-2'>
                                 <MdOutlineBathroom />
                                 <Form.Control
+                                    required
                                     type="text"
                                     value={formData.bathDetails}
                                     onChange={(e) => setFormData({ ...formData, bathDetails: e.target.value })}
@@ -329,6 +346,7 @@ export default function AddInsertion({ mod, setKey, setMod }) {
                             <Form.Group controlId="other" className='p-2'>
                                 <MdOutlineOtherHouses />
                                 <Form.Control
+                                    required
                                     type="text"
                                     value={formData.other}
                                     onChange={(e) => setFormData({ ...formData, other: e.target.value })}
@@ -340,12 +358,69 @@ export default function AddInsertion({ mod, setKey, setMod }) {
                         </Col>
 
                     </Row>
+                    <Row>
+                        <h3>Regole della casa</h3>
+
+                        <Col md={6}>
+
+                            <Form.Group className='p-2'>
+                                <Form.Label>Inserisci l'orario di check-in da... a...</Form.Label>
+                                <Form.Control
+                                    required
+                                    type="time"
+                                    value={formData.checkInStart}
+                                    onChange={(e) => setFormData({ ...formData, checkInStart: e.target.value })}
+                                    placeholder='Inserisci data Check-in di inizio'
+                                />
+
+                            </Form.Group>
+                        </Col>
+                        <Col md={6} className='mt-4'>
+                            <Form.Group className='p-2'>
+                                <Form.Control
+                                    required
+                                    type="time"
+                                    value={formData.checkInEnd}
+                                    onChange={(e) => setFormData({ ...formData, checkInEnd: e.target.value })}
+                                    placeholder='Inserisci data Check-in di fine'
+                                />
+
+                            </Form.Group>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col md={6}>
+
+                            <Form.Group className='p-2'>
+                                <Form.Label>Inserisci l'orario di check-out</Form.Label>
+                                <Form.Control
+                                    required
+                                    type="time"
+                                    value={formData.checkOut}
+                                    onChange={(e) => setFormData({ ...formData, checkOut: e.target.value })}
+                                    placeholder='Inserisci data di limite del Check-out'
+                                />
+
+                            </Form.Group>
+                        </Col>
+                        <Col md={6}>
+                            <Form.Group className='p-2'>
+                                <Form.Label>Inserisci la possibilità di introdurre animali</Form.Label>
+                                <Form.Check
+                                    value={formData.pets}
+                                    onChange={(e) => setFormData({ ...formData, pets: e.target.checked })}
+                                />
+
+                            </Form.Group>
+
+                        </Col>
+                    </Row>
                     {mod ?
                         <>
                             <div className='mt-3'>
                                 <Button variant='primary' type='submit'>Modifica inserzione</Button>
                                 <span className='mx-2'>oppure</span>
-                                <Button variant='outline-secondary' onClick={() => setMod("")}>Aggiungi nuova nserzione</Button>
+                                <Button variant='outline-secondary' onClick={() => setMod("")}>Aggiungi nuova inserzione</Button>
                             </div>
                         </>
                         :

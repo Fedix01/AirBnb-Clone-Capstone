@@ -15,8 +15,9 @@ import ReviewsArea from '../ReviewsArea/ReviewsArea';
 export default function InsertionDetailsPage(props) {
 
     const { id, title, address, category, covers, details,
-        hostType, place, price, services,
-        hostAvatar, hostName, hostSurname, reviews, reviewUpdate } = props;
+        hostType, place, price, services, hostBirthday,
+        hostAvatar, hostName, hostSurname, reviews, reviewUpdate,
+        insertions, hostCreatedAt, checkInRule, checkOutRule, petsRule } = props;
 
     const [average, setAverage] = useState(0);
 
@@ -37,6 +38,28 @@ export default function InsertionDetailsPage(props) {
         setAverage(result);
 
     };
+
+    const convertDate = (dateString) => {
+        const date = new Date(dateString);
+
+        const month = date.toLocaleString('default', { month: 'long' });
+        const year = date.getFullYear();
+        return (
+            <h5>{month} {year}</h5>
+        )
+    }
+
+    const freeCancDate = (daysAhead) => {
+        const today = new Date();
+        const futureDate = new Date(today);
+        futureDate.setDate(today.getDate() + daysAhead);
+        const day = futureDate.toLocaleString('default', { day: 'numeric' })
+        const month = futureDate.toLocaleString('default', { month: 'short' })
+        return (
+            <b>{day} {month}</b>
+        )
+    }
+
 
     const handleClick = () => {
         ref.current?.scrollIntoView({ behavior: "smooth" })
@@ -80,19 +103,19 @@ export default function InsertionDetailsPage(props) {
                 </Col>
                 <Col md={6}>
                     <div className='d-flex mb-2'>
-                        <img src={covers ? covers[1] : emptyLocation} className='me-2'
+                        <img src={covers ? (covers[1] ? covers[1] : emptyLocation) : emptyLocation} className='me-2'
                             alt=""
                             style={{ height: "210px", width: "270px" }} />
-                        <img src={covers ? covers[2] : emptyLocation}
+                        <img src={covers ? (covers[2] ? covers[2] : emptyLocation) : emptyLocation}
                             alt=""
                             style={{ height: "210px", width: "270px", borderTopRightRadius: "15px" }} />
                     </div>
                     <div className='d-flex'>
-                        <img src={covers ? covers[3] : emptyLocation}
+                        <img src={covers ? (covers[3] ? covers[3] : emptyLocation) : emptyLocation}
                             className='me-2'
                             style={{ height: "210px", width: "270px" }}
                             alt="" />
-                        <img src={covers ? covers[4] : emptyLocation}
+                        <img src={covers ? (covers[4] ? covers[4] : emptyLocation) : emptyLocation}
                             style={{ height: "210px", width: "270px", borderBottomRightRadius: "15px" }}
                             alt="" />
                     </div>
@@ -150,34 +173,77 @@ export default function InsertionDetailsPage(props) {
                     </div>
                 </Col>
             </Row>
-            <hr />
+            <hr className='my-5' />
             <Row>
                 <Col md={12}>
                     <h3>Informazioni sull'Host</h3>
                 </Col>
             </Row>
-            <Row>
-                <Col md={6}>
-                    <div className='host-container d-flex flex-column justify-content-center align-items-center'>
+            <Row className='mt-3'>
+                <Col md={4}>
+                    <div className='host-container'>
 
-                        <img src={hostAvatar}
-                            style={{ width: "50px", height: "50px", borderRadius: "20px" }}
-                            alt="" />
-                        <h3>{hostName}</h3>
-                        <h5>{hostType}</h5>
+                        <Row>
+                            <Col md={8}>
+                                <div className='d-flex flex-column justify-content-center align-items-center'>
+                                    <img src={hostAvatar}
+                                        style={{ width: "70px", height: "70px", borderRadius: "50%" }}
+                                        className='my-2'
+                                        alt="" />
+                                    <h3 className='my-1'>{hostName}</h3>
+                                    <h5>{hostType}</h5>
 
+                                </div>
+                            </Col>
+                            <Col md={4}>
+                                <div className='d-flex flex-column justify-content-center align-items-center'>
+                                    <div className='ins-tot'>
+                                        <h6>Inserzioni totali</h6>
+                                        <h4>{insertions.length}</h4>
+                                    </div>
+                                    <div className='mt-2'>
+                                        <h6>Host da</h6>
+                                        {convertDate(hostCreatedAt)}
+                                    </div>
+                                </div>
+                            </Col>
+                        </Row>
                     </div>
 
                 </Col>
+                <Col md={8}>
+                    <div className='mx-3 p-2'>
+                        <h4>{hostName} è un {hostType}</h4>
+                        <h6 style={{ fontWeight: "400" }}>
+                            {hostType === "Host professionista" ?
+                                "Host professionista (commerciante): Qualsiasi parte che affitti una o più strutture ricettive per scopi connessi alla propria attività commerciale o professione principale."
+                                :
+                                "Host privato (non commerciante): Qualsiasi parte che affitti una o più strutture ricettive per scopi non connessi alla propria attività commerciale o professione principale."
+                            }
+                        </h6>
+                        <h6 className='my-3'>Data di nascita di {hostName} {hostSurname}: {hostBirthday}</h6>
+                    </div>
+                </Col>
+            </Row>
+            <hr className='my-5' />
+            <Row>
+                <Col md={12}>
+                    <h2>Da sapere</h2>
+                </Col>
+            </Row>
+            <Row>
                 <Col md={6}>
-                    <h4>{hostName} è un {hostType}</h4>
-                    <h6 style={{ fontWeight: "400" }}>
-                        {hostType === "Host professionista" ?
-                            "Host professionista (commerciante): Qualsiasi parte che affitti una o più strutture ricettive per scopi connessi alla propria attività commerciale o professione principale."
-                            :
-                            "Host privato (non commerciante): Qualsiasi parte che affitti una o più strutture ricettive per scopi non connessi alla propria attività commerciale o professione principale."
-                        }
-                    </h6>
+                    <h5 className='my-2'>Regole della casa</h5>
+                    <h6 className='p-2'>Check-In: <b>{checkInRule}</b></h6>
+                    <h6 className='p-2'>Check-Out entro le ore: <b>{checkOutRule}</b></h6>
+                    <h6 className='p-2'>Animali domestici: <b>{petsRule ? "Ammessi" : "NON ammessi"}</b></h6>
+
+                </Col>
+
+                <Col md={6}>
+                    <h5 className='my-2'>Termini di cancellazione</h5>
+                    <h6 className='p-2'>Cancellazione gratuita entro il giorno: {freeCancDate(7)}</h6>
+                    <h6 className='p-2'>Leggi i termini di cancellazione completi dell'host, che si applicano anche in caso di malattia o disagi legati alla pandemia di COVID-19.</h6>
                 </Col>
             </Row>
         </div>
