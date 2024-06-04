@@ -20,7 +20,7 @@ export default function AllInsertions({ data, setPage, loading, stopLoad, spinne
                 }
                 {data &&
                     data.map((el) => (
-                        <Col md={2} key={el._id}>
+                        <Col md={2} key={el._id} style={{ position: "relative" }}>
 
                             <SingleInsertion
                                 key={el._id}
@@ -29,7 +29,9 @@ export default function AllInsertions({ data, setPage, loading, stopLoad, spinne
                                 covers={el.covers}
                                 price={el.price}
                                 place={el.place}
-                                reviews={el.reviews} />
+                                reviews={el.reviews}
+                                hostName={el.user.name}
+                                hostSurname={el.user.surname} />
                         </Col>
                     ))}
             </Row>

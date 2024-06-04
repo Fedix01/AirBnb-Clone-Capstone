@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import Card from 'react-bootstrap/Card';
 import Carousel from 'react-bootstrap/Carousel';
 import emptyLocation from "../../assets/empty.png";
 import { FaStar } from "react-icons/fa";
+import { FaRegHeart } from "react-icons/fa";
 import './SingleInsertion.css';
 import { useNavigate } from 'react-router-dom';
 export default function SingleInsertion(props) {
 
-    const { id, covers, price, place, hostType, reviews } = props;
+    const { id, covers, price, place, hostType, reviews, hostName, hostSurname } = props;
 
     const navigate = useNavigate();
 
@@ -29,6 +29,19 @@ export default function SingleInsertion(props) {
         setRevAverage(result.toFixed(2));
 
     };
+
+    const dateIns = () => {
+        const today = new Date();
+        const firstDay = today.toLocaleString('default', { day: 'numeric' });
+        const firstMonth = today.toLocaleString('default', { month: 'short' })
+        const futureDate = new Date(today);
+        futureDate.setDate(today.getDate() + 4);
+        const lastDay = futureDate.toLocaleString('default', { day: 'numeric' })
+        const lastMonth = futureDate.toLocaleString('default', { month: 'short' })
+        return (
+            <h6>{firstDay} {firstMonth} - {lastDay} {lastMonth}</h6>
+        )
+    }
 
     useEffect(() => {
         calculateAverage(reviews)
@@ -68,13 +81,21 @@ export default function SingleInsertion(props) {
                     <h5 onClick={() => navigate(`/insertionDetails/${id}`)}
                         style={{ cursor: "pointer" }}
                     >{place}</h5>
-                    <h6>{hostType}</h6>
-                    <h6>25 Maggio - 2 Giugno</h6>
+                    {dateIns()}
+                    <h6>{hostType}: {hostName} {hostSurname}</h6>
                     <h5><b>{price} €</b> notte</h5>
                 </div>
                 <div className='d-flex me-4'>
-                    <FaStar />
+                    <FaStar className='me-1' />
                     <h5>{revAverage}</h5>
+                </div>
+                {revAverage >= 4 &&
+                    <div className='upper-text'>
+                        <h5 className='m-0'>Amato dagli ospiti</h5>
+                    </div>
+                }
+                <div className='add-favorites'>
+                    <FaRegHeart />
                 </div>
             </div>
         </>

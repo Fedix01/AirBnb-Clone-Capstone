@@ -9,6 +9,8 @@ import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Spinner from 'react-bootstrap/Spinner';
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
 import { TiDelete } from "react-icons/ti";
 import { MdOutlineWavingHand } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
@@ -39,6 +41,8 @@ export default function UserBookings() {
     const endpoint = `http://localhost:3001/api/insertion/userBooking/`;
 
     const endpointGeneric = `http://localhost:3001/api/insertion/`;
+
+    const [key, setKey] = useState('trips');
 
     const navigate = useNavigate();
 
@@ -151,114 +155,129 @@ export default function UserBookings() {
             <MyNavbar />
             <Container>
 
-                <Row>
-                    <Col md={12}>
-                        <h2>Viaggi</h2>
-                    </Col>
-                </Row>
-
-                <Row className='trips-box mt-2'>
-                    <Col md={6}>
-                        <div className='d-flex flex-column trips-text p-4 my-2'>
-                            <MdOutlineWavingHand />
-                            <h5 className='mt-3'>Nessun viaggio prenotato... per ora!</h5>
-                            <p>È giusto il momento di rispolverare i bagagli e iniziare a programmare la tua prossima avventura.</p>
-                            <Button onClick={() => navigate("/")}>Inizia a cercare</Button>
-                        </div>
-                    </Col>
-                    <Col md={6} className='img-cont'>
-                        <img src={tripBackground} alt=""
-                            className='img-fluid trip-image'
-                        />
-                    </Col>
-                </Row>
-
-                <Row>
-                    <Col md={12} className='mt-5'>
-                        <h2>Le mie prenotazioni</h2>
-                    </Col>
-                </Row>
-
-                <Row className='mt-4'>
-                    {spinner &&
-                        <Spinner animation="border" role="status">
-                            <span className="visually-hidden">Loading...</span>
-                        </Spinner>
-                    }
-                    {data &&
-                        data.map((booking) => (
-                            <Col md={5} key={booking._id} className='trip-container mx-2 my-2'>
-                                <>
-                                    <Row className='row-trip'>
-
-                                        <Col md={6} className='p-4'>
-                                            <Button variant='transparent' className='delete-btn' onClick={() => setShowModalDelete(true)}>
-                                                <TiDelete />
-                                            </Button>
-                                            <Modal
-                                                show={showModalDelete} onHide={() => setShowModalDelete(false)}
-                                                centered
-                                            >
-                                                <Modal.Header closeButton>
-
-                                                </Modal.Header>
-                                                <Modal.Body>
-                                                    <h4>Eliminare la prenotazione ?</h4>
-
-                                                </Modal.Body>
-                                                <Modal.Footer>
-                                                    <Button onClick={() => setShowModalDelete(false)}>Chiudi</Button>
-                                                    <Button variant='danger' onClick={() => deleteBooking(booking._id, booking.insertion._id)}>Elimina</Button>
-                                                </Modal.Footer>
-                                            </Modal>
-                                            <div>
-                                                <h4>{booking.insertion.title}</h4>
-                                                <h5>{booking.insertion.place}</h5>
-                                            </div>
-                                            <hr />
-                                            <div className='d-flex align-items-center'>
-                                                <div className='mx-3'>
-                                                    Arrivo: {dateString(booking.checkInDate)}
-                                                    Partenza: {dateString(booking.checkOutDate)}
-                                                </div>
-                                                <div className='mx-3'>
-                                                    <h6>{booking.insertion.address}</h6>
-                                                </div>
-                                            </div>
-                                            <div className='text-center mt-2'>
-                                                {booking.confirm ?
-                                                    <h5>Confermato!</h5>
-                                                    :
-                                                    <Button variant='success' onClick={() => setShowModal(true)}>Procedi al Pagamento</Button>
-                                                }
-                                            </div>
-                                        </Col>
-                                        <Col md={6} className='p-0 d-flex justify-content-end'>
-                                            <img src={booking.insertion.covers[0]} alt=''
-                                                className='img-fluid' />
-                                        </Col>
-                                        <Modal
-                                            show={showModal} onHide={() => setShowModal(false)}
-                                            centered
-                                        >
-                                            <Modal.Header closeButton>
-
-                                            </Modal.Header>
-                                            <Modal.Body>
-                                                <h4>Conferma la prenotazione: Totale {booking.totalPrice} €</h4>
-
-                                            </Modal.Body>
-                                            <Modal.Footer>
-                                                <Button onClick={() => setShowModal(false)}>Chiudi</Button>
-                                                <Button variant='success' onClick={() => handlePayment(booking._id, booking.insertion._id)}>Paga</Button>
-                                            </Modal.Footer>
-                                        </Modal>
-
-                                    </Row>
-                                </>
+                <Tabs
+                    id="controlled-tab-example"
+                    activeKey={key}
+                    onSelect={(k) => setKey(k)}
+                    className="mb-3"
+                >
+                    <Tab eventKey="trips" title="Viaggi">
+                        <Row>
+                            <Col md={12}>
+                                <h2>Viaggi</h2>
                             </Col>
-                        ))}
-                </Row>
+                        </Row>
+
+                        <Row className='trips-box mt-2'>
+                            <Col md={6}>
+                                <div className='d-flex flex-column trips-text p-4 my-2'>
+                                    <MdOutlineWavingHand />
+                                    <h5 className='mt-3'>Nessun viaggio prenotato... per ora!</h5>
+                                    <p>È giusto il momento di rispolverare i bagagli e iniziare a programmare la tua prossima avventura.</p>
+                                    <Button onClick={() => navigate("/")}>Inizia a cercare</Button>
+                                </div>
+                            </Col>
+                            <Col md={6} className='img-cont'>
+                                <img src={tripBackground} alt=""
+                                    className='img-fluid trip-image'
+                                />
+                            </Col>
+                        </Row>
+
+                        <Row>
+                            <Col md={12} className='mt-5'>
+                                <h2>Le mie prenotazioni</h2>
+                            </Col>
+                        </Row>
+
+                        <Row className='mt-4'>
+                            {spinner &&
+                                <Spinner animation="border" role="status">
+                                    <span className="visually-hidden">Loading...</span>
+                                </Spinner>
+                            }
+                            {data &&
+                                data.map((booking) => (
+                                    <Col md={5} key={booking._id} className='trip-container mx-2 my-2'>
+                                        <>
+                                            <Row className='row-trip'>
+
+                                                <Col md={6} className='p-4'>
+                                                    <Button variant='transparent' className='delete-btn' onClick={() => setShowModalDelete(true)}>
+                                                        <TiDelete />
+                                                    </Button>
+                                                    <Modal
+                                                        show={showModalDelete} onHide={() => setShowModalDelete(false)}
+                                                        centered
+                                                    >
+                                                        <Modal.Header closeButton>
+
+                                                        </Modal.Header>
+                                                        <Modal.Body>
+                                                            <h4>Eliminare la prenotazione ?</h4>
+
+                                                        </Modal.Body>
+                                                        <Modal.Footer>
+                                                            <Button onClick={() => setShowModalDelete(false)}>Chiudi</Button>
+                                                            <Button variant='danger' onClick={() => deleteBooking(booking._id, booking.insertion._id)}>Elimina</Button>
+                                                        </Modal.Footer>
+                                                    </Modal>
+                                                    <div>
+                                                        <h4>{booking.insertion.title}</h4>
+                                                        <h5>{booking.insertion.place}</h5>
+                                                    </div>
+                                                    <hr />
+                                                    <div className='d-flex align-items-center'>
+                                                        <div className='mx-3'>
+                                                            Arrivo: {dateString(booking.checkInDate)}
+                                                            Partenza: {dateString(booking.checkOutDate)}
+                                                        </div>
+                                                        <div className='mx-3'>
+                                                            <h6>{booking.insertion.address}</h6>
+                                                        </div>
+                                                    </div>
+                                                    <div className='text-center mt-2'>
+                                                        {booking.confirm ?
+                                                            <h5>Confermato!</h5>
+                                                            :
+                                                            <Button variant='success' onClick={() => setShowModal(true)}>Procedi al Pagamento</Button>
+                                                        }
+                                                    </div>
+                                                </Col>
+                                                <Col md={6} className='p-0 d-flex justify-content-end'>
+                                                    <img src={booking.insertion.covers[0]} alt=''
+                                                        className='img-fluid' />
+                                                </Col>
+                                                <Modal
+                                                    show={showModal} onHide={() => setShowModal(false)}
+                                                    centered
+                                                >
+                                                    <Modal.Header closeButton>
+
+                                                    </Modal.Header>
+                                                    <Modal.Body>
+                                                        <h4>Conferma la prenotazione: Totale {booking.totalPrice} €</h4>
+
+                                                    </Modal.Body>
+                                                    <Modal.Footer>
+                                                        <Button onClick={() => setShowModal(false)}>Chiudi</Button>
+                                                        <Button variant='success' onClick={() => handlePayment(booking._id, booking.insertion._id)}>Paga</Button>
+                                                    </Modal.Footer>
+                                                </Modal>
+
+                                            </Row>
+                                        </>
+                                    </Col>
+                                ))}
+                        </Row>
+                    </Tab>
+                    <Tab eventKey="favorites" title="Preferiti">
+                        Tab content for favorite
+                    </Tab>
+
+                </Tabs>
+
+
             </Container>
         </>
     )

@@ -16,3 +16,23 @@ h6 {
 .carousel-control-next {
     right: 10%;
 }
+
+.upper-text {
+    position: absolute;
+    top: 5%;
+    left: 8%;
+    border: 1px solid lightgray;
+    border-radius: 20px;
+    background-color: white;
+    padding: 5px;
+}
+
+
+.add-favorites {
+    position: absolute;
+    right: 17%;
+    top: 3%;
+    font-size: 25px;
+    color: white;
+    transition: transform 1s;
+}
