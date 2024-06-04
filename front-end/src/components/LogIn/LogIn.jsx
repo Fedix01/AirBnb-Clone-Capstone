@@ -4,10 +4,15 @@ import Form from 'react-bootstrap/Form';
 import './LogIn.css';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
 import { useNavigate } from 'react-router-dom';
 import { AlertContext } from '../AlertProvider/AlertProvider';
 import { searchBarContext } from '../SearchBarProvider/SearchBarProvider';
 import { AuthContext } from '../AuthContextProvider/AuthContextProvider';
+import { FooterContext } from '../FooterProvider/FooterProvider';
+import MyFooter from '../MyFooter/MyFooter';
 export default function LogIn() {
 
     const endpoint = "http://localhost:3001/api/user/login"
@@ -19,6 +24,8 @@ export default function LogIn() {
     const { setToken } = useContext(AuthContext);
 
     const { setSearchBar } = useContext(searchBarContext);
+
+    const { setShowAllFooter } = useContext(FooterContext);
 
     const [errorAlert, setErrorAlert] = useState(false);
 
@@ -85,6 +92,7 @@ export default function LogIn() {
 
     useEffect(() => {
         setSearchBar(false);
+        setShowAllFooter(false);
     }, [])
 
 
@@ -92,52 +100,62 @@ export default function LogIn() {
         <>
             <MyNavbar />
 
-            <div className='logIn'>
-                <h6 className='header pb-3'>Accedi o registrati</h6>
-                <h3><b>Bentornato su AirBnb</b></h3>
-                <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                    <Form.Group controlId="email">
-                        <Form.Label>Email</Form.Label>
-                        <Form.Control
-                            required
-                            type="email"
-                            value={formData.email}
-                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                            placeholder="Inserisci email"
-                        />
-                        <Form.Control.Feedback type="invalid">
-                            Inserisci una email valida
-                        </Form.Control.Feedback>
-                        <Form.Control.Feedback>Ottimo!</Form.Control.Feedback>
-                    </Form.Group>
+            <Container>
+                <Row>
+                    <Col md={12}>
+                        <div className='logIn'>
+                            <h6 className='header pb-3'>Accedi o registrati</h6>
+                            <h3><b>Bentornato su AirBnb</b></h3>
+                            <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                                <Form.Group controlId="email" className='my-4'>
+                                    <Form.Label>Email</Form.Label>
+                                    <Form.Control
+                                        required
+                                        type="email"
+                                        value={formData.email}
+                                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                        placeholder="Inserisci email"
+                                    />
+                                    <Form.Control.Feedback type="invalid">
+                                        Inserisci una email valida
+                                    </Form.Control.Feedback>
+                                    <Form.Control.Feedback>Ottimo!</Form.Control.Feedback>
+                                </Form.Group>
 
-                    <Form.Group controlId="password">
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control
-                            required
-                            type="password"
-                            value={formData.password}
-                            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                            placeholder="Inserisci password"
-                        />
-                        <Form.Control.Feedback type="invalid">
-                            Inserisci una password valida
-                        </Form.Control.Feedback>
-                        <Form.Control.Feedback>Perfetto!</Form.Control.Feedback>
-                    </Form.Group>
-                    {errorAlert &&
-                        <Alert variant='danger' style={{ width: "50%" }}>
-                            Email o password errata
-                        </Alert>
-                    }
+                                <Form.Group controlId="password" className='my-4'>
+                                    <Form.Label>Password</Form.Label>
+                                    <Form.Control
+                                        required
+                                        type="password"
+                                        value={formData.password}
+                                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                                        placeholder="Inserisci password"
+                                    />
+                                    <Form.Control.Feedback type="invalid">
+                                        Inserisci una password valida
+                                    </Form.Control.Feedback>
+                                    <Form.Control.Feedback>Perfetto!</Form.Control.Feedback>
+                                </Form.Group>
+                                {errorAlert &&
+                                    <Alert variant='danger' style={{ width: "50%" }}>
+                                        Email o password errata
+                                    </Alert>
+                                }
 
-                    <Button className='btn-logIn mt-3' type='submit'>Log In</Button>
-                </Form>
-                <div className='d-flex align-items-center justify-content-center'>
-                    <div className='mt-3 ps-3'>Non hai un account?</div>
-                    <Button variant='outline' className='signIn-btn mt-3 ms-2' onClick={() => navigate("/signIn")}>Registrati</Button>
-                </div>
-            </div>
+                                <Button className='btn-logIn mt-3' type='submit'>Log In</Button>
+                            </Form>
+                            <div className='d-flex align-items-center justify-content-center'>
+                                <div className='mt-3 ps-3'>Non hai un account?</div>
+                                <Button variant='outline' className='signIn-btn mt-3 ms-2' onClick={() => navigate("/signIn")}>Registrati</Button>
+                            </div>
+                        </div>
+
+
+                    </Col>
+                </Row>
+            </Container>
+
+            <MyFooter />
         </>
     )
 }

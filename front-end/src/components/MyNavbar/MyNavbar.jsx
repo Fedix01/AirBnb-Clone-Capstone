@@ -100,7 +100,7 @@ export default function MyNavbar(props) {
             return (
                 <>
                     <div className='d-flex'>
-                        <Button variant='transparent'>Affitta con AirBnb</Button>
+                        <Button variant='transparent' onClick={() => navigate("/signIn")}>Affitta con AirBnb</Button>
                         <Dropdown>
                             <Dropdown.Toggle variant="transparent">
                                 <MdOutlineFormatListBulleted className='mx-2' />
@@ -131,7 +131,7 @@ export default function MyNavbar(props) {
                         <div className="bar">
                             <div className="location">
                                 <p>Location</p>
-                                <input type="text" placeholder="Where are you going?"
+                                <input type="text" placeholder="Dove vuoi andare?"
                                     value={placeInput}
                                     onChange={(e) => setSearch({ ...searchForm, placeInput: e.target.value })} />
                             </div>
@@ -148,13 +148,16 @@ export default function MyNavbar(props) {
                             <div className="guests">
                                 <p>Guests</p>
                                 <input type="number" placeholder="Add guests"
+                                    min='0'
+                                    max='6'
                                     value={guestNum}
                                     style={{ width: "50px" }}
                                     onChange={(e) => setSearch({ ...searchForm, guestNum: e.target.value })} />
-                                <span>
+                                <span className='btn-navbar'>
                                     <Button variant='transparent' type='submit'>
                                         <GoSearch />
-                                    </Button></span>
+                                    </Button>
+                                </span>
                             </div>
                         </div>
                     </Form>

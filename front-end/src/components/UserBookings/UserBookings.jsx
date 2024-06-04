@@ -14,10 +14,13 @@ import { MdOutlineWavingHand } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../AuthContextProvider/AuthContextProvider';
 import { AlertContext } from '../AlertProvider/AlertProvider';
+import { FooterContext } from '../FooterProvider/FooterProvider';
 
 export default function UserBookings() {
 
     const { setSearchBar } = useContext(searchBarContext);
+
+    const { setShowAllFooter } = useContext(FooterContext);
 
     const { setToken, token } = useContext(AuthContext);
 
@@ -128,7 +131,8 @@ export default function UserBookings() {
     }
 
     useEffect(() => {
-        setSearchBar(false)
+        setSearchBar(false);
+        setShowAllFooter(false);
     }, [])
 
     useEffect(() => {

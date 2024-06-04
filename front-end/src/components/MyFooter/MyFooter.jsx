@@ -1,70 +1,103 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './MyFooter.css';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
+import Button from 'react-bootstrap/Button';
+import { FaFacebookSquare } from "react-icons/fa";
+import { FaTwitterSquare } from "react-icons/fa";
+import { FaInstagramSquare } from "react-icons/fa";
+import { RiGlobalLine } from "react-icons/ri";
+import { FaEuroSign } from "react-icons/fa";
+import { FooterContext } from '../FooterProvider/FooterProvider';
+import { useNavigate } from 'react-router-dom';
 
 export default function MyFooter() {
+
+    const { showAllFooter } = useContext(FooterContext);
+
+    const navigate = useNavigate();
+
     return (
         <>
-            <div className='footer-box mt-5'>
-                <div className="container">
-                    <footer className="py-5">
-                        <div className="row">
-                            <div className="col-6 col-md-2 mb-3">
-                                <h5>Section</h5>
-                                <ul className="nav flex-column">
-                                    <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">Home</a></li>
-                                    <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">Features</a></li>
-                                    <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">Pricing</a></li>
-                                    <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">FAQs</a></li>
-                                    <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">About</a></li>
-                                </ul>
-                            </div>
+            {showAllFooter &&
+                <div className='footer-box mt-5'>
+                    <Container>
+                        <footer className="py-5">
+                            <Row>
+                                <Col sm={6} md={4} className='mb-3'>
+                                    <h5>Assistenza</h5>
+                                    <ul className="nav flex-column">
+                                        <li className="nav-item mb-2">Home</li>
+                                        <li className="nav-item mb-2">Features</li>
+                                        <li className="nav-item mb-2">Pricing</li>
+                                        <li className="nav-item mb-2">FAQs</li>
+                                        <li className="nav-item mb-2">About</li>
+                                    </ul>
+                                </Col>
 
-                            <div className="col-6 col-md-2 mb-3">
-                                <h5>Section</h5>
-                                <ul className="nav flex-column">
-                                    <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">Home</a></li>
-                                    <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">Features</a></li>
-                                    <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">Pricing</a></li>
-                                    <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">FAQs</a></li>
-                                    <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">About</a></li>
-                                </ul>
-                            </div>
+                                <Col sm={6} md={4} className='mb-3'>
+                                    <h5>Ospitare</h5>
+                                    <ul className="nav flex-column">
+                                        <li className="nav-item mb-2">Home</li>
+                                        <li className="nav-item mb-2">Features</li>
+                                        <li className="nav-item mb-2">Pricing</li>
+                                        <li className="nav-item mb-2">FAQs</li>
+                                        <li className="nav-item mb-2">About</li>
+                                    </ul>
+                                </Col>
 
-                            <div className="col-6 col-md-2 mb-3">
-                                <h5>Section</h5>
-                                <ul className="nav flex-column">
-                                    <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">Home</a></li>
-                                    <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">Features</a></li>
-                                    <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">Pricing</a></li>
-                                    <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">FAQs</a></li>
-                                    <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">About</a></li>
-                                </ul>
-                            </div>
+                                <Col sm={6} md={4} className='mb-3'>
+                                    <h5>Airbnb</h5>
+                                    <ul className="nav flex-column">
+                                        <li className="nav-item mb-2">Home</li>
+                                        <li className="nav-item mb-2">Features</li>
+                                        <li className="nav-item mb-2">Pricing</li>
+                                        <li className="nav-item mb-2">FAQs</li>
+                                        <li className="nav-item mb-2">About</li>
+                                    </ul>
+                                </Col>
 
-                            <div className="col-md-5 offset-md-1 mb-3">
-                                <form>
-                                    <h5>Subscribe to our newsletter</h5>
-                                    <p>Monthly digest of what's new and exciting from us.</p>
-                                    <div className="d-flex flex-column flex-sm-row w-100 gap-2">
-                                        <label className="visually-hidden">Email address</label>
-                                        <input type="text" className="form-control" placeholder="Email address" />
-                                        <button className="btn btn-primary" type="button">Subscribe</button>
+
+                            </Row>
+
+                            <div className="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top">
+                                <p>© 2022 Company, Inc. All rights reserved.</p>
+                                <div className='d-flex mx-3'>
+                                    <div className='mx-2'>
+                                        <RiGlobalLine className='mx-2' />
+                                        <span>Italiano (IT)</span>
                                     </div>
-                                </form>
+                                    <div className='mx-2'>
+                                        <FaEuroSign className='mx-2' />
+                                        <span>Eur</span>
+                                    </div>
+                                    <div className='d-flex social'>
+                                        <FaFacebookSquare className='mx-2' />
+                                        <FaTwitterSquare className='mx-2' />
+                                        <FaInstagramSquare className='mx-2' />
+                                    </div>
+                                </div>
                             </div>
+                        </footer>
+                    </Container>
+                </div>
+            }
+
+            {!showAllFooter &&
+                <div className='mx-5'>
+                    <footer className="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+                        <p className="col-md-4 mb-0 text-muted">© 2024 Airbnb, Inc</p>
+
+                        <div className="nav col-md-4 justify-content-end">
+                            <Button variant='transparent' className='mx-3' onClick={() => navigate("/")}>Home</Button>
+                            <Button variant='transparent' className='mx-3' onClick={() => navigate("/me")}>Il mio profilo</Button>
+                            <Button variant='transparent' className='mx-3' onClick={() => navigate("/signIn")}>Registrati</Button>
                         </div>
 
-                        <div className="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top">
-                            <p>© 2022 Company, Inc. All rights reserved.</p>
-                            <ul className="list-unstyled d-flex">
-                                <li className="ms-3"><a className="link-dark" href="#"><svg className="bi" width="24" height="24"></svg></a></li>
-                                <li className="ms-3"><a className="link-dark" href="#"><svg className="bi" width="24" height="24"></svg></a></li>
-                                <li className="ms-3"><a className="link-dark" href="#"><svg className="bi" width="24" height="24"></svg></a></li>
-                            </ul>
-                        </div>
                     </footer>
                 </div>
-            </div>
+            }
         </>
     )
 }

@@ -24,6 +24,7 @@ insertionApiRoute.get("/", async (req, res, next) => {
                     model: "Insertion",
                     select: ["title"]
                 }
+
             ]
         });
         res.send(insertion)
@@ -53,6 +54,10 @@ insertionApiRoute.post("/search", async (req, res, next) => {
         }).populate({
             path: "bookings",
             model: "Booking",
+        }).populate({
+            path: "reviews",
+            model: "Review",
+            select: ["rating"]
         });
 
         const availableInsertions = insertions.filter(insertion => {
@@ -79,7 +84,14 @@ insertionApiRoute.get("/findByCategory/:category/pagination", async (req, res, n
 
         const itemsForPage = 2;
 
-        const category = await Insertion.find({ "category": req.params.category }).skip(queryPage * itemsForPage).limit(itemsForPage);
+        const category = await Insertion.find({ "category": req.params.category })
+            .skip(queryPage * itemsForPage)
+            .limit(itemsForPage).populate({
+                path: "reviews",
+                model: "Review",
+                select: ["rating"]
+            });
+
         res.send(category)
     } catch (error) {
         next(error)
@@ -93,7 +105,13 @@ insertionApiRoute.get("/pagination", async (req, res, next) => {
 
         const itemsForPage = 2;
 
-        const ins = await Insertion.find().skip(queryPage * itemsForPage).limit(itemsForPage);
+        const ins = await Insertion.find()
+            .skip(queryPage * itemsForPage)
+            .limit(itemsForPage).populate({
+                path: "reviews",
+                model: "Review",
+                select: ["rating"]
+            });
 
         res.send(ins)
     } catch (error) {

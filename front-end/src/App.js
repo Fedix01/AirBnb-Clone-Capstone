@@ -13,6 +13,7 @@ import BookingInfo from './components/BookingInfo/BookingInfo';
 import AuthContextProvider from './components/AuthContextProvider/AuthContextProvider';
 import ProtectedAuthRoute from './components/ProtectedAuthRoute/ProtectedAuthRoute';
 import UserBookings from './components/UserBookings/UserBookings';
+import FooterProvider from './components/FooterProvider/FooterProvider';
 
 function App() {
   return (
@@ -20,19 +21,21 @@ function App() {
       <BrowserRouter>
         <AlertProvider>
           <SearchBarProvider>
-            <Routes>
-              <Route path='/' element={<Homepage />}></Route>
-              <Route path='/*' element={<NotFound />}></Route>
-              <Route path='/signIn' element={<SignIn />}></Route>
-              <Route path='/logIn' element={<LogIn />}></Route>
-              <Route path='/insertionDetails/:id' element={<InsertionDetails />}></Route>
-              <Route element={<ProtectedAuthRoute />}>
-                <Route path='/hostDashboard' element={<HostDashboard />}></Route>
-                <Route path='/myBookings' element={<UserBookings />}></Route>
-                <Route path='/bookingInfo' element={<BookingInfo />}></Route>
-                <Route path='/me' element={<Profile />}></Route>
-              </Route>
-            </Routes>
+            <FooterProvider>
+              <Routes>
+                <Route path='/' element={<Homepage />}></Route>
+                <Route path='/*' element={<NotFound />}></Route>
+                <Route path='/signIn' element={<SignIn />}></Route>
+                <Route path='/logIn' element={<LogIn />}></Route>
+                <Route path='/insertionDetails/:id' element={<InsertionDetails />}></Route>
+                <Route element={<ProtectedAuthRoute />}>
+                  <Route path='/hostDashboard' element={<HostDashboard />}></Route>
+                  <Route path='/myBookings' element={<UserBookings />}></Route>
+                  <Route path='/bookingInfo' element={<BookingInfo />}></Route>
+                  <Route path='/me' element={<Profile />}></Route>
+                </Route>
+              </Routes>
+            </FooterProvider>
           </SearchBarProvider>
         </AlertProvider>
       </BrowserRouter>

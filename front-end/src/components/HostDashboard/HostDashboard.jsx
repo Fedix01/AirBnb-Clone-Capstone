@@ -8,6 +8,7 @@ import AddInsertion from '../AddInsertion/AddInsertion';
 import MyInsertions from '../MyInsertions/MyInsertions';
 import { searchBarContext } from '../SearchBarProvider/SearchBarProvider';
 import { AuthContext } from '../AuthContextProvider/AuthContextProvider';
+import { FooterContext } from '../FooterProvider/FooterProvider';
 
 
 export default function HostDashboard() {
@@ -21,12 +22,15 @@ export default function HostDashboard() {
 
     const { setSearchBar } = useContext(searchBarContext);
 
+    const { setShowAllFooter } = useContext(FooterContext);
+
     useEffect(() => {
         setKey("myInsertions")
     }, [])
 
     useEffect(() => {
-        setSearchBar(false)
+        setSearchBar(false);
+        setShowAllFooter(false)
     }, [])
 
 

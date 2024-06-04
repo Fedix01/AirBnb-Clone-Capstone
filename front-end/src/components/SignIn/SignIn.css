@@ -1,9 +1,7 @@
 .signIn {
-    position: absolute;
-    top: 54%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 700px;
+    margin-left: 15%;
+    margin-right: 15%;
+    max-width: 60%;
     padding: 30px;
     border: 1px solid lightgray;
     border-radius: 15px;

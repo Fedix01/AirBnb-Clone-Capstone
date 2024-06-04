@@ -6,6 +6,7 @@ import Container from 'react-bootstrap/Container';
 import emptyAvatar from "../../assets/avatar.png";
 import { searchBarContext } from '../SearchBarProvider/SearchBarProvider';
 import MyFooter from '../MyFooter/MyFooter';
+import { FooterContext } from '../FooterProvider/FooterProvider';
 
 
 export default function InsertionDetails() {
@@ -15,6 +16,8 @@ export default function InsertionDetails() {
     const [data, setData] = useState({});
 
     const { setSearchBar } = useContext(searchBarContext);
+
+    const { setShowAllFooter } = useContext(FooterContext);
 
     const endpoint = `http://localhost:3001/api/insertion/${params.id}`;
 
@@ -42,6 +45,7 @@ export default function InsertionDetails() {
 
     useEffect(() => {
         setSearchBar(false);
+        setShowAllFooter(true)
     }, [])
 
 

@@ -28,7 +28,8 @@ export default function AllInsertions({ data, setPage, loading, stopLoad, spinne
                                 hostType={el.hostType}
                                 covers={el.covers}
                                 price={el.price}
-                                place={el.place} />
+                                place={el.place}
+                                reviews={el.reviews} />
                         </Col>
                     ))}
             </Row>

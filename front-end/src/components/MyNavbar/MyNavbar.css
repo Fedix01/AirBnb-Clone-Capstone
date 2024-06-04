@@ -14,7 +14,7 @@
 }
 
 .bar {
-    width: 650px;
+    width: 675px;
     background: white;
     box-shadow: 0 0 5px hsl(0 0% 78%);
     height: 55px;
@@ -101,4 +101,12 @@ input[type="text"]:focus {
 .dropdown {
     border: 1px solid lightgray;
     border-radius: 20px;
+}
+
+.btn-navbar button svg {
+    color: white;
+}
+
+.btn-navbar:hover {
+    background-color: #E41D56;
 }

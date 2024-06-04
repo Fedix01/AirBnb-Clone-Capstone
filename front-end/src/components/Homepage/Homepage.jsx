@@ -5,6 +5,7 @@ import AllInsertions from '../AllInsertions/AllInsertions'
 import { searchBarContext } from '../SearchBarProvider/SearchBarProvider';
 import { AlertContext } from '../AlertProvider/AlertProvider';
 import MyFooter from '../MyFooter/MyFooter';
+import { FooterContext } from '../FooterProvider/FooterProvider';
 
 export default function Homepage() {
 
@@ -17,6 +18,8 @@ export default function Homepage() {
     const [stopLoad, setStopLoad] = useState(false);
 
     const { setSearchBar } = useContext(searchBarContext);
+
+    const { setShowAllFooter } = useContext(FooterContext);
 
     const { setAlert } = useContext(AlertContext);
 
@@ -51,6 +54,7 @@ export default function Homepage() {
             if (res.ok) {
                 const response = await res.json();
                 setData(response);
+                console.log(response)
                 setSpinner(false)
             }
         } catch (error) {
@@ -124,8 +128,10 @@ export default function Homepage() {
 
 
     useEffect(() => {
-        setSearchBar(true)
+        setSearchBar(true);
+        setShowAllFooter(false)
     }, [])
+
 
 
 
