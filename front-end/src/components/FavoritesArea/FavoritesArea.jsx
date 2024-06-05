@@ -7,18 +7,18 @@ export default function FavoritesArea(props) {
     const { title, address, category, hostType, cover } = props;
 
     return (
-        <div>
-            <Card style={{ width: '18rem' }}>
-                <Card.Img variant="top" src={cover} />
-                <Card.Body>
-                    <Card.Title>{title}</Card.Title>
-                    <h5>{address}</h5>
-                    <h5>{category}</h5>
-                    <h5>{hostType}</h5>
 
-                    <Button variant="primary">Go somewhere</Button>
-                </Card.Body>
-            </Card>
-        </div>
+        <Card style={{ width: '18rem' }}>
+            <Card.Img variant="top" src={cover} />
+            <Card.Body>
+                <Card.Title>{title}</Card.Title>
+                <h5>{address}</h5>
+                <h5>{category}</h5>
+                <h5>{hostType}</h5>
+
+                <Button variant="primary">Go somewhere</Button>
+            </Card.Body>
+        </Card>
+
     )
 }

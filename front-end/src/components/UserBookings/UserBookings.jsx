@@ -300,9 +300,15 @@ export default function UserBookings() {
                         </Row>
                     </Tab>
                     <Tab eventKey="favorites" title="Preferiti">
-                        {dataFav &&
-                            dataFav.map(el => <FavoritesArea key={el._id} address={el.address} title={el.title} category={el.category} cover={el.covers[0]} hostType={el.hostType} />)
-                        }
+                        <Row>
+
+                            {dataFav &&
+                                dataFav.map(el => (
+                                    <Col md={6}>
+                                        <FavoritesArea key={el._id} address={el.address} title={el.title} category={el.category} cover={el.covers[0]} hostType={el.hostType} />
+                                    </Col>
+                                ))}
+                        </Row>
                     </Tab>
 
                 </Tabs>

@@ -375,29 +375,47 @@ insertionApiRoute.get("/:id/booking", authMiddleware, async (req, res, next) => 
 insertionApiRoute.post("/:id/booking", authMiddleware, async (req, res, next) => {
     try {
         const userId = req.user.id;
-        console.log(userId)
-        const newBooking = await Booking.create({
-            ...req.body,
-            user: userId,
-            insertion: req.params.id,
+
+        const insertion = await Insertion.findById(req.params.id);
+
+
+        const requestedDates = getDatesFromPeriod(new Date(req.body.checkInDate), new Date(req.body.checkOutDate));
+
+        const isAvailable = insertion.bookings.every(booking => {
+            const bookingCheckInDate = new Date(booking.checkInDate);
+            const bookingCheckOutDate = new Date(booking.checkOutDate);
+
+            return requestedDates.every(date => date < bookingCheckInDate || date > bookingCheckOutDate);
         });
-        console.log(newBooking)
-        const post = await Insertion.findByIdAndUpdate(
-            req.params.id,
-            {
-                $push: {
-                    bookings: newBooking
-                }
-            },
-            { new: true }).populate({
-                path: "bookings",
-                populate: {
-                    path: "user",
-                    model: "User",
-                    select: ["name", "surname", "avatar"]
-                }
+
+        if (isAvailable) {
+            console.log(userId)
+            const newBooking = await Booking.create({
+                ...req.body,
+                user: userId,
+                insertion: req.params.id,
             });
-        res.send(post)
+            console.log(newBooking)
+            const post = await Insertion.findByIdAndUpdate(
+                req.params.id,
+                {
+                    $push: {
+                        bookings: newBooking
+                    }
+                },
+                { new: true }).populate({
+                    path: "bookings",
+                    populate: {
+                        path: "user",
+                        model: "User",
+                        select: ["name", "surname", "avatar"]
+                    }
+                });
+            res.send(post)
+
+        } else {
+            res.status(400).send("Errore date gia prenotate")
+        }
     } catch (error) {
         next(error)
     }

@@ -51,17 +51,17 @@ const insertionSchema = new Schema({
     services: {
         roomDetails: {
             type: String,
-            required: true
+            required: false
         },
 
         bathDetails: {
             type: String,
-            required: true
+            required: false
         },
 
         otherDetails: {
             type: String,
-            required: true
+            required: false
         }
     },
 

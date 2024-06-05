@@ -96,10 +96,13 @@ export default function BookingForm({ price, id }) {
                         console.log(post);
                         setAlert("prenotazione");
 
+                    } else {
+                        throw new Error("Errore nella prenotazione");
                     }
+
                 } catch (error) {
                     console.error(error);
-                    setAlert("Errore nella prenotazione");
+                    setAlert("Errore: date già prenotate");
                     setTimeout(() => {
                         setAlert("")
                     }, 4000);
