@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../AuthContextProvider/AuthContextProvider';
 import { AlertContext } from '../AlertProvider/AlertProvider';
 import { FooterContext } from '../FooterProvider/FooterProvider';
+import FavoritesArea from '../FavoritesArea/FavoritesArea';
 
 export default function UserBookings() {
 
@@ -150,6 +151,33 @@ export default function UserBookings() {
     }, [])
 
 
+    const endpointFav = "http://localhost:3001/api/user/favorites";
+
+    const [dataFav, setDataFav] = useState([]);
+
+    const getFavorites = async () => {
+        try {
+            const res = await fetch(endpointFav, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+            if (res.ok) {
+                const allFav = await res.json();
+                console.log(allFav.favorites);
+                setDataFav(allFav.favorites)
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    useEffect(() => {
+        getFavorites()
+    }, [])
+
+
     return (
         <>
             <MyNavbar />
@@ -272,7 +300,9 @@ export default function UserBookings() {
                         </Row>
                     </Tab>
                     <Tab eventKey="favorites" title="Preferiti">
-                        Tab content for favorite
+                        {dataFav &&
+                            dataFav.map(el => <FavoritesArea key={el._id} address={el.address} title={el.title} category={el.category} cover={el.covers[0]} hostType={el.hostType} />)
+                        }
                     </Tab>
 
                 </Tabs>

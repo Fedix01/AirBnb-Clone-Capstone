@@ -55,6 +55,12 @@ const UserSchema = new Schema({
         required: true
     },
 
+    favorites: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Insertion"
+        }
+    ]
 },
     {
         collection: "AirBnb User",

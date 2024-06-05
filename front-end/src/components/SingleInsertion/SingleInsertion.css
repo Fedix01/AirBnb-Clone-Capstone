@@ -35,4 +35,10 @@ h6 {
     font-size: 25px;
     color: white;
     transition: transform 1s;
+    z-index: 10;
+    cursor: pointer;
+}
+
+.add-favorites:hover {
+    transform: scale(1.2);
 }

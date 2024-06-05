@@ -116,3 +116,39 @@ userApiRoute.patch("/:id/avatar", avatarCloud.single("avatar"), async (req, res,
         next(error)
     }
 })
+
+// Preferiti
+userApiRoute.post("/:id/favorites", authMiddleware, async (req, res, next) => {
+    try {
+        const insertionId = req.params.id;
+        const user = req.user.id;
+
+        const userDoc = await User.findById(user);
+        if (userDoc.favorites.includes(insertionId)) {
+            return res.status(400).send({ message: "Insertion already in favorites" });
+        }
+
+        const newFav = await User.updateOne(
+            { _id: user },
+            { $push: { favorites: insertionId } }
+
+        );
+        res.send(newFav)
+    } catch (error) {
+        next(error)
+    }
+})
+
+userApiRoute.get("/favorites", authMiddleware, async (req, res, next) => {
+    try {
+        const user = req.user.id;
+        const getFav = await User.findById(user).populate({
+            path: "favorites",
+            model: "Insertion"
+        });
+
+        res.send(getFav)
+    } catch (error) {
+        next(error)
+    }
+})

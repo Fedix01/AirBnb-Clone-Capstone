@@ -1,19 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
 import emptyLocation from "../../assets/empty.png";
 import { FaStar } from "react-icons/fa";
 import { FaRegHeart } from "react-icons/fa";
 import './SingleInsertion.css';
 import { useNavigate } from 'react-router-dom';
+import { AlertContext } from '../AlertProvider/AlertProvider';
 export default function SingleInsertion(props) {
 
     const { id, covers, price, place, hostType, reviews, hostName, hostSurname } = props;
 
     const navigate = useNavigate();
 
+    const { setAlert } = useContext(AlertContext);
+
     const [index, setIndex] = useState(0);
 
     const [revAverage, setRevAverage] = useState(0);
+
+    const [token, setToken] = useState("");
+
+    const endpointFav = "http://localhost:3001/api/user/";
 
     const handleSelect = (selectedIndex) => {
         setIndex(selectedIndex);
@@ -43,9 +50,44 @@ export default function SingleInsertion(props) {
         )
     }
 
+    const addToFavorites = async (e) => {
+        e.stopPropagation()
+        try {
+            const res = await fetch(`${endpointFav}${id}/favorites`, {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
+
+            });
+            if (res.ok) {
+                const add = await res.json();
+                console.log(add);
+                setAlert("Struttura aggiunta ai preferiti!");
+                setTimeout(() => {
+                    setAlert("")
+                }, 4000);
+            }
+        } catch (error) {
+            console.error(error);
+            setAlert("Errore nell'aggiunta ai preferiti");
+            setTimeout(() => {
+                setAlert("")
+            }, 4000);
+        }
+    }
+
     useEffect(() => {
         calculateAverage(reviews)
     }, [reviews])
+
+    useEffect(() => {
+        const tok = localStorage.getItem("token");
+        if (tok) {
+            setToken(tok)
+        }
+    }, [])
 
 
     return (
@@ -94,7 +136,7 @@ export default function SingleInsertion(props) {
                         <h5 className='m-0'>Amato dagli ospiti</h5>
                     </div>
                 }
-                <div className='add-favorites'>
+                <div className='add-favorites' onClick={(e) => addToFavorites(e)}>
                     <FaRegHeart />
                 </div>
             </div>
