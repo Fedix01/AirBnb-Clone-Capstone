@@ -43,6 +43,12 @@ export default function UserBookings() {
 
     const endpointGeneric = `http://localhost:3001/api/insertion/`;
 
+    const endpointFav = "http://localhost:3001/api/user/favorites";
+
+    const endpointDelFav = "http://localhost:3001/api/user/";
+
+    const [dataFav, setDataFav] = useState([]);
+
     const [key, setKey] = useState('trips');
 
     const navigate = useNavigate();
@@ -135,26 +141,6 @@ export default function UserBookings() {
         )
     }
 
-    useEffect(() => {
-        setSearchBar(false);
-        setShowAllFooter(false);
-    }, [])
-
-    useEffect(() => {
-        const user = localStorage.getItem("user");
-        const token = localStorage.getItem("token");
-        if (token && user) {
-            setToken(token);
-            getBookings(token, JSON.parse(user));
-            setCurrentUser(JSON.parse(user))
-        }
-    }, [])
-
-
-    const endpointFav = "http://localhost:3001/api/user/favorites";
-
-    const [dataFav, setDataFav] = useState([]);
-
     const getFavorites = async () => {
         try {
             const res = await fetch(endpointFav, {
@@ -172,6 +158,53 @@ export default function UserBookings() {
             console.error(error)
         }
     }
+
+    const deleteFavorite = async (id, title) => {
+        try {
+            const del = await fetch(`${endpointDelFav}${id}/favorites`, {
+                method: "DELETE",
+                headers:
+                {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
+            });
+            if (del.ok) {
+                const deleted = await del.json();
+                console.log(deleted);
+                setCurrentUser(deleted);;
+                localStorage.setItem("user", JSON.stringify(deleted))
+                getFavorites();
+                setAlert(`Hai eliminato ${title}`);
+                setTimeout(() => {
+                    setAlert("")
+                }, 4000);
+            }
+        } catch (error) {
+            console.error(error);
+            setAlert("Errore durante l'eliminazione");
+            setTimeout(() => {
+                setAlert("")
+            }, 4000);
+        }
+    }
+
+    useEffect(() => {
+        setSearchBar(false);
+        setShowAllFooter(false);
+    }, [])
+
+    useEffect(() => {
+        const user = localStorage.getItem("user");
+        const token = localStorage.getItem("token");
+        if (token && user) {
+            setToken(token);
+            getBookings(token, JSON.parse(user));
+            setCurrentUser(JSON.parse(user))
+        }
+    }, [])
+
+
 
     useEffect(() => {
         getFavorites()
@@ -304,10 +337,28 @@ export default function UserBookings() {
 
                             {dataFav &&
                                 dataFav.map(el => (
-                                    <Col md={6}>
-                                        <FavoritesArea key={el._id} address={el.address} title={el.title} category={el.category} cover={el.covers[0]} hostType={el.hostType} />
+                                    <Col md={6} key={el._id}>
+                                        <FavoritesArea
+                                            id={el._id}
+                                            address={el.address}
+                                            title={el.title}
+                                            category={el.category}
+                                            cover={el.covers[0]}
+                                            hostType={el.hostType}
+                                            reviews={el.reviews}
+                                            place={el.place}
+                                            price={el.price}
+                                            deleteFavorite={deleteFavorite} />
                                     </Col>
                                 ))}
+
+                            <Col md={12} className='mt-3'>
+                                <div className='fav-box'>
+                                    <h2 className='p-2'>Benvenuto nei preferiti</h2>
+                                    <p className='p-2'>Qui puoi aggiungere tutte le strutture che ti piacciono e che vuoi tenere d'occhio</p>
+                                    <Button onClick={() => navigate("/")}>Aggiungi ai preferiti</Button>
+                                </div>
+                            </Col>
                         </Row>
                     </Tab>
 

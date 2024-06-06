@@ -1,10 +1,13 @@
 import React from 'react';
-import Button from 'react-bootstrap/Button';
+import './FavoritesArea.css';
 import Card from 'react-bootstrap/Card';
+import { TiDelete } from "react-icons/ti";
 
 export default function FavoritesArea(props) {
 
-    const { title, address, category, hostType, cover } = props;
+    const { id, title, address, category,
+        hostType, cover, reviews, place, price,
+        deleteFavorite } = props;
 
     return (
 
@@ -12,12 +15,16 @@ export default function FavoritesArea(props) {
             <Card.Img variant="top" src={cover} />
             <Card.Body>
                 <Card.Title>{title}</Card.Title>
-                <h5>{address}</h5>
-                <h5>{category}</h5>
-                <h5>{hostType}</h5>
+                <h5>{place}</h5>
+                <h6>{reviews.length} recensioni</h6>
+                <h6>{hostType}</h6>
 
-                <Button variant="primary">Go somewhere</Button>
+                <h5>{price} €</h5>
+                <h6>Include tasse e costi</h6>
             </Card.Body>
+            <div className='delete' onClick={() => deleteFavorite(id, title)}>
+                <TiDelete />
+            </div>
         </Card>
 
     )

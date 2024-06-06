@@ -128,12 +128,10 @@ userApiRoute.post("/:id/favorites", authMiddleware, async (req, res, next) => {
             return res.status(400).send({ message: "Insertion already in favorites" });
         }
 
-        const newFav = await User.updateOne(
-            { _id: user },
-            { $push: { favorites: insertionId } }
+        userDoc.favorites.push(insertionId);
+        await userDoc.save();
 
-        );
-        res.send(newFav)
+        res.send(userDoc)
     } catch (error) {
         next(error)
     }
@@ -148,6 +146,22 @@ userApiRoute.get("/favorites", authMiddleware, async (req, res, next) => {
         });
 
         res.send(getFav)
+    } catch (error) {
+        next(error)
+    }
+})
+
+userApiRoute.delete("/:id/favorites", authMiddleware, async (req, res, next) => {
+    try {
+        const insertionId = req.params.id;
+        const user = req.user.id;
+        const searchUser = await User.findById(user);
+
+        if (searchUser.favorites.includes(insertionId)) {
+            searchUser.favorites.pull(insertionId);
+            await searchUser.save()
+        }
+        res.send(searchUser)
     } catch (error) {
         next(error)
     }

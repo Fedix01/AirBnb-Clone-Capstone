@@ -3,6 +3,7 @@ import Carousel from 'react-bootstrap/Carousel';
 import emptyLocation from "../../assets/empty.png";
 import { FaStar } from "react-icons/fa";
 import { FaRegHeart } from "react-icons/fa";
+import { IoMdHeart } from "react-icons/io";
 import './SingleInsertion.css';
 import { useNavigate } from 'react-router-dom';
 import { AlertContext } from '../AlertProvider/AlertProvider';
@@ -19,6 +20,10 @@ export default function SingleInsertion(props) {
     const [revAverage, setRevAverage] = useState(0);
 
     const [token, setToken] = useState("");
+
+    const [currentUser, setCurrentUser] = useState({});
+
+    const [fav, setFav] = useState(false);
 
     const endpointFav = "http://localhost:3001/api/user/";
 
@@ -64,6 +69,8 @@ export default function SingleInsertion(props) {
             if (res.ok) {
                 const add = await res.json();
                 console.log(add);
+                setCurrentUser(add);
+                localStorage.setItem('user', JSON.stringify(add));
                 setAlert("Struttura aggiunta ai preferiti!");
                 setTimeout(() => {
                     setAlert("")
@@ -78,16 +85,57 @@ export default function SingleInsertion(props) {
         }
     }
 
+    const deleteFromFavorites = async () => {
+        try {
+            const res = await fetch(`${endpointFav}${id}/favorites`, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
+            });
+            if (res.ok) {
+                const deleted = await res.json();
+                setCurrentUser(deleted);
+                localStorage.setItem('user', JSON.stringify(deleted));
+                setFav(false)
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    const handleFav = () => {
+
+        if (currentUser && currentUser.favorites && currentUser.favorites.includes(id)) {
+            setFav(true)
+        } else {
+            setFav(false)
+        }
+
+    }
+
     useEffect(() => {
         calculateAverage(reviews)
     }, [reviews])
 
     useEffect(() => {
         const tok = localStorage.getItem("token");
+        const user = localStorage.getItem("user");
         if (tok) {
             setToken(tok)
         }
+        if (user) {
+            setCurrentUser(JSON.parse(user))
+        };
+        if (user && tok) {
+            handleFav()
+        }
     }, [])
+
+    useEffect(() => {
+        handleFav()
+    }, [id, currentUser])
 
 
     return (
@@ -136,9 +184,18 @@ export default function SingleInsertion(props) {
                         <h5 className='m-0'>Amato dagli ospiti</h5>
                     </div>
                 }
-                <div className='add-favorites' onClick={(e) => addToFavorites(e)}>
-                    <FaRegHeart />
-                </div>
+                {fav ?
+                    <>
+                        <div className='add-favorites' onClick={(e) => deleteFromFavorites(e)}>
+                            <IoMdHeart />
+                        </div>
+                    </>
+                    :
+                    <>
+                        <div className='add-favorites' onClick={(e) => addToFavorites(e)}>
+                            <FaRegHeart />
+                        </div>
+                    </>}
             </div>
         </>
     )

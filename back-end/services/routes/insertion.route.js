@@ -17,7 +17,7 @@ insertionApiRoute.get("/", async (req, res, next) => {
                 {
                     path: "user",
                     model: "User",
-                    select: ["name", "surname", "avatar"]
+                    select: ["name", "surname", "avatar", "favorites"]
                 },
                 {
                     path: "insertion",
@@ -61,7 +61,7 @@ insertionApiRoute.post("/search", async (req, res, next) => {
         }).populate({
             path: "user",
             model: "User",
-            select: ["name", "surname"]
+            select: ["name", "surname", "favorites"]
         });
 
         const availableInsertions = insertions.filter(insertion => {
@@ -97,7 +97,7 @@ insertionApiRoute.get("/findByCategory/:category/pagination", async (req, res, n
             }).populate({
                 path: "user",
                 model: "User",
-                select: ["name", "surname"]
+                select: ["name", "surname", "favorites"]
             });
 
         res.send(category)
@@ -122,7 +122,7 @@ insertionApiRoute.get("/pagination", async (req, res, next) => {
             }).populate({
                 path: "user",
                 model: "User",
-                select: ["name", "surname"]
+                select: ["name", "surname", "favorites"]
             });
 
         res.send(ins)
