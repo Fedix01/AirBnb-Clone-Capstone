@@ -9,6 +9,7 @@ import MyInsertions from '../MyInsertions/MyInsertions';
 import { searchBarContext } from '../SearchBarProvider/SearchBarProvider';
 import { AuthContext } from '../AuthContextProvider/AuthContextProvider';
 import { FooterContext } from '../FooterProvider/FooterProvider';
+import MyFooter from '../MyFooter/MyFooter';
 
 
 export default function HostDashboard() {
@@ -73,6 +74,8 @@ export default function HostDashboard() {
 
                 </Col>
             </Row>
+
+            <MyFooter />
         </>
     )
 }

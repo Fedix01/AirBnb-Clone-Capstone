@@ -6,3 +6,29 @@
 .social {
     font-size: 25px;
 }
+
+.footer-short {
+    position: fixed;
+    bottom: 0;
+    width: 90%;
+}
+
+@media screen and (max-width:768px) {
+    .footer-short {
+        position: static;
+    }
+
+    .bottom-bar {
+        background-color: white;
+        padding: 20px;
+        border-top: 1px solid lightgray;
+        position: sticky;
+        bottom: 0;
+    }
+
+    .bottom-bar svg {
+        font-size: 30px;
+    }
+
+
+}

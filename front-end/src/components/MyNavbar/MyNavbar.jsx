@@ -122,12 +122,12 @@ export default function MyNavbar(props) {
     return (
         <>
             <Navbar className="justify-content-around navbar">
-                <Navbar.Brand onClick={() => navigate("/")} style={{ cursor: "pointer" }}>
+                <Navbar.Brand className='nav-icon' onClick={() => navigate("/")} style={{ cursor: "pointer" }}>
                     <img src={logoPink} alt=""
                         style={{ width: "100px" }} />
                 </Navbar.Brand>
                 {searchBar &&
-                    <Form onSubmit={filteredNavSearch}>
+                    <Form onSubmit={filteredNavSearch} className='form-search'>
                         <div className="bar">
                             <div className="location">
                                 <p>Location</p>
@@ -164,7 +164,7 @@ export default function MyNavbar(props) {
 
                 }
 
-                <div>
+                <div className='user-area'>
                     {renderUserArea()}
                 </div>
             </Navbar>

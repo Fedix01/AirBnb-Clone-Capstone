@@ -110,3 +110,36 @@ input[type="text"]:focus {
 .btn-navbar:hover {
     background-color: #E41D56;
 }
+
+@media screen and (max-width: 768px) {
+    .nav-icon {
+        display: none;
+    }
+
+    .user-area {
+        display: none;
+    }
+
+    .bar {
+        max-width: 90vw;
+    }
+
+    .bar .check-in,
+    .check-out {
+        display: none;
+    }
+
+    .guests {
+        position: static;
+    }
+
+    .form-search {
+        position: relative;
+    }
+
+    .btn-navbar {
+        position: absolute;
+        right: 5px;
+        bottom: 5px;
+    }
+}

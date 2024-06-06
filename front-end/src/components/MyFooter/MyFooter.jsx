@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './MyFooter.css';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -9,6 +9,11 @@ import { FaTwitterSquare } from "react-icons/fa";
 import { FaInstagramSquare } from "react-icons/fa";
 import { RiGlobalLine } from "react-icons/ri";
 import { FaEuroSign } from "react-icons/fa";
+import { HiOutlineMagnifyingGlass } from "react-icons/hi2";
+import { FaRegHeart } from "react-icons/fa";
+import { FaSuitcase } from "react-icons/fa6";
+import { FaRegUserCircle } from "react-icons/fa";
+import { TbWorld } from "react-icons/tb";
 import { FooterContext } from '../FooterProvider/FooterProvider';
 import { useNavigate } from 'react-router-dom';
 
@@ -17,6 +22,16 @@ export default function MyFooter() {
     const { showAllFooter } = useContext(FooterContext);
 
     const navigate = useNavigate();
+
+    const [currentUser, setCurrentUser] = useState({});
+
+
+    useEffect(() => {
+        const user = localStorage.getItem("user");
+        if (user) {
+            setCurrentUser(JSON.parse(user))
+        }
+    }, [])
 
     return (
         <>
@@ -85,7 +100,7 @@ export default function MyFooter() {
             }
 
             {!showAllFooter &&
-                <div className='mx-5'>
+                <div className='mx-5 footer-short'>
                     <footer className="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
                         <p className="col-md-4 mb-0 text-muted">© 2024 Airbnb, Inc</p>
 
@@ -98,6 +113,47 @@ export default function MyFooter() {
                     </footer>
                 </div>
             }
+
+            <div className='d-md-none bottom-bar d-flex justify-content-evenly'>
+                <div className='d-flex flex-column align-items-center justify-content-center'
+                    onClick={() => navigate("/")}>
+                    <HiOutlineMagnifyingGlass />
+                    <h6 className='mt-1'>Cerca</h6>
+                </div>
+                {currentUser.isHost ?
+                    <>
+                        <div className='d-flex flex-column align-items-center justify-content-center'
+                            onClick={() => navigate("/myBookings")}>
+                            <TbWorld />
+                            <h6 className='mt-1'>Host Dashboard</h6>
+                        </div>
+                    </>
+                    :
+                    <>
+                        <div className='d-flex flex-column align-items-center justify-content-center'
+                            onClick={() => navigate("/myBookings")}>
+                            <FaRegHeart />
+                            <h6 className='mt-1'>Preferiti</h6>
+                        </div>
+                    </>
+                }
+                {currentUser.isHost ?
+                    null
+                    :
+                    <>
+                        <div className='d-flex flex-column align-items-center justify-content-center'
+                            onClick={() => navigate("/myBookings")}>
+                            <FaSuitcase />
+                            <h6 className='mt-1'>Prenotazioni</h6>
+                        </div>
+                    </>
+                }
+                <div className='d-flex flex-column align-items-center justify-content-center'
+                    onClick={() => navigate("/me")}>
+                    <FaRegUserCircle />
+                    <h6 className='mt-1'>Profilo</h6>
+                </div>
+            </div>
         </>
     )
 }

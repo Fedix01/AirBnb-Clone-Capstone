@@ -15,6 +15,7 @@ import { FaRegAddressCard } from "react-icons/fa6";
 import { AlertContext } from '../AlertProvider/AlertProvider';
 import { searchBarContext } from '../SearchBarProvider/SearchBarProvider';
 import { AuthContext } from '../AuthContextProvider/AuthContextProvider';
+import MyFooter from '../MyFooter/MyFooter';
 
 export default function Profile() {
     const [data, setData] = useState([]);
@@ -416,6 +417,7 @@ export default function Profile() {
                 </Row>
             }
 
+            <MyFooter />
 
             <Modal
                 show={modalShow}

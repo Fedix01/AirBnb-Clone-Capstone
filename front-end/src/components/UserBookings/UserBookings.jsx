@@ -18,6 +18,7 @@ import { AuthContext } from '../AuthContextProvider/AuthContextProvider';
 import { AlertContext } from '../AlertProvider/AlertProvider';
 import { FooterContext } from '../FooterProvider/FooterProvider';
 import FavoritesArea from '../FavoritesArea/FavoritesArea';
+import MyFooter from '../MyFooter/MyFooter';
 
 export default function UserBookings() {
 
@@ -366,6 +367,7 @@ export default function UserBookings() {
 
 
             </Container>
+            <MyFooter />
         </>
     )
 }
