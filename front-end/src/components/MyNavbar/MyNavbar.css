@@ -66,11 +66,8 @@ input[type="text"]:focus {
     margin-bottom: 0;
 }
 
-.guests span {
-    position: absolute;
-    top: 50%;
-    right: 7px;
-    transform: translateY(-50%);
+.bar span {
+    padding: 4px;
     background: #FF385C;
     color: white;
     font-size: 0.8rem;
@@ -125,21 +122,20 @@ input[type="text"]:focus {
     }
 
     .bar .check-in,
-    .check-out {
+    .check-out,
+    .guests {
         display: none;
     }
 
-    .guests {
-        position: static;
-    }
-
-    .form-search {
-        position: relative;
+    .bar {
+        justify-content: space-between;
     }
 
     .btn-navbar {
-        position: absolute;
-        right: 5px;
-        bottom: 5px;
+        padding: 7px;
+    }
+
+    .btn-navbar svg {
+        margin-bottom: 12px;
     }
 }

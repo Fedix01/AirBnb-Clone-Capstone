@@ -86,7 +86,7 @@ insertionApiRoute.get("/findByCategory/:category/pagination", async (req, res, n
 
         const queryPage = req.query.page;
 
-        const itemsForPage = 2;
+        const itemsForPage = 12;
 
         const category = await Insertion.find({ "category": req.params.category })
             .skip(queryPage * itemsForPage)
@@ -111,7 +111,7 @@ insertionApiRoute.get("/pagination", async (req, res, next) => {
     try {
         const queryPage = req.query.page;
 
-        const itemsForPage = 2;
+        const itemsForPage = 12;
 
         const ins = await Insertion.find()
             .skip(queryPage * itemsForPage)

@@ -199,7 +199,7 @@ export default function InsertionDetailsPage(props) {
                                 <div className='d-flex flex-column justify-content-center align-items-center'>
                                     <div className='ins-tot'>
                                         <h6>Inserzioni totali</h6>
-                                        <h4>{insertions.length}</h4>
+                                        <h4>{insertions ? insertions.length : ""}</h4>
                                     </div>
                                     <div className='mt-2'>
                                         <h6>Host da</h6>

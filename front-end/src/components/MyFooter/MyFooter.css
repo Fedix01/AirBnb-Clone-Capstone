@@ -8,9 +8,7 @@
 }
 
 .footer-short {
-    position: fixed;
-    bottom: 0;
-    width: 90%;
+    margin-top: 20vh;
 }
 
 @media screen and (max-width:768px) {

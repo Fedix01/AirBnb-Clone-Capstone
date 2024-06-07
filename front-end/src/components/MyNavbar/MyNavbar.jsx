@@ -153,12 +153,12 @@ export default function MyNavbar(props) {
                                     value={guestNum}
                                     style={{ width: "50px" }}
                                     onChange={(e) => setSearch({ ...searchForm, guestNum: e.target.value })} />
-                                <span className='btn-navbar'>
-                                    <Button variant='transparent' type='submit'>
-                                        <GoSearch />
-                                    </Button>
-                                </span>
                             </div>
+                            <span className='btn-navbar mt-2 mb-2 me-2'>
+                                <Button variant='transparent' type='submit'>
+                                    <GoSearch className='mb-3' />
+                                </Button>
+                            </span>
                         </div>
                     </Form>
 

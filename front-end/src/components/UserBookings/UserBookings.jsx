@@ -50,7 +50,7 @@ export default function UserBookings() {
 
     const [dataFav, setDataFav] = useState([]);
 
-    const [key, setKey] = useState('trips');
+    const [key, setKey] = useState('viaggi');
 
     const navigate = useNavigate();
 
@@ -223,7 +223,7 @@ export default function UserBookings() {
                     onSelect={(k) => setKey(k)}
                     className="mb-3"
                 >
-                    <Tab eventKey="trips" title="Viaggi">
+                    <Tab eventKey="viaggi" title="Viaggi">
                         <Row>
                             <Col md={12}>
                                 <h2>Viaggi</h2>
@@ -231,7 +231,7 @@ export default function UserBookings() {
                         </Row>
 
                         <Row className='trips-box mt-2'>
-                            <Col md={6}>
+                            <Col md={6} sm={12}>
                                 <div className='d-flex flex-column trips-text p-4 my-2'>
                                     <MdOutlineWavingHand />
                                     <h5 className='mt-3'>Nessun viaggio prenotato... per ora!</h5>
@@ -239,7 +239,7 @@ export default function UserBookings() {
                                     <Button onClick={() => navigate("/")}>Inizia a cercare</Button>
                                 </div>
                             </Col>
-                            <Col md={6} className='img-cont'>
+                            <Col md={6} className='img-cont d-none d-md-block'>
                                 <img src={tripBackground} alt=""
                                     className='img-fluid trip-image'
                                 />
@@ -247,7 +247,7 @@ export default function UserBookings() {
                         </Row>
 
                         <Row>
-                            <Col md={12} className='mt-5'>
+                            <Col md={12} sm={12} className='mt-5'>
                                 <h2>Le mie prenotazioni</h2>
                             </Col>
                         </Row>
@@ -260,11 +260,11 @@ export default function UserBookings() {
                             }
                             {data &&
                                 data.map((booking) => (
-                                    <Col md={5} key={booking._id} className='trip-container mx-2 my-2'>
+                                    <Col md={5} sm={12} key={booking._id} className='trip-container mx-2 my-2'>
                                         <>
                                             <Row className='row-trip'>
 
-                                                <Col md={6} className='p-4'>
+                                                <Col md={6} sm={12} className='p-4'>
                                                     <Button variant='transparent' className='delete-btn' onClick={() => setShowModalDelete(true)}>
                                                         <TiDelete />
                                                     </Button>
@@ -306,9 +306,11 @@ export default function UserBookings() {
                                                         }
                                                     </div>
                                                 </Col>
-                                                <Col md={6} className='p-0 d-flex justify-content-end'>
+                                                <Col md={6} sm={12} className='p-0 d-flex justify-content-end img-booking'>
                                                     <img src={booking.insertion.covers[0]} alt=''
-                                                        className='img-fluid' />
+                                                        className='img-fluid'
+                                                        onClick={() => navigate(`/insertionDetails/${booking.insertion._id}`)}
+                                                        style={{ cursor: "pointer" }} />
                                                 </Col>
                                                 <Modal
                                                     show={showModal} onHide={() => setShowModal(false)}
@@ -333,7 +335,7 @@ export default function UserBookings() {
                                 ))}
                         </Row>
                     </Tab>
-                    <Tab eventKey="favorites" title="Preferiti">
+                    <Tab eventKey="preferiti" title="Preferiti">
                         <Row>
 
                             {dataFav &&

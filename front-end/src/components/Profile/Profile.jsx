@@ -192,6 +192,26 @@ export default function Profile() {
         }
     }
 
+    const dateString = (dateCreation) => {
+        const date = new Date(dateCreation);
+
+        const month = date.toLocaleString('default', { month: 'long' });
+        const year = date.getFullYear();
+        return (
+            <h4>{month} {year}</h4>
+        )
+    }
+
+    const handleLogOut = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        navigate("/");
+        setAlert("Logout effettuato correttamente");
+        setTimeout(() => {
+            setAlert("")
+        }, 4000);
+    }
+
     useEffect(() => {
         setSearchBar(false)
     }, [])
@@ -204,26 +224,31 @@ export default function Profile() {
             {data &&
 
                 <Row>
-                    <Col md={5} className='d-flex justify-content-center'>
+                    <Col md={5} sm={12} className='d-block d-md-flex justify-content-center'>
                         <div className='image-prof'>
                             <Row>
-                                <Col md={6}>
-                                    <img src={data.avatar ? data.avatar : avatar} alt=""
-                                        style={{ width: "100px", borderRadius: "50%" }} />
-                                    <h4 className='mt-2' style={{ textAlign: "center" }}>{data.name}</h4>
-                                    <h6 style={{ textAlign: "center" }}>{data.isHost ? "Host" : "Ospite"}</h6>
+                                <Col md={6} sm={6} className='d-flex flex-column align-items-center justify-content-center d-md-block'>
+                                    <div>
+                                        <img src={data.avatar ? data.avatar : avatar} alt=""
+                                            style={{ width: "100px", borderRadius: "50%" }} />
+                                    </div>
+                                    <div>
+                                        <h4 className='mt-2' style={{ textAlign: "center" }}>{data.name}</h4>
+                                        <h6 style={{ textAlign: "center" }}>{data.isHost ? "Host" : "Ospite"}</h6>
+
+                                    </div>
                                 </Col>
-                                <Col md={6} className='d-flex flex-column justify-content-center'>
-                                    <h4>1</h4>
-                                    <h6>Recensione</h6>
+                                <Col md={6} sm={6} className=' d-flex flex-column justify-content-center'>
+                                    <h6>Preferiti</h6>
+                                    <h4>{data.favorites ? data.favorites.length : null}</h4>
                                     <hr />
-                                    <h4>4</h4>
-                                    <h6>Anni su AirBnb</h6>
+                                    <h6>su AirBnb da</h6>
+                                    {dateString(data.createdAt)}
                                 </Col>
                             </Row>
                         </div>
                     </Col>
-                    <Col md={7}>
+                    <Col md={7} sm={12}>
                         <div>
                             <h2>{`Informazioni su ${data.name}`}</h2>
                         </div>
@@ -237,6 +262,9 @@ export default function Profile() {
                             </div>
                             <div className='ms-2'>
                                 <Button variant='outline-danger' onClick={() => setModalShow(true)}>Elimina profilo</Button>
+                            </div>
+                            <div className='ms-2'>
+                                <Button variant='danger' onClick={() => handleLogOut()}>Logout</Button>
                             </div>
                         </div>
                         <hr style={{ width: "50%" }} />
@@ -383,23 +411,23 @@ export default function Profile() {
                                     <Row>
                                         <Col md={6} className='d-flex align-items-center'>
                                             <div className='info1'>
-                                                <div>
+                                                <div className='m-3'>
                                                     <MdOutlineAlternateEmail />
                                                     <span className='ms-2'><b>Email: </b>{data.email}</span>
                                                 </div>
-                                                <div>
+                                                <div className='m-3'>
                                                     <FaRegUserCircle />
                                                     <span className='ms-2'><b>Username: </b>{data.username}</span>
                                                 </div>
                                             </div>
                                             <div className='ms-2 info2'>
-                                                <div>
+                                                <div className='m-3'>
                                                     <MdOutlineWorkOutline />
                                                     <span className='ms-2'><b>Lavoro: </b>{data.work ? data.work : (
                                                         <Button variant='transparent' style={{ border: "1px solid black", fontSize: "10px", padding: "2px" }}>Aggiungi lavoro</Button>
                                                     )}</span>
                                                 </div>
-                                                <div>
+                                                <div className='m-3'>
                                                     <FaRegAddressCard />
                                                     <span className='ms-2'><b>Indirizzo: </b>{data.address ? data.address :
                                                         <Button variant='transparent' style={{ border: "1px solid black", fontSize: "10px", padding: "2px" }}>Aggiungi indirizzo</Button>

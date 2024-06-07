@@ -109,7 +109,7 @@ export default function SingleInsertion(props) {
 
         if (currentUser && currentUser.favorites && currentUser.favorites.includes(id)) {
             setFav(true)
-        } else {
+        } else if (!currentUser) {
             setFav(false)
         }
 

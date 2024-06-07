@@ -110,69 +110,74 @@ export default function MyInsertions({ setMod, setKey }) {
                 <Button variant='outline-primary' onClick={() => filteredByTitle()}>Cerca</Button>
             </InputGroup>
 
-            <Table hover>
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Annuncio</th>
-                        <th>Prenotazioni</th>
-                        <th>Prezzo</th>
-                        <th>Azioni</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {data &&
-                        data.map((el, index) => (
-                            <tr key={el._id}>
-                                <td>{index + 1}</td>
-                                <td>
-                                    <div className='d-flex'>
+            <div className='table-responsive'>
+                <Table hover className='table'>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Foto annuncio</th>
+                            <th>Titolo</th>
+                            <th>Prenotazioni</th>
+                            <th>Prezzo</th>
+                            <th>Azioni</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {data &&
+                            data.map((el, index) => (
+                                <tr key={el._id}>
+                                    <td>{index + 1}</td>
+                                    <td>
+
                                         <img src={el.covers ? el.covers[0] : emptyLocation} alt=""
                                             className='img-fluid'
                                             style={{ height: "130px", width: "200px" }} />
-                                        <div className='ms-3'>
+                                    </td>
+                                    <td>
+                                        <div>
                                             <h3>{el.title}</h3>
                                             <p style={{ color: 'gray' }}>{el.place}</p>
                                         </div>
-                                    </div>
-                                </td>
-                                <td>{el.bookings.length !== 0 ? (
-                                    <>
-                                        <h6>{el.bookings.length} prenotazioni</h6>
-                                        <Button variant='transparent' className='bookings' onClick={() => handleViewBookings(el._id)}>Visualizza prenotazioni</Button>
 
-                                    </>
-                                )
-                                    : "Nessuna prenotazione"}</td>
-                                <td>{el.price} €</td>
-                                <td>
-                                    <Button variant='transparent' onClick={() => handleMod(el._id)}>
-                                        <GoPencil />
-                                    </Button>
-                                    <Button variant='transparent' onClick={() => setShowModal(true)}>
-                                        <FaRegTrashAlt />
-                                    </Button>
-                                    <Modal
-                                        show={showModal} onHide={() => setShowModal(false)}
-                                        centered
-                                    >
-                                        <Modal.Header closeButton>
+                                    </td>
+                                    <td>{el.bookings.length !== 0 ? (
+                                        <>
+                                            <h6>{el.bookings.length} prenotazioni</h6>
+                                            <Button variant='transparent' className='bookings' onClick={() => handleViewBookings(el._id)}>Visualizza prenotazioni</Button>
 
-                                        </Modal.Header>
-                                        <Modal.Body>
-                                            <h4>Eliminare la struttura {el.title} ?</h4>
+                                        </>
+                                    )
+                                        : "Nessuna prenotazione"}</td>
+                                    <td>{el.price} €</td>
+                                    <td>
+                                        <Button variant='transparent' onClick={() => handleMod(el._id)}>
+                                            <GoPencil />
+                                        </Button>
+                                        <Button variant='transparent' onClick={() => setShowModal(true)}>
+                                            <FaRegTrashAlt />
+                                        </Button>
+                                        <Modal
+                                            show={showModal} onHide={() => setShowModal(false)}
+                                            centered
+                                        >
+                                            <Modal.Header closeButton>
 
-                                        </Modal.Body>
-                                        <Modal.Footer>
-                                            <Button onClick={() => setShowModal(false)}>Chiudi</Button>
-                                            <Button variant='danger' onClick={() => handleDelete(el._id)}>Elimina</Button>
-                                        </Modal.Footer>
-                                    </Modal>
-                                </td>
-                            </tr>
-                        ))}
-                </tbody>
-            </Table>
+                                            </Modal.Header>
+                                            <Modal.Body>
+                                                <h4>Eliminare la struttura {el.title} ?</h4>
+
+                                            </Modal.Body>
+                                            <Modal.Footer>
+                                                <Button onClick={() => setShowModal(false)}>Chiudi</Button>
+                                                <Button variant='danger' onClick={() => handleDelete(el._id)}>Elimina</Button>
+                                            </Modal.Footer>
+                                        </Modal>
+                                    </td>
+                                </tr>
+                            ))}
+                    </tbody>
+                </Table>
+            </div>
         </>
     )
 }

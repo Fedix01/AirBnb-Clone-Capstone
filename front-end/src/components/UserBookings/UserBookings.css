@@ -65,3 +65,13 @@
     background: linear-gradient(#F62F58, #DE1263);
     border: none;
 }
+
+@media screen and (max-width:768px) {
+    .img-booking {
+        justify-content: center !important;
+    }
+
+    .img-booking img {
+        border-radius: 20px;
+    }
+}

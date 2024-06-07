@@ -100,7 +100,7 @@ export default function MyFooter() {
             }
 
             {!showAllFooter &&
-                <div className='mx-5 footer-short'>
+                <div className='mx-5 footer-short d-none d-md-block'>
                     <footer className="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
                         <p className="col-md-4 mb-0 text-muted">© 2024 Airbnb, Inc</p>
 
@@ -123,7 +123,7 @@ export default function MyFooter() {
                 {currentUser.isHost ?
                     <>
                         <div className='d-flex flex-column align-items-center justify-content-center'
-                            onClick={() => navigate("/myBookings")}>
+                            onClick={() => navigate("/hostDashboard")}>
                             <TbWorld />
                             <h6 className='mt-1'>Host Dashboard</h6>
                         </div>
