@@ -40,36 +40,36 @@ export default function MyFooter() {
                     <Container>
                         <footer className="py-5">
                             <Row>
-                                <Col sm={6} md={4} className='mb-3'>
+                                <Col xs={6} sm={6} md={4} className='mb-3'>
                                     <h5>Assistenza</h5>
                                     <ul className="nav flex-column">
-                                        <li className="nav-item mb-2">Home</li>
-                                        <li className="nav-item mb-2">Features</li>
-                                        <li className="nav-item mb-2">Pricing</li>
+                                        <li className="nav-item mb-2">Centro Assistenza</li>
+                                        <li className="nav-item mb-2">AirCover</li>
+                                        <li className="nav-item mb-2">Opzioni di cancellazione</li>
                                         <li className="nav-item mb-2">FAQs</li>
-                                        <li className="nav-item mb-2">About</li>
+                                        <li className="nav-item mb-2">Segnala problema</li>
                                     </ul>
                                 </Col>
 
-                                <Col sm={6} md={4} className='mb-3'>
+                                <Col xs={6} sm={6} md={4} className='mb-3'>
                                     <h5>Ospitare</h5>
                                     <ul className="nav flex-column">
-                                        <li className="nav-item mb-2">Home</li>
-                                        <li className="nav-item mb-2">Features</li>
-                                        <li className="nav-item mb-2">Pricing</li>
-                                        <li className="nav-item mb-2">FAQs</li>
-                                        <li className="nav-item mb-2">About</li>
+                                        <li className="nav-item mb-2">Apri un Airbnb</li>
+                                        <li className="nav-item mb-2">AirCover per gli ospiti</li>
+                                        <li className="nav-item mb-2">Risorse per gli host</li>
+                                        <li className="nav-item mb-2">Forum</li>
+                                        <li className="nav-item mb-2">Ospitare responsabilemente</li>
                                     </ul>
                                 </Col>
 
-                                <Col sm={6} md={4} className='mb-3'>
+                                <Col xs={6} sm={6} md={4} className='mb-3'>
                                     <h5>Airbnb</h5>
                                     <ul className="nav flex-column">
-                                        <li className="nav-item mb-2">Home</li>
-                                        <li className="nav-item mb-2">Features</li>
-                                        <li className="nav-item mb-2">Pricing</li>
-                                        <li className="nav-item mb-2">FAQs</li>
-                                        <li className="nav-item mb-2">About</li>
+                                        <li className="nav-item mb-2">Newsroom</li>
+                                        <li className="nav-item mb-2">Nuove funzionalità</li>
+                                        <li className="nav-item mb-2">Oppurtunità di lavoro</li>
+                                        <li className="nav-item mb-2">Gift Card</li>
+                                        <li className="nav-item mb-2">Investitori</li>
                                     </ul>
                                 </Col>
 
@@ -77,7 +77,7 @@ export default function MyFooter() {
                             </Row>
 
                             <div className="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top">
-                                <p>© 2022 Company, Inc. All rights reserved.</p>
+                                <p>© 2024 Airbnb, Inc. All rights reserved.</p>
                                 <div className='d-flex mx-3'>
                                     <div className='mx-2'>
                                         <RiGlobalLine className='mx-2' />

@@ -162,11 +162,9 @@ insertionApiRoute.post("/", authMiddleware, async (req, res, next) => {
         if (user) {
             const post = await Insertion.create({ ...req.body, user: user });
 
-            // Assicurati che l'array insertions esista
             if (!user.insertions) {
-                user.insertions = [];
+                user.insertions = []
             }
-
             user.insertions.push(post._id);
             await user.save();
             res.send(post);
@@ -190,9 +188,17 @@ insertionApiRoute.put("/:id", authMiddleware, async (req, res, next) => {
 
 insertionApiRoute.delete("/:id", authMiddleware, async (req, res, next) => {
     try {
-        const del = await Insertion.findByIdAndDelete(req.params.id);
+        const user = await User.findById(req.user.id);
+        if (user) {
+            const del = await Insertion.findByIdAndDelete(req.params.id);
 
-        res.send(del)
+            user.insertions.pull(del._id);
+            await user.save();
+            res.send(del)
+
+        } else {
+            res.status(400).send("Utente non trovato")
+        }
     } catch (error) {
         next(error)
     }
@@ -376,16 +382,28 @@ insertionApiRoute.post("/:id/booking", authMiddleware, async (req, res, next) =>
     try {
         const userId = req.user.id;
 
-        const insertion = await Insertion.findById(req.params.id);
+        const insertion = await Insertion.findById(req.params.id).populate({
+            path: "bookings",
+            model: "Booking",
+        });
 
+        if (!insertion) {
+            return res.status(404).send({ message: "Insertion not found" });
+        }
 
-        const requestedDates = getDatesFromPeriod(new Date(req.body.checkInDate), new Date(req.body.checkOutDate));
+        const requestedCheckIn = new Date(req.body.checkInDate);
+        const requestedCheckOut = new Date(req.body.checkOutDate);
+
 
         const isAvailable = insertion.bookings.every(booking => {
             const bookingCheckInDate = new Date(booking.checkInDate);
             const bookingCheckOutDate = new Date(booking.checkOutDate);
 
-            return requestedDates.every(date => date < bookingCheckInDate || date > bookingCheckOutDate);
+            return (
+                requestedCheckOut <= bookingCheckInDate ||
+                requestedCheckIn >= bookingCheckOutDate
+            );
+
         });
 
         if (isAvailable) {
@@ -414,7 +432,7 @@ insertionApiRoute.post("/:id/booking", authMiddleware, async (req, res, next) =>
             res.send(post)
 
         } else {
-            res.status(400).send("Errore date gia prenotate")
+            res.status(400).send({ message: "Errore: date già prenotate" });
         }
     } catch (error) {
         next(error)

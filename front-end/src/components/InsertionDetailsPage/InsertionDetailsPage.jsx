@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { FaRegHeart } from "react-icons/fa6";
 import { IoShareOutline } from "react-icons/io5";
 import Row from 'react-bootstrap/Row';
@@ -10,6 +10,7 @@ import './InsertionDetailsPage.css';
 import { FaStar } from "react-icons/fa";
 import BookingForm from '../BookingForm/BookingForm';
 import ReviewsArea from '../ReviewsArea/ReviewsArea';
+import { AlertContext } from '../AlertProvider/AlertProvider';
 
 
 export default function InsertionDetailsPage(props) {
@@ -23,10 +24,55 @@ export default function InsertionDetailsPage(props) {
 
     const [show, setShow] = useState(false);
 
+    const [token, setToken] = useState("");
+
+    const { setAlert } = useContext(AlertContext);
+
+    const [currentUser, setCurrentUser] = useState({});
+
     const ref = useRef(null);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    const endpointFav = "http://localhost:3001/api/user/";
+
+
+    const addToFavorites = async () => {
+        if (currentUser.isHost === true) {
+            setAlert("Gli host non possono aggiungere ai preferiti");
+            setTimeout(() => {
+                setAlert("")
+            }, 4000);
+        } else {
+            try {
+                const res = await fetch(`${endpointFav}${id}/favorites`, {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    }
+
+                });
+                if (res.ok) {
+                    const add = await res.json();
+                    console.log(add);
+                    setCurrentUser(add);
+                    localStorage.setItem('user', JSON.stringify(add));
+                    setAlert("Struttura aggiunta ai preferiti!");
+                    setTimeout(() => {
+                        setAlert("")
+                    }, 4000);
+                }
+            } catch (error) {
+                console.error(error);
+                setAlert("Errore nell'aggiunta ai preferiti");
+                setTimeout(() => {
+                    setAlert("")
+                }, 4000);
+            }
+        }
+    }
 
     const calculateAverage = (reviews) => {
         if (!Array.isArray(reviews) || reviews.length === 0) {
@@ -70,6 +116,17 @@ export default function InsertionDetailsPage(props) {
         }
     }, [reviews]);
 
+    useEffect(() => {
+        const tokenUser = localStorage.getItem("token");
+        const user = localStorage.getItem("user");
+        if (tokenUser) {
+            setToken(tokenUser)
+        }
+        if (user) {
+            setCurrentUser(JSON.parse(user))
+        }
+    }, [])
+
 
     return (
         <div className='mx-3'>
@@ -78,18 +135,18 @@ export default function InsertionDetailsPage(props) {
                     <h3>{title}</h3>
                 </div>
                 <div className='d-flex'>
-                    <div className='mx-2'>
+                    <div className='mx-2' style={{ cursor: "pointer" }} >
                         <IoShareOutline className='me-2' />
                         <span>Condividi</span>
                     </div>
-                    <div className='mx-2'>
+                    <div className='mx-2' style={{ cursor: "pointer" }} onClick={() => addToFavorites()}>
                         <FaRegHeart className='me-2' />
                         <span>Salva</span>
                     </div>
                 </div>
             </div>
-            <Row>
-                <Col md={6}>
+            <Row className='img-row'>
+                <Col md={6} sm={12}>
                     <img src={covers ? covers[0] : emptyLocation}
                         className='img-fluid'
                         alt=""
@@ -101,8 +158,8 @@ export default function InsertionDetailsPage(props) {
                         }}
                     />
                 </Col>
-                <Col md={6}>
-                    <div className='d-flex mb-2'>
+                <Col md={6} sm={12}>
+                    <div className='d-block d-md-flex mb-2'>
                         <img src={covers ? (covers[1] ? covers[1] : emptyLocation) : emptyLocation} className='me-2'
                             alt=""
                             style={{ height: "210px", width: "270px" }} />
@@ -110,7 +167,7 @@ export default function InsertionDetailsPage(props) {
                             alt=""
                             style={{ height: "210px", width: "270px", borderTopRightRadius: "15px" }} />
                     </div>
-                    <div className='d-flex'>
+                    <div className='d-block d-md-flex'>
                         <img src={covers ? (covers[3] ? covers[3] : emptyLocation) : emptyLocation}
                             className='me-2'
                             style={{ height: "210px", width: "270px" }}
@@ -123,7 +180,7 @@ export default function InsertionDetailsPage(props) {
             </Row>
 
             <Row>
-                <Col md={7}>
+                <Col md={7} sm={12}>
                     <div className='mt-3'>
                         <h3>{place}</h3>
                         <h6>{services ? services.roomDetails : "Nessun servizio"}, {services ? services.bathDetails : "Nessun servizio"}</h6>
@@ -161,12 +218,12 @@ export default function InsertionDetailsPage(props) {
 
                     </div>
                 </Col>
-                <Col md={5} className='mt-5'>
+                <Col md={5} sm={12} className='mt-5'>
                     <BookingForm price={price} id={id} />
                 </Col>
             </Row>
             <Row>
-                <Col md={12} className='mt-5'>
+                <Col md={12} sm={12} className='mt-5'>
                     <div className='comment-box' ref={ref}>
                         <ReviewsArea reviews={reviews} insertionId={id} reviewUpdate={reviewUpdate} />
 
@@ -175,7 +232,7 @@ export default function InsertionDetailsPage(props) {
             </Row>
             <hr className='my-5' />
             <Row>
-                <Col md={12}>
+                <Col md={12} sm={12}>
                     <h3>Informazioni sull'Host</h3>
                 </Col>
             </Row>

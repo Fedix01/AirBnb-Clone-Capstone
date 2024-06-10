@@ -20,7 +20,7 @@ export default function AllInsertions({ data, setPage, loading, stopLoad, spinne
                 }
                 {data &&
                     data.map((el) => (
-                        <Col md={2} key={el._id} style={{ position: "relative" }}>
+                        <Col xs={12} md={4} lg={2} key={el._id} style={{ position: "relative" }}>
 
                             <SingleInsertion
                                 key={el._id}

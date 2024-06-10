@@ -186,6 +186,7 @@ export default function AddInsertion({ mod, setKey, setMod }) {
                             <Form.Group controlId="title" className='p-2'>
                                 <Form.Label>Titolo</Form.Label>
                                 <Form.Control
+                                    className='p-2'
                                     required
                                     type="text"
                                     value={formData.title}
@@ -234,6 +235,7 @@ export default function AddInsertion({ mod, setKey, setMod }) {
                             <Form.Group controlId="address" className='p-2'>
                                 <Form.Label>Indirizzo</Form.Label>
                                 <Form.Control
+                                    className='p-2'
                                     required
                                     type="text"
                                     value={formData.address}
@@ -251,6 +253,7 @@ export default function AddInsertion({ mod, setKey, setMod }) {
                             <Form.Group controlId="details" className='p-2'>
                                 <Form.Label>Dettagli</Form.Label>
                                 <Form.Control
+                                    className='p-2'
                                     required
                                     type="text"
                                     value={formData.details}
@@ -301,6 +304,7 @@ export default function AddInsertion({ mod, setKey, setMod }) {
                                 <Form.Label>Luogo</Form.Label>
                                 <Form.Control
                                     required
+                                    className='p-2'
                                     type="text"
                                     value={formData.place}
                                     onChange={(e) => setFormData({ ...formData, place: e.target.value })}
@@ -314,12 +318,13 @@ export default function AddInsertion({ mod, setKey, setMod }) {
                         </Col>
                     </Row>
                     <Row>
-                        <h3 className='mt-2'>Servizi</h3>
+                        <h3 className='mt-4'>Servizi</h3>
                         <Col md={6}>
                             <Form.Group controlId="room" className='p-2'>
                                 <MdOutlineBedroomChild />
                                 <Form.Control
                                     required
+                                    className='p-2'
                                     type="text"
                                     value={formData.roomDetails}
                                     onChange={(e) => setFormData({ ...formData, roomDetails: e.target.value })}
@@ -332,6 +337,7 @@ export default function AddInsertion({ mod, setKey, setMod }) {
                                 <MdOutlineBathroom />
                                 <Form.Control
                                     required
+                                    className='p-2'
                                     type="text"
                                     value={formData.bathDetails}
                                     onChange={(e) => setFormData({ ...formData, bathDetails: e.target.value })}
@@ -346,6 +352,7 @@ export default function AddInsertion({ mod, setKey, setMod }) {
                             <Form.Group controlId="other" className='p-2'>
                                 <MdOutlineOtherHouses />
                                 <Form.Control
+                                    className='p-2'
                                     required
                                     type="text"
                                     value={formData.other}
@@ -359,7 +366,7 @@ export default function AddInsertion({ mod, setKey, setMod }) {
 
                     </Row>
                     <Row>
-                        <h3>Regole della casa</h3>
+                        <h3 className='mt-4'>Regole della casa</h3>
 
                         <Col md={6}>
 

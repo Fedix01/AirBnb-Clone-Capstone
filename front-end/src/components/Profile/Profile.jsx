@@ -66,17 +66,29 @@ export default function Profile() {
     };
 
     const getProfile = async () => {
+        if (!token) {
+            navigate("/logIn");
+            setAlert("Rieffettua il login");
+            setTimeout(() => {
+                setAlert("")
+            }, 4000);
+            return
+        }
+
         try {
             const res = await fetch(endpoint, {
                 method: "GET",
                 headers: {
-                    "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`
                 }
             });
             if (res.ok) {
                 const profile = await res.json();
                 setData(profile)
+            } else {
+                localStorage.removeItem("user");
+                localStorage.removeItem("token");
+                navigate("/logIn")
             }
         } catch (error) {
             console.error(error);
@@ -224,10 +236,10 @@ export default function Profile() {
             {data &&
 
                 <Row>
-                    <Col md={5} sm={12} className='d-block d-md-flex justify-content-center'>
+                    <Col md={5} xs={12} className='d-block d-md-flex justify-content-center'>
                         <div className='image-prof'>
                             <Row>
-                                <Col md={6} sm={6} className='d-flex flex-column align-items-center justify-content-center d-md-block'>
+                                <Col md={6} xs={6} className='d-flex flex-column align-items-center justify-content-center d-md-block'>
                                     <div>
                                         <img src={data.avatar ? data.avatar : avatar} alt=""
                                             style={{ width: "100px", borderRadius: "50%" }} />
@@ -238,7 +250,7 @@ export default function Profile() {
 
                                     </div>
                                 </Col>
-                                <Col md={6} sm={6} className=' d-flex flex-column justify-content-center'>
+                                <Col md={6} xs={6} className=' d-flex flex-column justify-content-center'>
                                     <h6>Preferiti</h6>
                                     <h4>{data.favorites ? data.favorites.length : null}</h4>
                                     <hr />
@@ -248,7 +260,7 @@ export default function Profile() {
                             </Row>
                         </div>
                     </Col>
-                    <Col md={7} sm={12}>
+                    <Col md={7} xs={12}>
                         <div>
                             <h2>{`Informazioni su ${data.name}`}</h2>
                         </div>
@@ -263,9 +275,7 @@ export default function Profile() {
                             <div className='ms-2'>
                                 <Button variant='outline-danger' onClick={() => setModalShow(true)}>Elimina profilo</Button>
                             </div>
-                            <div className='ms-2'>
-                                <Button variant='danger' onClick={() => handleLogOut()}>Logout</Button>
-                            </div>
+
                         </div>
                         <hr style={{ width: "50%" }} />
 
@@ -409,7 +419,7 @@ export default function Profile() {
                             <>
                                 <div className='mt-2'>
                                     <Row>
-                                        <Col md={6} className='d-flex align-items-center'>
+                                        <Col xs={12} md={6} className='d-block d-md-flex align-items-center'>
                                             <div className='info1'>
                                                 <div className='m-3'>
                                                     <MdOutlineAlternateEmail />
@@ -434,7 +444,11 @@ export default function Profile() {
                                                     }</span>
                                                 </div>
                                             </div>
+
                                         </Col>
+                                        <div className='ms-2 mt-3 text-xs-center text-md-left'>
+                                            <Button variant='danger' onClick={() => handleLogOut()}>Logout</Button>
+                                        </div>
                                     </Row>
                                 </div>
 

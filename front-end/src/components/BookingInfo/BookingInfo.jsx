@@ -103,7 +103,7 @@ export default function BookingInfo() {
                 <div>
                     <h4>Tutte le prenotazione</h4>
                     <div className='table-responsive'>
-                        <Table striped bordered hover className='table'>
+                        <Table bordered hover className='table'>
                             <thead>
                                 <tr>
                                     <th>#</th>

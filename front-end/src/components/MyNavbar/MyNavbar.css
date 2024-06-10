@@ -93,6 +93,7 @@ input[type="text"]:focus {
 .alert {
     position: sticky;
     top: 60px;
+    z-index: 20;
 }
 
 .dropdown {

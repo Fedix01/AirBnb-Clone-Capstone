@@ -55,6 +55,13 @@ const UserSchema = new Schema({
         required: true
     },
 
+    insertions: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Insertion"
+        }
+    ],
+
     favorites: [
         {
             type: Schema.Types.ObjectId,

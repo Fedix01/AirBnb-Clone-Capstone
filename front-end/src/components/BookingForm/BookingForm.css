@@ -52,3 +52,9 @@
     text-decoration: underline;
     cursor: pointer;
 }
+
+@media screen and (max-width:768px) {
+    .booking-box input[type="date"] {
+        width: 100%;
+    }
+}

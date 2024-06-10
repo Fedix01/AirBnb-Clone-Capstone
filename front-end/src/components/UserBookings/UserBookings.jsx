@@ -120,10 +120,12 @@ export default function UserBookings() {
                 setTimeout(() => {
                     setAlert("")
                 }, 4000);
+                setShowModalDelete(false);
                 getBookings(token, currentUser)
             }
         } catch (error) {
             console.error(error);
+            setShowModalDelete(false);
             setAlert("Errore durante l'eliminazione della prenotazione");
             setTimeout(() => {
                 setAlert("")
@@ -234,7 +236,7 @@ export default function UserBookings() {
                             <Col md={6} sm={12}>
                                 <div className='d-flex flex-column trips-text p-4 my-2'>
                                     <MdOutlineWavingHand />
-                                    <h5 className='mt-3'>Nessun viaggio prenotato... per ora!</h5>
+                                    <h5 className='mt-3'>Benvenuto nelle tue prenotazioni!</h5>
                                     <p>È giusto il momento di rispolverare i bagagli e iniziare a programmare la tua prossima avventura.</p>
                                     <Button onClick={() => navigate("/")}>Inizia a cercare</Button>
                                 </div>
@@ -337,10 +339,17 @@ export default function UserBookings() {
                     </Tab>
                     <Tab eventKey="preferiti" title="Preferiti">
                         <Row>
+                            <Col xs={12} md={12} className='my-3'>
+                                <div className='fav-box'>
+                                    <h2 className='p-2'>Benvenuto nei preferiti</h2>
+                                    <p className='p-2'>Qui puoi aggiungere tutte le strutture che ti piacciono e che vuoi tenere d'occhio</p>
+                                    <Button onClick={() => navigate("/")}>Aggiungi ai preferiti</Button>
+                                </div>
+                            </Col>
 
                             {dataFav &&
                                 dataFav.map(el => (
-                                    <Col md={6} key={el._id}>
+                                    <Col xs={12} md={6} key={el._id}>
                                         <FavoritesArea
                                             id={el._id}
                                             address={el.address}
@@ -355,13 +364,6 @@ export default function UserBookings() {
                                     </Col>
                                 ))}
 
-                            <Col md={12} className='mt-3'>
-                                <div className='fav-box'>
-                                    <h2 className='p-2'>Benvenuto nei preferiti</h2>
-                                    <p className='p-2'>Qui puoi aggiungere tutte le strutture che ti piacciono e che vuoi tenere d'occhio</p>
-                                    <Button onClick={() => navigate("/")}>Aggiungi ai preferiti</Button>
-                                </div>
-                            </Col>
                         </Row>
                     </Tab>
 

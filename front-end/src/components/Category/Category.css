@@ -5,3 +5,10 @@
 .category-container button h6 {
     font-size: 10px;
 }
+
+@media screen and (max-width:768px) {
+    .category-container {
+        overflow-x: scroll;
+    }
+
+}
