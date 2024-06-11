@@ -110,16 +110,16 @@ input[type="text"]:focus {
 }
 
 @media screen and (max-width: 768px) {
-    .nav-icon {
+    /* .nav-icon {
         display: none;
-    }
+    } */
 
     .user-area {
         display: none;
     }
 
     .bar {
-        max-width: 90vw;
+        max-width: 70vw;
     }
 
     .bar .check-in,

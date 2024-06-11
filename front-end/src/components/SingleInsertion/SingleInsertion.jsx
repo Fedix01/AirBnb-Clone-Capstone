@@ -56,43 +56,53 @@ export default function SingleInsertion(props) {
     }
 
     const addToFavorites = async (e) => {
-        e.stopPropagation()
-        if (currentUser.isHost === true) {
-            setAlert("Gli host non possono aggiungere ai preferiti");
-            setTimeout(() => {
-                setAlert("")
-            }, 4000);
-        } else {
-            try {
-                const res = await fetch(`${endpointFav}${id}/favorites`, {
-                    method: "POST",
-                    headers: {
-                        "Authorization": `Bearer ${token}`,
-                        "Content-Type": "application/json"
-                    }
+        e.stopPropagation();
+        if (Object.keys(currentUser).length) {
+            if (currentUser.isHost === true) {
+                setAlert("Gli host non possono aggiungere ai preferiti");
+                setTimeout(() => {
+                    setAlert("")
+                }, 4000);
+            } else {
+                try {
+                    const res = await fetch(`${endpointFav}${id}/favorites`, {
+                        method: "POST",
+                        headers: {
+                            "Authorization": `Bearer ${token}`,
+                            "Content-Type": "application/json"
+                        }
 
-                });
-                if (res.ok) {
-                    const add = await res.json();
-                    console.log(add);
-                    setCurrentUser(add);
-                    localStorage.setItem('user', JSON.stringify(add));
-                    setAlert("Struttura aggiunta ai preferiti!");
+                    });
+                    if (res.ok) {
+                        const add = await res.json();
+                        console.log(add);
+                        setCurrentUser(add);
+                        localStorage.setItem('user', JSON.stringify(add));
+                        setAlert("Struttura aggiunta ai preferiti!");
+                        setTimeout(() => {
+                            setAlert("")
+                        }, 4000);
+                    }
+                } catch (error) {
+                    console.error(error);
+                    setAlert("Errore nell'aggiunta ai preferiti");
                     setTimeout(() => {
                         setAlert("")
                     }, 4000);
                 }
-            } catch (error) {
-                console.error(error);
-                setAlert("Errore nell'aggiunta ai preferiti");
-                setTimeout(() => {
-                    setAlert("")
-                }, 4000);
             }
+
+        } else {
+            setAlert("Per aggiungere ai preferiti ti devi loggare");
+            setTimeout(() => {
+                setAlert("")
+            }, 4000);
+            navigate("/logIn")
         }
     }
 
-    const deleteFromFavorites = async () => {
+    const deleteFromFavorites = async (e) => {
+        e.stopPropagation();
         try {
             const res = await fetch(`${endpointFav}${id}/favorites`, {
                 method: "DELETE",

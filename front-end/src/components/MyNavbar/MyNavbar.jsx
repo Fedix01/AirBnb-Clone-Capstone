@@ -47,12 +47,14 @@ export default function MyNavbar(props) {
         setToken("");
         localStorage.removeItem("token");
         localStorage.removeItem("user");
+        window.location.reload();
+        navigate("/");
         setAlert("Logout effettuato con successo!");
         setTimeout(() => {
             setAlert("")
         }, 4000);
         setUser([])
-        navigate("/")
+
     }
 
     const handleAlertPay = () => {

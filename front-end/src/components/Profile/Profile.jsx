@@ -193,7 +193,8 @@ export default function Profile() {
                 setModalShow(false);
                 localStorage.removeItem("user");
                 localStorage.removeItem("token");
-                navigate("/")
+                navigate("/");
+                window.location.reload();
                 setAlert("Utente eliminato correttamente");
                 setTimeout(() => {
                     setAlert("")
@@ -218,6 +219,7 @@ export default function Profile() {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         navigate("/");
+        window.location.reload();
         setAlert("Logout effettuato correttamente");
         setTimeout(() => {
             setAlert("")

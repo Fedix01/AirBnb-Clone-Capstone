@@ -11,6 +11,7 @@ import { FaStar } from "react-icons/fa";
 import BookingForm from '../BookingForm/BookingForm';
 import ReviewsArea from '../ReviewsArea/ReviewsArea';
 import { AlertContext } from '../AlertProvider/AlertProvider';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function InsertionDetailsPage(props) {
@@ -19,6 +20,8 @@ export default function InsertionDetailsPage(props) {
         hostType, place, price, services, hostBirthday,
         hostAvatar, hostName, hostSurname, reviews, reviewUpdate,
         insertions, hostCreatedAt, checkInRule, checkOutRule, petsRule } = props;
+
+    const navigate = useNavigate();
 
     const [average, setAverage] = useState(0);
 
@@ -39,38 +42,47 @@ export default function InsertionDetailsPage(props) {
 
 
     const addToFavorites = async () => {
-        if (currentUser.isHost === true) {
-            setAlert("Gli host non possono aggiungere ai preferiti");
-            setTimeout(() => {
-                setAlert("")
-            }, 4000);
-        } else {
-            try {
-                const res = await fetch(`${endpointFav}${id}/favorites`, {
-                    method: "POST",
-                    headers: {
-                        "Authorization": `Bearer ${token}`,
-                        "Content-Type": "application/json"
-                    }
+        if (Object.keys(currentUser).length) {
+            if (currentUser.isHost === true) {
+                setAlert("Gli host non possono aggiungere ai preferiti");
+                setTimeout(() => {
+                    setAlert("")
+                }, 4000);
+            } else {
+                try {
+                    const res = await fetch(`${endpointFav}${id}/favorites`, {
+                        method: "POST",
+                        headers: {
+                            "Authorization": `Bearer ${token}`,
+                            "Content-Type": "application/json"
+                        }
 
-                });
-                if (res.ok) {
-                    const add = await res.json();
-                    console.log(add);
-                    setCurrentUser(add);
-                    localStorage.setItem('user', JSON.stringify(add));
-                    setAlert("Struttura aggiunta ai preferiti!");
+                    });
+                    if (res.ok) {
+                        const add = await res.json();
+                        console.log(add);
+                        setCurrentUser(add);
+                        localStorage.setItem('user', JSON.stringify(add));
+                        setAlert("Struttura aggiunta ai preferiti!");
+                        setTimeout(() => {
+                            setAlert("")
+                        }, 4000);
+                    }
+                } catch (error) {
+                    console.error(error);
+                    setAlert("Errore nell'aggiunta ai preferiti");
                     setTimeout(() => {
                         setAlert("")
                     }, 4000);
                 }
-            } catch (error) {
-                console.error(error);
-                setAlert("Errore nell'aggiunta ai preferiti");
-                setTimeout(() => {
-                    setAlert("")
-                }, 4000);
             }
+
+        } else {
+            setAlert("Per aggiungere ai preferiti devi effettuare il login");
+            setTimeout(() => {
+                setAlert("")
+            }, 4000);
+            navigate("/logIn")
         }
     }
 
