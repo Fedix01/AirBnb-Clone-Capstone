@@ -216,10 +216,13 @@ export default function Profile() {
     }
 
     const handleLogOut = () => {
+        navigate('/', { replace: true });
+
         localStorage.removeItem("token");
         localStorage.removeItem("user");
-        navigate("/");
+
         window.location.reload();
+
         setAlert("Logout effettuato correttamente");
         setTimeout(() => {
             setAlert("")

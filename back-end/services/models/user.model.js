@@ -50,6 +50,11 @@ const UserSchema = new Schema({
         required: false
     },
 
+    googleId: {
+        type: String,
+        required: false
+    },
+
     isHost: {
         type: Boolean,
         required: true

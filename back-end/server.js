@@ -6,6 +6,9 @@ import { insertionApiRoute } from './services/routes/insertion.route.js';
 import cors from 'cors';
 import { log } from './services/middlewares/log.js';
 import { badRequestHandler, genericErrorHandler, notFoundHandler, unhautorizedHandler } from './services/middlewares/errorHandler.js';
+import passport from 'passport';
+import googleStrategy from './services/middlewares/passport.js';
+import cookieParser from 'cookie-parser';
 
 config();
 // Creo il server
@@ -15,7 +18,11 @@ const port = process.env.PORT || 3001;
 
 app.use(express.json());
 // Abilito cors per comunicazione col front-end
-app.use(cors())
+app.use(cors());
+// Google strategy per login con google
+passport.use("google", googleStrategy);
+// Utilizzo cookie parser per salvarmi dei dati all'interno (isHost)
+app.use(cookieParser());
 // Inserisco un log
 app.use(log)
 // Rotte

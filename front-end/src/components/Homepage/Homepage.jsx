@@ -1,4 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react';
+import queryString from 'query-string';
 import MyNavbar from '../MyNavbar/MyNavbar'
 import Category from '../Category/Category'
 import AllInsertions from '../AllInsertions/AllInsertions'
@@ -39,6 +40,8 @@ export default function Homepage() {
     const endpointCategories = `http://localhost:3001/api/insertion/findByCategory/`;
 
     const endpointSearch = `http://localhost:3001/api/insertion/search`;
+
+    const params = queryString.parse(window.location.search);
 
     const getFromApi = async (singleCategory) => {
         try {
@@ -115,6 +118,38 @@ export default function Homepage() {
             console.error(error)
         }
     }
+
+    const getParams = () => {
+
+
+        if (Object.keys(params).length > 0) {
+            const userGoogle = {
+
+                token: params.accessToken
+                ,
+                user: {
+                    name: params.name || "",
+                    surname: params.surname || "",
+                    username: params.username || "",
+                    birthday: params.birthday || "",
+                    avatar: params.avatar || "",
+                    email: params.email || "",
+                    password: params.password || "",
+                    isHost: params.isHost || false
+                }
+            }
+            if (userGoogle) {
+                localStorage.setItem("user", JSON.stringify(userGoogle.user));
+                localStorage.setItem("token", userGoogle.token);
+                console.log(userGoogle)
+            }
+        }
+    }
+
+    useEffect(() => {
+        getParams()
+    }, [params])
+
 
     useEffect(() => {
         setPage(0)

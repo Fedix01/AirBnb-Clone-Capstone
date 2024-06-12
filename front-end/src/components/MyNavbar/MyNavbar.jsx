@@ -43,12 +43,14 @@ export default function MyNavbar(props) {
     }
 
     const handleLogOut = () => {
+        navigate('/', { replace: true });
 
         setToken("");
         localStorage.removeItem("token");
         localStorage.removeItem("user");
+
         window.location.reload();
-        navigate("/");
+
         setAlert("Logout effettuato con successo!");
         setTimeout(() => {
             setAlert("")

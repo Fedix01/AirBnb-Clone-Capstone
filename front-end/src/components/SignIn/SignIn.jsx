@@ -110,11 +110,19 @@ export default function SignIn() {
         }
     }
 
+    const googleLogin = () => {
+        const endpoint = `http://localhost:3001/api/user/googleLogin?isHost=${formData.isHost}`;
+        window.open(endpoint, "_self")
+    }
+
     useEffect(() => {
         setSearchBar(false);
         setShowAllFooter(false)
     }, [])
 
+    useEffect(() => {
+        console.log(formData.isHost)
+    }, [formData.isHost])
 
 
     return (
@@ -127,7 +135,21 @@ export default function SignIn() {
                         <div className='signIn'>
                             <h6 className='header pb-3'>Accedi o registrati</h6>
                             <h3><b>Benvenuto su AirBnb</b></h3>
+
                             <Form noValidate validated={validated} onSubmit={handleSubmit}>
+
+                                <Form.Group className="mb-3 my-4">
+                                    <Form.Label>Sei un host?</Form.Label>
+                                    <Form.Check
+                                        value={formData.isHost}
+                                        style={{ width: "20%" }}
+                                        onChange={(e) => setFormData({ ...formData, isHost: e.target.checked })}
+                                    />
+                                </Form.Group>
+
+                                <Button variant='warning' onClick={() => googleLogin()}>Accedi con Google</Button>
+
+
                                 <Form.Group controlId="name" className='my-4'>
                                     <Form.Label>Nome</Form.Label>
                                     <Form.Control
@@ -225,14 +247,7 @@ export default function SignIn() {
 
                                 </Form.Group>
 
-                                <Form.Group className="mb-3 my-4">
-                                    <Form.Label>Sei un host?</Form.Label>
-                                    <Form.Check
-                                        value={formData.isHost}
-                                        style={{ width: "20%" }}
-                                        onChange={(e) => setFormData({ ...formData, isHost: e.target.checked })}
-                                    />
-                                </Form.Group>
+
                                 <Button className='btn-signIn mt-3' type="submit">Registrati</Button>
                             </Form>
                             <div className='d-flex align-items-center justify-content-center'>
