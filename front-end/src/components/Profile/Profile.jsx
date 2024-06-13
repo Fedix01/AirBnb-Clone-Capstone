@@ -24,7 +24,7 @@ export default function Profile() {
 
     const { setSearchBar } = useContext(searchBarContext);
 
-    const { setToken } = useContext(AuthContext);
+    const { setToken, token } = useContext(AuthContext);
 
     const { setAlert } = useContext(AlertContext);
 
@@ -32,7 +32,6 @@ export default function Profile() {
     const endpointPATCH = `http://localhost:3001/api/user/${data._id}/avatar`;
     const navigate = useNavigate();
 
-    const token = localStorage.getItem("token");
 
     const [mod, setMod] = useState(false);
 
@@ -66,14 +65,6 @@ export default function Profile() {
     };
 
     const getProfile = async () => {
-        if (!token) {
-            navigate("/logIn");
-            setAlert("Rieffettua il login");
-            setTimeout(() => {
-                setAlert("")
-            }, 4000);
-            return
-        }
 
         try {
             const res = await fetch(endpoint, {
@@ -103,8 +94,17 @@ export default function Profile() {
     }, [])
 
     useEffect(() => {
-        setToken(token)
-    }, [token])
+        const token = localStorage.getItem("token");
+        if (token) {
+            setToken(token)
+        } else {
+            navigate("/logIn");
+            setAlert("Rieffettua il login");
+            setTimeout(() => {
+                setAlert("")
+            }, 4000);
+        }
+    }, [])
 
 
     const handleSignIn = async () => {
@@ -247,11 +247,12 @@ export default function Profile() {
                                 <Col md={6} xs={6} className='d-flex flex-column align-items-center justify-content-center d-md-block'>
                                     <div>
                                         <img src={data.avatar ? data.avatar : avatar} alt=""
-                                            style={{ width: "100px", borderRadius: "50%" }} />
+                                            style={{ width: "100px", borderRadius: "50%" }}
+                                            className='ms-3' />
                                     </div>
                                     <div>
                                         <h4 className='mt-2' style={{ textAlign: "center" }}>{data.name}</h4>
-                                        <h6 style={{ textAlign: "center" }}>{data.isHost ? "Host" : "Ospite"}</h6>
+                                        <h6 style={{ textAlign: "center" }}>{data.isHost ? "Host" : "Guest"}</h6>
 
                                     </div>
                                 </Col>
@@ -274,7 +275,13 @@ export default function Profile() {
                                 {mod ?
                                     <Button variant='transparent' style={{ border: "1px solid black" }} onClick={() => setMod(false)}>Torna al tuo profilo</Button>
                                     :
-                                    <Button variant='transparent' style={{ border: "1px solid black" }} onClick={() => setMod(true)}>Modifica il profilo</Button>
+                                    <>
+                                        {data && data.googleId ?
+                                            <h4>Il profilo Google non è modificabile</h4>
+                                            :
+                                            <Button variant='transparent' style={{ border: "1px solid black" }} onClick={() => setMod(true)}>Modifica il profilo</Button>
+                                        }
+                                    </>
                                 }
                             </div>
                             <div className='ms-2'>
@@ -411,7 +418,7 @@ export default function Profile() {
                                     <Form.Group className="mb-3">
                                         <Form.Check
                                             disabled
-                                            label={data.isHost ? "Sei un host" : "Sei un user"}
+                                            label={data.isHost ? "Sei un host" : "Sei un guest"}
                                             value={data.isHost}
                                             onChange={(e) => setFormData({ ...formData, isHost: e.target.checked })}
                                         />

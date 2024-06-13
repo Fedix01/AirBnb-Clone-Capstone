@@ -128,6 +128,7 @@ export default function Homepage() {
                 token: params.accessToken
                 ,
                 user: {
+                    _id: params._id || "",
                     name: params.name || "",
                     surname: params.surname || "",
                     username: params.username || "",
@@ -135,7 +136,8 @@ export default function Homepage() {
                     avatar: params.avatar || "",
                     email: params.email || "",
                     password: params.password || "",
-                    isHost: params.isHost || false
+                    isHost: false,
+                    googleId: params.googleId || ""
                 }
             }
             if (userGoogle) {

@@ -8,7 +8,6 @@ import { log } from './services/middlewares/log.js';
 import { badRequestHandler, genericErrorHandler, notFoundHandler, unhautorizedHandler } from './services/middlewares/errorHandler.js';
 import passport from 'passport';
 import googleStrategy from './services/middlewares/passport.js';
-import cookieParser from 'cookie-parser';
 
 config();
 // Creo il server
@@ -21,8 +20,6 @@ app.use(express.json());
 app.use(cors());
 // Google strategy per login con google
 passport.use("google", googleStrategy);
-// Utilizzo cookie parser per salvarmi dei dati all'interno (isHost)
-app.use(cookieParser());
 // Inserisco un log
 app.use(log)
 // Rotte

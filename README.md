@@ -6,7 +6,8 @@ Questa è una Web App Full Stack che consente di eseguire prenotazioni, aggiunge
 
 ### Sicurezza 🔒
 
-🔑 La sicurezza gestita da back-end contiene la crittografia della password e la distinzione tra Guest e Host
+🔑 La sicurezza gestita da back-end contiene la crittografia della password e la distinzione tra Guest e Host.
+📲 Accesso con Google: l'autenticazione con Google permette di risparmiare tempo accedendo direttamente col proprio account.
 
 ### Funzionalità del Guest 👩 👨  📅
 
@@ -16,11 +17,11 @@ Questa è una Web App Full Stack che consente di eseguire prenotazioni, aggiunge
 📃 Pagina di dettaglio: consente di visualizzare i dettagli della struttura e dell'host inoltre offre la possibilità di prenotare e lasciare una recensione.  
 👜 Sezione dei viaggi: permette al guest di visualizzare le informazioni inerenti alla prenotazione, confermarla pagando oppure eliminarla.  
 💖 Sezione dei preferiti: permette al guest di visualizzare le strutture da tener d'occhio.  
- 👩 👨 Area Personale: visualizzare i dettagli dell'utente, aggiungere dettagli, modificare e cancellare il profilo oppure fare il logout.  
+👩 👨 Area Personale: visualizzare i dettagli dell'utente, aggiungere dettagli, modificare e cancellare il profilo oppure fare il logout.  
 
 ### Funzionalità dell' Host 👩 👨 💼 
 
-🧑‍💻 Gestione delle strutture: la dashboard permette di visulizzare le strutture, filtrarle per nome, controllare le prenotazioni e il relativo stato oppure rimuoverle.  
+🧑‍💻 Gestione delle strutture: la dashboard permette di visualizzare le strutture, filtrarle per nome, controllare le prenotazioni e il relativo stato oppure rimuoverle.  
 📝 Aggiunta o modifica: permette di aggiungere o modificare le caratteristiche della struttura.  
 
 ## Tecnologie utilizzate
@@ -46,21 +47,6 @@ Questa è una Web App Full Stack che consente di eseguire prenotazioni, aggiunge
 
 ## Setup 🔧
 
-### Frontend setup:
-
-Entra nella cartella front-end:
-````
-cd front-end
-````
-Esegui l'installazione di tutti i pacchetti:
-````
-npm install
-````
-Fai partire la web app:
-````
-npm start
-````
-
 ### Backend setup:
 
 Entra nella cartella back-end:
@@ -79,8 +65,26 @@ C_CLOUD_NAME
 C_API_KEY
 C_API_SECRET
 JWT_SECRET
+G_CLIENT_ID
+G_CLIENT_SECRET 
+G_CB
 ````
 Fai partire il back-end:
+````
+npm start
+````
+
+### Frontend setup:
+
+Entra nella cartella front-end:
+````
+cd front-end
+````
+Esegui l'installazione di tutti i pacchetti:
+````
+npm install
+````
+Fai partire la web app:
 ````
 npm start
 ````
@@ -88,7 +92,7 @@ npm start
 ## Utilizzo 🌐💻
 
 ## Guest 👩 👨
-1) Effettua la registrazione e non dichiarare che sei un host oppure effettua il login.  
+1) Effettua la registrazione e non dichiarare che sei un host oppure effettua il login (puoi anche eseguire sia registrazione che log-in con Google).  
 2) Puoi utilizzare la barra di ricerca per scoprire se il luogo e le date per cui vuoi prenotare sono disponibili, puoi anche cercare per categoria.  
 3) Apri l'inserzione ed effettua la prenotazione, eventualmente puoi lasciare anche una recensione.  
 4) Recati nella sezione delle prenotazioni e scegli se pagare o cancellare la prenotazione, eventualmente puoi aggiungerla ai preferiti.

@@ -7,11 +7,11 @@ import { generateJWT } from './auth.js';
 const options = {
     clientID: process.env.G_CLIENT_ID,
     clientSecret: process.env.G_CLIENT_SECRET,
-    callbackURL: process.env.G_CB
+    callbackURL: process.env.G_CB,
 };
 
 
-const googleStrategy = new GoogleStrategy(options, async (accessToken, refreshToken, profile, passportNext) => {
+const googleStrategy = new GoogleStrategy(options, async (accessToken, refreshToken, profile, done) => {
     try {
 
         const { email, given_name, family_name, sub, picture, birthday } = profile._json;
@@ -20,11 +20,13 @@ const googleStrategy = new GoogleStrategy(options, async (accessToken, refreshTo
 
         if (user) {
             const accToken = await generateJWT({
-                _id: user._id
+                _id: user._id,
+                isHost: user.isHost
             })
 
-            passportNext(null, { accToken, email, given_name, family_name, picture, birthday, sub })
+            done(null, { accToken, email, given_name, family_name, picture, birthday, sub, _id: user._id, isHost: user.isHost })
         } else {
+
             const newUser = new User({
                 name: given_name,
                 surname: family_name,
@@ -43,10 +45,11 @@ const googleStrategy = new GoogleStrategy(options, async (accessToken, refreshTo
                 email: newUser.email
             });
 
-            passportNext(null, { accToken, email, given_name, family_name, picture, birthday, sub })
+            done(null, { accToken, email, given_name, family_name, picture, birthday, sub, _id: newUser._id })
         }
+
     } catch (error) {
-        passportNext(error)
+        done(error)
     }
 
 });

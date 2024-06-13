@@ -11,6 +11,7 @@ import { AlertContext } from '../AlertProvider/AlertProvider';
 import { searchBarContext } from '../SearchBarProvider/SearchBarProvider';
 import { AuthContext } from '../AuthContextProvider/AuthContextProvider';
 import { FooterContext } from '../FooterProvider/FooterProvider';
+import { FcGoogle } from "react-icons/fc";
 import MyFooter from '../MyFooter/MyFooter';
 
 export default function SignIn() {
@@ -111,7 +112,7 @@ export default function SignIn() {
     }
 
     const googleLogin = () => {
-        const endpoint = `http://localhost:3001/api/user/googleLogin?isHost=${formData.isHost}`;
+        const endpoint = `http://localhost:3001/api/user/googleLogin`;
         window.open(endpoint, "_self")
     }
 
@@ -135,6 +136,22 @@ export default function SignIn() {
                         <div className='signIn'>
                             <h6 className='header pb-3'>Accedi o registrati</h6>
                             <h3><b>Benvenuto su AirBnb</b></h3>
+                            {formData.isHost === true ?
+                                <>
+                                    <Button variant='transparent' className='google-btn p-2 mt-2' disabled onClick={() => googleLogin()}>
+                                        <FcGoogle />
+                                        <span className='ms-2'>Accedi con Google</span>
+                                    </Button>
+                                </>
+                                :
+                                <>
+                                    <Button variant='transparent' className='google-btn p-2 mt-2' onClick={() => googleLogin()}>
+                                        <FcGoogle />
+                                        <span className='ms-2'>Accedi con Google</span>
+                                    </Button>
+                                </>
+                            }
+
 
                             <Form noValidate validated={validated} onSubmit={handleSubmit}>
 
@@ -146,8 +163,6 @@ export default function SignIn() {
                                         onChange={(e) => setFormData({ ...formData, isHost: e.target.checked })}
                                     />
                                 </Form.Group>
-
-                                <Button variant='warning' onClick={() => googleLogin()}>Accedi con Google</Button>
 
 
                                 <Form.Group controlId="name" className='my-4'>

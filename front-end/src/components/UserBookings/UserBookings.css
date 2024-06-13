@@ -74,4 +74,8 @@
     .img-booking img {
         border-radius: 20px;
     }
+
+    .fav-box button {
+        width: 100%;
+    }
 }

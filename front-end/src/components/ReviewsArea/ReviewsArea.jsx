@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './ReviewsArea.css';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import emptyAvatar from "../../assets/avatar.png";
 import { useParams } from 'react-router-dom';
 import { FaStar } from "react-icons/fa";
 import { FaRegStar } from "react-icons/fa";
 import ReviewForm from '../ReviewForm/ReviewForm';
+import { AlertContext } from '../AlertProvider/AlertProvider';
 
 export default function ReviewsArea({ reviews, reviewUpdate }) {
 
@@ -17,6 +19,8 @@ export default function ReviewsArea({ reviews, reviewUpdate }) {
     const [token, setToken] = useState();
 
     const [modify, setModify] = useState("");
+
+    const { setAlert } = useContext(AlertContext);
 
     const [currentUser, setCurrentUser] = useState({});
 
@@ -108,7 +112,6 @@ export default function ReviewsArea({ reviews, reviewUpdate }) {
                     <FaStar />
                     <FaStar />
                     <FaStar />
-                    <FaRegStar />
                 </>
             )
         }
@@ -132,7 +135,11 @@ export default function ReviewsArea({ reviews, reviewUpdate }) {
                 } else {
                     getfromApi(endpoint)
                 }
-                reviewUpdate()
+                reviewUpdate();
+                setAlert("Il commento è stato eliminato")
+                setTimeout(() => {
+                    setAlert("")
+                }, 4000);
             }
         } catch (error) {
             console.error(error)
@@ -198,10 +205,10 @@ export default function ReviewsArea({ reviews, reviewUpdate }) {
                         <Col md={6} key={el._id}>
                             <div className='rev-container my-4 mx-4'>
                                 <div className='d-flex align-items-center'>
-                                    <img src={el.user.avatar}
+                                    <img src={el.user && el.user.avatar ? el.user.avatar : emptyAvatar}
                                         alt=""
                                         className='avatar-rev' />
-                                    <h4 className='ms-3'>{el.user.name} {el.user.surname}</h4>
+                                    <h4 className='ms-3'>{el.user && el.user.name ? el.user.name : ""} {el.user && el.user.surname ? el.user.surname : ""}</h4>
                                 </div>
                                 <div className='d-flex align-items-center ratings mt-2'>
                                     <div>
@@ -217,8 +224,8 @@ export default function ReviewsArea({ reviews, reviewUpdate }) {
                                 <div>
                                     {(el.user._id === currentUser._id) &&
                                         <>
-                                            <Button variant='transparent' onClick={() => setModify(el._id)}>Modifica</Button>
-                                            <Button variant='transparent' onClick={() => deleteReview(el._id)}>Elimina</Button>
+                                            <Button variant='transparent' className='handleRev' onClick={() => setModify(el._id)}>Modifica</Button>
+                                            <Button variant='transparent' className='handleRev' onClick={() => deleteReview(el._id)}>Elimina</Button>
                                         </>
                                     }
                                 </div>

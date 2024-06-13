@@ -81,7 +81,7 @@ export default function MyNavbar(props) {
             return (
                 <>
                     <div className='d-flex'>
-                        {user.isHost ?
+                        {user.isHost === true ?
                             <Button variant='transparent' onClick={() => navigate("/hostDashboard")}>Host dashboard</Button>
                             :
                             <Button variant='transparent' onClick={() => navigate("/myBookings")}>Le mie prenotazioni</Button>}
@@ -89,7 +89,10 @@ export default function MyNavbar(props) {
                             <Dropdown.Toggle variant="transparent">
                                 <MdOutlineFormatListBulleted className='mx-2' />
                                 <img src={user.avatar ? user.avatar : avatar} alt=""
-                                    style={{ width: "30px", height: "30px", borderRadius: "50%" }} />
+                                    style={{ width: "30px", height: "30px", borderRadius: "50%" }} onError={(e) => {
+                                        e.target.onerror = null;
+                                        e.target.src = avatar;
+                                    }} />
                             </Dropdown.Toggle>
 
                             <Dropdown.Menu>

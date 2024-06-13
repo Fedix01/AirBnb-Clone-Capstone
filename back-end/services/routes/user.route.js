@@ -16,18 +16,13 @@ userApiRoute.get("/", async (req, res, next) => {
     }
 })
 
-userApiRoute.get('/googleLogin', (req, res, next) => {
-    const isHost = req.query.isHost === 'true';
-    res.cookie('isHost', isHost, { httpOnly: true });
-    next();
-}, passport.authenticate('google', { scope: ['profile', 'email'] }));
-
+userApiRoute.get('/googleLogin',
+    passport.authenticate('google',
+        { scope: ['profile', 'email'] }));
 
 userApiRoute.get("/callback", passport.authenticate("google", { session: false }), (req, res, next) => {
     try {
-        const isHost = req.cookies.isHost;
-        res.clearCookie("isHost");
-        res.redirect(`http://localhost:3000/?accessToken=${req.user.accToken}&isHost=${isHost}&name=${req.user.given_name}&surname=${req.user.family_name}&avatar=${req.user.picture}&birthday=${req.user.birthday}&email=${req.user.email}`);
+        res.redirect(`http://localhost:3000/?accessToken=${req.user.accToken}&name=${req.user.given_name}&surname=${req.user.family_name}&avatar=${req.user.picture}&birthday=${req.user.birthday}&email=${req.user.email}&_id=${req.user._id}&googleId=${req.user.sub}`);
     } catch (error) {
         next(error)
     }

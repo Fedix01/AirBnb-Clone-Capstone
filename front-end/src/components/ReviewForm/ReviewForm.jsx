@@ -53,6 +53,7 @@ export default function ReviewForm({ getfromApi, showAll, modify, reviewUpdate }
                     }
                     reviewUpdate()
                     console.log(newRev);
+                    setFormData({ ...formData, comment: "" })
                 }
             } catch (error) {
                 console.error(error)
@@ -101,6 +102,7 @@ export default function ReviewForm({ getfromApi, showAll, modify, reviewUpdate }
                     setTimeout(() => {
                         setAlert("")
                     }, 4000);
+                    setFormData({ ...formData, comment: "" })
                 }
             } catch (error) {
                 console.error(error)

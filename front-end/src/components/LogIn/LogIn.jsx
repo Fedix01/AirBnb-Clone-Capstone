@@ -12,6 +12,7 @@ import { AlertContext } from '../AlertProvider/AlertProvider';
 import { searchBarContext } from '../SearchBarProvider/SearchBarProvider';
 import { AuthContext } from '../AuthContextProvider/AuthContextProvider';
 import { FooterContext } from '../FooterProvider/FooterProvider';
+import { FcGoogle } from "react-icons/fc";
 import MyFooter from '../MyFooter/MyFooter';
 export default function LogIn() {
 
@@ -89,6 +90,10 @@ export default function LogIn() {
         }
     }
 
+    const googleLogin = () => {
+        const endpoint = "http://localhost:3001/api/user/googleLogin";
+        window.open(endpoint, "_self")
+    }
 
     useEffect(() => {
         setSearchBar(false);
@@ -106,6 +111,11 @@ export default function LogIn() {
                         <div className='logIn'>
                             <h6 className='header pb-3'>Accedi o registrati</h6>
                             <h3><b>Bentornato su AirBnb</b></h3>
+
+                            <Button variant='transparent' className='google-btn p-2 mt-2' onClick={() => googleLogin()}>
+                                <FcGoogle />
+                                <span className='ms-2'>Accedi con Google</span>
+                            </Button>
                             <Form noValidate validated={validated} onSubmit={handleSubmit}>
                                 <Form.Group controlId="email" className='my-4'>
                                     <Form.Label>Email</Form.Label>
