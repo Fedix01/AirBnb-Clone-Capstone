@@ -157,7 +157,7 @@ export default function InsertionDetailsPage(props) {
                     </div>
                 </div>
             </div>
-            <Row className='img-row'>
+            <Row className='img-row align-items-center'>
                 <Col md={6} sm={12}>
                     <img src={covers ? covers[0] : emptyLocation}
                         className='img-fluid'

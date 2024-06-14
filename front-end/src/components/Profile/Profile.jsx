@@ -257,8 +257,17 @@ export default function Profile() {
                                     </div>
                                 </Col>
                                 <Col md={6} xs={6} className=' d-flex flex-column justify-content-center'>
-                                    <h6>Preferiti</h6>
-                                    <h4>{data.favorites ? data.favorites.length : null}</h4>
+                                    {data.isHost === true ?
+                                        <>
+                                            <h6>Inserzioni</h6>
+                                            <h4>{data.insertions ? data.insertions.length : null}</h4>
+                                        </>
+                                        :
+                                        <>
+                                            <h6>Preferiti</h6>
+                                            <h4>{data.favorites ? data.favorites.length : null}</h4>
+                                        </>
+                                    }
                                     <hr />
                                     <h6>su AirBnb da</h6>
                                     {dateString(data.createdAt)}
@@ -277,7 +286,7 @@ export default function Profile() {
                                     :
                                     <>
                                         {data && data.googleId ?
-                                            <h4>Il profilo Google non è modificabile</h4>
+                                            <h5>Il profilo Google non è modificabile</h5>
                                             :
                                             <Button variant='transparent' style={{ border: "1px solid black" }} onClick={() => setMod(true)}>Modifica il profilo</Button>
                                         }
@@ -294,7 +303,7 @@ export default function Profile() {
                         {mod ?
                             <>
                                 <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                                    <Form.Group controlId="name">
+                                    <Form.Group controlId="name" className='my-3'>
                                         <Form.Label>Nome</Form.Label>
                                         <Form.Control
                                             required
@@ -308,7 +317,7 @@ export default function Profile() {
                                         </Form.Control.Feedback>
                                         <Form.Control.Feedback>Perfetto!</Form.Control.Feedback>
                                     </Form.Group>
-                                    <Form.Group controlId="surname">
+                                    <Form.Group controlId="surname" className='my-3'>
                                         <Form.Label>Cognome</Form.Label>
                                         <Form.Control
                                             required
@@ -322,7 +331,7 @@ export default function Profile() {
                                         </Form.Control.Feedback>
                                         <Form.Control.Feedback>Perfetto!</Form.Control.Feedback>
                                     </Form.Group>
-                                    <Form.Group controlId="email">
+                                    <Form.Group controlId="email" className='my-3'>
                                         <Form.Label>Email</Form.Label>
                                         <Form.Control
                                             required
@@ -336,7 +345,7 @@ export default function Profile() {
                                         </Form.Control.Feedback>
                                         <Form.Control.Feedback>Perfetto!</Form.Control.Feedback>
                                     </Form.Group>
-                                    <Form.Group controlId="username">
+                                    <Form.Group controlId="username" className='my-3'>
                                         <Form.Label>Username</Form.Label>
                                         <Form.Control
                                             required
@@ -350,7 +359,7 @@ export default function Profile() {
                                         </Form.Control.Feedback>
                                         <Form.Control.Feedback>Perfetto!</Form.Control.Feedback>
                                     </Form.Group>
-                                    <Form.Group controlId="date">
+                                    <Form.Group controlId="date" className='my-3'>
                                         <Form.Label>Data di nascita</Form.Label>
                                         <Form.Control
                                             type="date"
@@ -363,7 +372,7 @@ export default function Profile() {
                                         </Form.Control.Feedback>
                                         <Form.Control.Feedback>Perfetto!</Form.Control.Feedback>
                                     </Form.Group>
-                                    <Form.Group controlId="address">
+                                    <Form.Group controlId="address" className='my-3'>
                                         <Form.Label>Indirizzo</Form.Label>
                                         <Form.Control
                                             type="text"
@@ -376,7 +385,7 @@ export default function Profile() {
                                         </Form.Control.Feedback>
                                         <Form.Control.Feedback>Perfetto!</Form.Control.Feedback>
                                     </Form.Group>
-                                    <Form.Group controlId="work">
+                                    <Form.Group controlId="work" className='my-3'>
                                         <Form.Label>Lavoro</Form.Label>
                                         <Form.Control
                                             type="text"
@@ -389,7 +398,7 @@ export default function Profile() {
                                         </Form.Control.Feedback>
                                         <Form.Control.Feedback>Perfetto!</Form.Control.Feedback>
                                     </Form.Group>
-                                    <Form.Group controlId="password">
+                                    <Form.Group controlId="password" className='my-3'>
                                         <Form.Label>Password</Form.Label>
                                         <Form.Control
                                             required
@@ -403,7 +412,7 @@ export default function Profile() {
                                         </Form.Control.Feedback>
                                         <Form.Control.Feedback>Perfetto!</Form.Control.Feedback>
                                     </Form.Group>
-                                    <Form.Group controlId="avatar">
+                                    <Form.Group controlId="avatar" className='my-3'>
                                         <Form.Label>Avatar</Form.Label>
                                         <Form.Control
                                             type="file"
@@ -415,7 +424,7 @@ export default function Profile() {
                                         </Form.Control.Feedback>
                                         <Form.Control.Feedback>Perfetto!</Form.Control.Feedback>
                                     </Form.Group>
-                                    <Form.Group className="mb-3">
+                                    <Form.Group className="my-3">
                                         <Form.Check
                                             disabled
                                             label={data.isHost ? "Sei un host" : "Sei un guest"}

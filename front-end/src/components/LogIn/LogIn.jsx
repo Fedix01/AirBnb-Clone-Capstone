@@ -111,11 +111,12 @@ export default function LogIn() {
                         <div className='logIn'>
                             <h6 className='header pb-3'>Accedi o registrati</h6>
                             <h3><b>Bentornato su AirBnb</b></h3>
-
+                            <h6 className='my-3'>Sei un Guest?</h6>
                             <Button variant='transparent' className='google-btn p-2 mt-2' onClick={() => googleLogin()}>
                                 <FcGoogle />
                                 <span className='ms-2'>Accedi con Google</span>
                             </Button>
+                            <h6 className='my-3'>oppure</h6>
                             <Form noValidate validated={validated} onSubmit={handleSubmit}>
                                 <Form.Group controlId="email" className='my-4'>
                                     <Form.Label>Email</Form.Label>

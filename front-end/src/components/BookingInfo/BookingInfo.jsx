@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
 import { AuthContext } from '../AuthContextProvider/AuthContextProvider';
 import emptyAvatar from "../../assets/avatar.png";
 import Container from 'react-bootstrap/Container';
@@ -11,11 +10,11 @@ import { GrStatusGoodSmall } from "react-icons/gr";
 import { MdDeleteOutline } from "react-icons/md";
 import { AlertContext } from '../AlertProvider/AlertProvider';
 import MyFooter from '../MyFooter/MyFooter';
+import { useParams } from 'react-router-dom';
 
 export default function BookingInfo() {
 
-    const location = useLocation();
-    const { insertionId } = location.state;
+    const params = useParams();
 
     const { setToken } = useContext(AuthContext);
 
@@ -31,7 +30,7 @@ export default function BookingInfo() {
 
     const fetchBookings = async () => {
         try {
-            const res = await fetch(`${endpoint}${insertionId}/booking`, {
+            const res = await fetch(`${endpoint}${params.id}/booking`, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`,

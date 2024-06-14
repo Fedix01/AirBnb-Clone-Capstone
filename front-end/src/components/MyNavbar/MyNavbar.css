@@ -54,6 +54,10 @@ input[type="text"]:focus {
     outline: none;
 }
 
+input[type="date"] {
+    border: none;
+}
+
 ::placeholder {
     font-size: 0.75rem;
 }

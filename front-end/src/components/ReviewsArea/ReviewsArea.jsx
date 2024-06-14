@@ -208,7 +208,7 @@ export default function ReviewsArea({ reviews, reviewUpdate }) {
                                     <img src={el.user && el.user.avatar ? el.user.avatar : emptyAvatar}
                                         alt=""
                                         className='avatar-rev' />
-                                    <h4 className='ms-3'>{el.user && el.user.name ? el.user.name : ""} {el.user && el.user.surname ? el.user.surname : ""}</h4>
+                                    <h4 className='ms-3'>{el.user && el.user.name ? el.user.name : "Utente eliminato"} {el.user && el.user.surname ? el.user.surname : ""}</h4>
                                 </div>
                                 <div className='d-flex align-items-center ratings mt-2'>
                                     <div>
@@ -222,7 +222,7 @@ export default function ReviewsArea({ reviews, reviewUpdate }) {
                                     <p>{el.comment}</p>
                                 </div>
                                 <div>
-                                    {(el.user._id === currentUser._id) &&
+                                    {(el.user && el.user._id === currentUser._id) &&
                                         <>
                                             <Button variant='transparent' className='handleRev' onClick={() => setModify(el._id)}>Modifica</Button>
                                             <Button variant='transparent' className='handleRev' onClick={() => deleteReview(el._id)}>Elimina</Button>

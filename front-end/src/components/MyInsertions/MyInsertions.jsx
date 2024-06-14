@@ -10,7 +10,6 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from 'react-router-dom';
-import BookingInfo from '../BookingInfo/BookingInfo';
 
 
 
@@ -59,9 +58,6 @@ export default function MyInsertions({ setMod, setKey }) {
         setKey("addNew")
     }
 
-    const handleViewBookings = (insertionId) => {
-        navigate("/bookingInfo", { state: { insertionId } })
-    }
 
     const handleDelete = async (id) => {
         setShowModal(false);
@@ -143,7 +139,7 @@ export default function MyInsertions({ setMod, setKey }) {
                                     <td>{el.bookings.length !== 0 ? (
                                         <>
                                             <h6>{el.bookings.length} prenotazioni</h6>
-                                            <Button variant='transparent' className='bookings' onClick={() => handleViewBookings(el._id)}>Visualizza prenotazioni</Button>
+                                            <Button variant='transparent' className='bookings' onClick={() => navigate(`/allBookings/${el._id}`)}>Visualizza prenotazioni</Button>
 
                                         </>
                                     )

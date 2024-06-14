@@ -33,6 +33,8 @@ insertionApiRoute.get("/", async (req, res, next) => {
     }
 })
 
+// Funzione per filtrare correttamente le date, se la data è gia nel database la ricerca non produrrà risultati
+
 const getDatesFromPeriod = (startDate, endDate) => {
     let currentDate = startDate;
     const dates = [];
@@ -81,6 +83,7 @@ insertionApiRoute.post("/search", async (req, res, next) => {
     }
 })
 
+// Paginazione per categorie
 insertionApiRoute.get("/findByCategory/:category/pagination", async (req, res, next) => {
     try {
 
@@ -107,6 +110,7 @@ insertionApiRoute.get("/findByCategory/:category/pagination", async (req, res, n
 
 })
 
+// Paginazione
 insertionApiRoute.get("/pagination", async (req, res, next) => {
     try {
         const queryPage = req.query.page;

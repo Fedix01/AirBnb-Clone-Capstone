@@ -32,7 +32,7 @@ function App() {
                 <Route element={<ProtectedAuthRoute />}>
                   <Route path='/hostDashboard' element={<HostDashboard />}></Route>
                   <Route path='/myBookings' element={<UserBookings />}></Route>
-                  <Route path='/bookingInfo' element={<BookingInfo />}></Route>
+                  <Route path='/allBookings/:id' element={<BookingInfo />}></Route>
                   <Route path='/me' element={<Profile />}></Route>
                 </Route>
               </Routes>

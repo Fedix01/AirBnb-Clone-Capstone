@@ -136,9 +136,10 @@ export default function SignIn() {
                         <div className='signIn'>
                             <h6 className='header pb-3'>Accedi o registrati</h6>
                             <h3><b>Benvenuto su AirBnb</b></h3>
+                            <h6 className='mt-3'>Sei un Guest?</h6>
                             {formData.isHost === true ?
                                 <>
-                                    <Button variant='transparent' className='google-btn p-2 mt-2' disabled onClick={() => googleLogin()}>
+                                    <Button variant='transparent' className='google-btn p-2 mt-2' disabled>
                                         <FcGoogle />
                                         <span className='ms-2'>Accedi con Google</span>
                                     </Button>
@@ -152,7 +153,7 @@ export default function SignIn() {
                                 </>
                             }
 
-
+                            <h6 className='my-3'>oppure</h6>
                             <Form noValidate validated={validated} onSubmit={handleSubmit}>
 
                                 <Form.Group className="mb-3 my-4">

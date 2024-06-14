@@ -1,12 +1,14 @@
 # AirBnb-Clone-Capstone
 
+![Airbnb-clone-cover](front-end/src/assets/Airbnb-Clone-Cover.png)
+
 Questa è una Web App Full Stack che consente di eseguire prenotazioni, aggiungere preferiti e gestire le funzionalità dell'host.
 
 ## Features 📱
 
 ### Sicurezza 🔒
 
-🔑 La sicurezza gestita da back-end contiene la crittografia della password e la distinzione tra Guest e Host.
+🔑 La sicurezza gestita da back-end contiene la crittografia della password e la distinzione tra Guest e Host.  
 📲 Accesso con Google: l'autenticazione con Google permette di risparmiare tempo accedendo direttamente col proprio account.
 
 ### Funzionalità del Guest 👩 👨  📅
