@@ -75,6 +75,13 @@ export default function MyNavbar(props) {
         fetchUser(userAuth)
     }, [userAuth])
 
+    useEffect(() => {
+        if (user && user.avatar) {
+            const img = new Image();
+            img.src = user.avatar;
+        }
+    }, [user])
+
 
     const renderUserArea = () => {
         if (user && user.length !== 0) {
